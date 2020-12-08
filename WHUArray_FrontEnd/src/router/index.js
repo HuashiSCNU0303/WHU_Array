@@ -7,7 +7,13 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'login',
       component: () => import('@/views/login')
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: () => import('@/views/index')
     }
   ]
 })

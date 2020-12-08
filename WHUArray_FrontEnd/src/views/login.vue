@@ -1,90 +1,119 @@
 <template>
   <div id="login">
     <div class="bg"></div>
-    <el-row class="main-container">
-      <el-col :span="12" :offset="0">
-        <el-row class="logo">
+    <a-row class="main-container">
+      <a-col :span="12" :offset="0" type="flex" justify="center" align="middle">
+        <a-row class="logo">
           <img src="../assets/logo.png" />
-        </el-row>
-        <el-row class="header">
-          <h2>一个基于SpringBoot+Vue开发的在线编程作业/考试平台</h2>
-        </el-row>
-      </el-col>
-      <el-col :span="7" :offset="1">
+        </a-row>
+        <a-row>
+          <p class="header-text"><b>一个基于SpringBoot+Vue开发的在线编程作业/考试平台</b></p>
+        </a-row>
+      </a-col>
+      <a-col :span="7" :offset="1">
         <div class="bottom">
-          <el-tabs class="container">
-            <el-tab-pane>
-              <span slot="label"><i class="el-icon-user-solid"></i>&nbsp;登录</span>
-              <el-form
-                :label-position="labelPosition"
-                label-width="80px"
-                ref="loginUserInfo"
-                :model="loginUserInfo"
-              >
-                <el-form-item label="用户名">
-                  <el-input
+          <a-tabs class="container" default-active-key="2">
+            <a-tab-pane key="1">
+              <span slot="tab"><a-icon type="login" />&nbsp;登录</span>
+              <a-form-model ref="loginUserInfo" :model="loginUserInfo">
+                <a-form-model-item>
+                  <a-input
                     v-model="loginUserInfo.username"
-                    placeholder="请输入用户名"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="密码">
-                  <el-input
+                    type="text"
+                    placeholder="请输入帐户名"
+                  >
+                    <a-icon
+                      slot="prefix"
+                      type="user"
+                      :style="{ color: 'rgba(0,0,0,.25)' }"
+                    />
+                  </a-input>
+                </a-form-model-item>
+
+                <a-form-model-item>
+                  <a-input
                     v-model="loginUserInfo.password"
-                    placeholder="请输入密码"
                     type="password"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="你的身份" prop="role">
-                  <el-radio-group v-model="loginUserInfo.role">
-                    <el-radio label="学生" ></el-radio>
-                    <el-radio label="老师" ></el-radio>
-                  </el-radio-group>
-                </el-form-item>
+                    autocomplete="false"
+                    placeholder="请输入密码"
+                  >
+                    <a-icon
+                      slot="prefix"
+                      type="lock"
+                      :style="{ color: 'rgba(0,0,0,.25)' }"
+                    />
+                  </a-input>
+                </a-form-model-item>
+                <a-form-model-item
+                  label="你的身份"
+                  :label-col="labelCol"
+                  :wrapper-col="wrapperCol"
+                >
+                  <a-radio-group v-model="loginUserInfo.role">
+                    <a-radio value="1">学生</a-radio>
+                    <a-radio value="2">老师</a-radio>
+                  </a-radio-group>
+                </a-form-model-item>
                 <div class="submit">
-                  <el-button type="primary" @click="login()">登录</el-button>
+                  <a-button type="primary" @click="login()">登录</a-button>
                 </div>
-              </el-form>
-            </el-tab-pane>
-            <el-tab-pane>
-              <span slot="label"><i class="el-icon-circle-plus"></i>&nbsp;注册</span>
-              <el-form
-                :label-position="labelPosition"
-                label-width="80px"
-                :model="registerUserInfo"
-              >
-                <el-form-item label="用户名">
-                  <el-input
+              </a-form-model>
+            </a-tab-pane>
+            <a-tab-pane key="2">
+              <span slot="tab"><a-icon type="user-add" />&nbsp;注册</span>
+              <a-form-model ref="registerUserInfo" :model="loginUserInfo">
+                <a-form-model-item>
+                  <a-input
                     v-model="registerUserInfo.username"
-                    placeholder="请输入用户名"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="密码">
-                  <el-input
+                    type="text"
+                    placeholder="请输入帐户名"
+                  >
+                    <a-icon
+                      slot="prefix"
+                      type="user"
+                      :style="{ color: 'rgba(0,0,0,.25)' }"
+                    />
+                  </a-input>
+                </a-form-model-item>
+
+                <a-form-model-item>
+                  <a-input
                     v-model="registerUserInfo.password"
-                    placeholder="请输入密码"
                     type="password"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="你的身份">
-                  <el-radio-group v-model="registerUserInfo.role">
-                    <el-radio label="学生" key="2"></el-radio>
-                    <el-radio label="老师" key="1"></el-radio>
-                  </el-radio-group>
-                </el-form-item>
+                    autocomplete="false"
+                    placeholder="请输入密码"
+                  >
+                    <a-icon
+                      slot="prefix"
+                      type="lock"
+                      :style="{ color: 'rgba(0,0,0,.25)' }"
+                    />
+                  </a-input>
+                </a-form-model-item>
+                <a-form-model-item
+                  label="你的身份"
+                  :label-col="labelCol"
+                  :wrapper-col="wrapperCol"
+                >
+                  <a-radio-group v-model="registerUserInfo.role">
+                    <a-radio value="1">学生</a-radio>
+                    <a-radio value="2">老师</a-radio>
+                  </a-radio-group>
+                </a-form-model-item>
                 <div class="submit">
-                  <el-button type="primary" @click="register()">登录</el-button>
+                  <a-button type="primary" @click="register()">注册</a-button>
                 </div>
-              </el-form>
-            </el-tab-pane>
-          </el-tabs>
+              </a-form-model>
+            </a-tab-pane>
+          </a-tabs>
         </div>
-      </el-col>
-    </el-row>
-    <el-row class="footer">
-      <el-col>
+      </a-col>
+    </a-row>
+    <a-row class="footer">
+      <a-col>
         <p class="msg2">版权所有&nbsp;©2019&nbsp;武汉大学计算机学院</p>
-      </el-col>
-    </el-row>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
@@ -94,15 +123,23 @@ export default {
   data() {
     return {
       labelPosition: "left",
+      formLayout: "horizontal",
+      labelCol: {
+        span: "8",
+        offset: "2",
+      },
+      wrapperCol: {
+        span: "12",
+      },
       loginUserInfo: {
-        username: "",
-        password: "",
-        role: "学生",
+        username: "fasg",
+        password: "2431",
+        role: "1",
       },
       registerUserInfo: {
         username: "1",
         password: "2",
-        role: "老师",
+        role: "2",
       },
     };
   },
@@ -110,6 +147,7 @@ export default {
     login() {
       // 请求后台登录接口，下面是原项目的旧代码，没有删
       console.log(JSON.stringify(this.loginUserInfo));
+      this.$router.push({ name: "index" });
       /*this.$axios({
         url: `/api/login`,
         method: "post",
@@ -151,15 +189,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .container {
   margin-bottom: 32px;
   margin-top: 32px;
-}
-#login {
-  font-size: 14px;
-  color: #000;
-  background-color: #fff;
+  width: 80%
 }
 #login .bg {
   position: fixed;
@@ -175,6 +209,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 60px;
 }
 #login .bottom {
   display: flex;
@@ -186,13 +221,12 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 #login .logo {
-  margin-top: 40px;
-  transform: scale(0.8);
+  transform: scale(0.6);
+  float: center;
 }
-#login .header {
-  margin-top: -10px;
+#login .header-text {
   text-align: center;
-  font-size: 120%;
+  font-size: 25px;
   color: #fff;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
