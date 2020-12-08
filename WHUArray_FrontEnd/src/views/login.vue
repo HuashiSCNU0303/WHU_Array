@@ -12,7 +12,7 @@
       </a-col>
       <a-col :span="7" :offset="1">
         <div class="bottom">
-          <a-tabs class="container" default-active-key="2">
+          <a-tabs class="container" default-active-key="1">
             <a-tab-pane key="1">
               <span slot="tab"><a-icon type="login" />&nbsp;登录</span>
               <a-form-model ref="loginUserInfo" :model="loginUserInfo">
@@ -147,7 +147,7 @@ export default {
     login() {
       // 请求后台登录接口，下面是原项目的旧代码，没有删
       console.log(JSON.stringify(this.loginUserInfo));
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "Index" });
       /*this.$axios({
         url: `/api/login`,
         method: "post",

@@ -7,13 +7,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'login',
+      name: 'Login',
       component: () => import('@/views/login')
     },
     {
       path: '/index',
-      name: 'index',
-      component: () => import('@/views/index')
+      name: 'Index',
+      component: () => import('@/views/index'),
+      children: [
+        {
+          path: 'mgmtcenter',
+          name: 'MgmtCenter',
+          component: () => import('@/views/mgmtcenter'),
+        },
+      ]
     }
   ]
 })

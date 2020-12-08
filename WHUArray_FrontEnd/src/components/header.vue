@@ -1,24 +1,33 @@
 <template>
-  <div>
-  <a-layout-header >
-      <a-menu
-        theme="light"
-        class="header"
-        mode="horizontal"
-        :default-selected-keys="['1']"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item id="logo-wrapper"> <img id="logo" src="../assets/logo.png" /> </a-menu-item>
-        <a-menu-item key="1"> 首页 </a-menu-item>
-        <a-menu-item key="2"> 作业 </a-menu-item>
-        <a-menu-item key="3"> 考试 </a-menu-item>
-        <a-menu-item key="4"> 题库 </a-menu-item>
-      </a-menu>
-    </a-layout-header>
-  </div>
+  <a-layout-header>
+    <a-menu
+      theme="light"
+      class="header"
+      mode="horizontal"
+      :default-selected-keys="['1']"
+      :style="{ lineHeight: '64px' }"
+    >
+      <a-menu-item id="unselectable-wrapper">
+        <img id="logo" src="../assets/logo.png" />
+      </a-menu-item>
+      <a-menu-item key="1"> <a-icon type="home" />&nbsp;首页 </a-menu-item>
+      <a-menu-item key="2"> <a-icon type="home" />&nbsp;作业 </a-menu-item>
+      <a-menu-item key="3"> <a-icon type="home" />&nbsp;考试 </a-menu-item>
+      <a-menu-item key="4"> <a-icon type="home" />&nbsp;题库 </a-menu-item>
+      <a-menu-item id="unselectable-wrapper" class="header-index-right"
+        ><user-menu></user-menu>
+      </a-menu-item>
+    </a-menu>
+  </a-layout-header>
 </template>
 
 <script>
+import UserMenu from "@/components/usermenu";
+export default {
+  components: {
+    UserMenu,
+  },
+};
 </script>
 
 <style scoped>
@@ -26,7 +35,8 @@
   height: 32px;
 }
 
-#logo-wrapper {
+#unselectable-wrapper {
+  color: rgba(0, 0, 0, 0.65);
   border-bottom: 2px solid transparent !important;
 }
 
@@ -37,5 +47,12 @@
 
 .header {
   padding: 0 20px;
+}
+
+.header-index-right {
+  flex: 1 0 auto;
+  height: 64px;
+  overflow: hidden;
+  float: right;
 }
 </style>
