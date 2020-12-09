@@ -13,15 +13,9 @@
       <a-menu-item id="unselectable-wrapper" key="logo">
         <img id="logo" src="../assets/logo.png" />
       </a-menu-item>
-      <a-menu-item key="todoList">
-        <a-icon type="home" />&nbsp;首页
-      </a-menu-item>
-      <a-menu-item key="course">
-        <a-icon type="home" />&nbsp;课程
-      </a-menu-item>
-      <a-menu-item key="problemRepos">
-        <a-icon type="home" />&nbsp;题库
-      </a-menu-item>
+      <a-menu-item key="todoList"> <a-icon type="home" />&nbsp;待办列表 </a-menu-item>
+      <a-menu-item key="course"> <a-icon type="home" />&nbsp;我的课程 </a-menu-item>
+      <a-menu-item key="problemRepos"> <a-icon type="home" />&nbsp;真题仓库 </a-menu-item>
       <a-menu-item id="unselectable-wrapper" class="header-index-right" key="userMenu">
         <user-menu @clearSelection="handleClearSelection"></user-menu>
       </a-menu-item>
@@ -35,33 +29,31 @@ export default {
   components: {
     UserMenu,
   },
-  data () {
+  data() {
     return {
-      currentKey: 'todoList'
-    }
+      currentKey: "todoList",
+    };
   },
   methods: {
-    handleClearSelection () {
-      this.currentKey = ''
+    handleClearSelection() {
+      this.currentKey = "";
     },
     handleTabSwitch: function (obj) {
-      const key = obj.key
-      if (key == "logo") {
-        this.currentKey = 'todoList'
+      const key = obj.key;
+      if (key == "logo" || key == "todoList") {
+        this.currentKey = "todoList";
         this.$router.push({
-          name: "todoList"
-        })
-      }
-      else if (key == "userMenu") {
-      }
-      else {
-        this.currentKey = key
+          path: "/index",
+        });
+      } else if (key == "userMenu") {
+      } else {
+        this.currentKey = key;
         this.$router.push({
-          name: key
-        })
+          name: key,
+        });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

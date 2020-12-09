@@ -3,29 +3,42 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import CommonPageView from "@/components/CommonPageView"
+import CommonPageView from "@/components/CommonPageView";
 
 export default new Router({
   routes: [
     {
       path: "/",
       name: "Login",
-      component: () => import("@/views/Login")
+      component: () => import("@/views/Login"),
     },
     {
       path: "/index",
+      redirect: "/index/todolist",
       component: () => import("@/views/Index"),
       children: [
         {
-          path: "",
+          path: "todolist",
           component: CommonPageView,
           children: [
             {
               path: "",
-              name: "todoList",
-              component: () => import("@/views/TodoList"),
-            }
-          ]
+              redirect: "/index/todolist/homework",
+              component: () => import("@/views/todolist/TodoList"),
+              children: [
+                {
+                  path: "homework",
+                  name: "homeworkInTodoList",
+                  component: () => import("@/views/todolist/HomeworkTodoList"),
+                },
+                {
+                  path: "exam",
+                  name: "examInTodoList",
+                  component: () => import("@/views/todolist/ExamTodoList"),
+                },
+              ],
+            },
+          ],
         },
         {
           path: "course",
@@ -34,9 +47,9 @@ export default new Router({
             {
               path: "",
               name: "course",
-              component: () => import("@/views/Course"),
-            }
-          ]
+              component: () => import("@/views/course/Course"),
+            },
+          ],
         },
         {
           path: "problemrepos",
@@ -46,8 +59,8 @@ export default new Router({
               path: "",
               name: "problemRepos",
               component: () => import("@/views/ProblemRepos"),
-            }
-          ]
+            },
+          ],
         },
         {
           path: "mgmtcenter",
@@ -56,31 +69,31 @@ export default new Router({
             {
               path: "usersetting",
               name: "userSetting",
-              component: () => import("@/views/management/UserSetting")
+              component: () => import("@/views/management/UserSetting"),
             },
             {
               path: "msg",
               name: "msgNotification",
-              component: () => import("@/views/management/MsgNotification")
+              component: () => import("@/views/management/MsgNotification"),
             },
             {
               path: "coursemgmt",
               name: "courseMgmt",
-              component: () => import("@/views/management/CourseMgmt")
+              component: () => import("@/views/management/CourseMgmt"),
             },
             {
               path: "homeworkmgmt",
               name: "homeworkMgmt",
-              component: () => import("@/views/management/HomeworkMgmt")
+              component: () => import("@/views/management/HomeworkMgmt"),
             },
             {
               path: "exammgmt",
               name: "examMgmt",
-              component: () => import("@/views/management/ExamMgmt")
+              component: () => import("@/views/management/ExamMgmt"),
             },
-          ]
-        }
-      ]
-    }
-  ]
+          ],
+        },
+      ],
+    },
+  ],
 });
