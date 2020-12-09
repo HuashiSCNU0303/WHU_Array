@@ -1,6 +1,6 @@
 <template>
-  <a-layout>
-    <a-layout-content style="padding: 50px">
+  <a-layout :style="{ height: '100%', paddingTop: '64px' }">
+    <a-layout-content style="padding: 30px 50px">
       <a-layout style="padding: 24px 0; background: #fff">
         <a-layout-sider width="200" style="background: #fff">
           <a-menu
@@ -28,7 +28,7 @@
           </a-menu>
         </a-layout-sider>
         <a-layout-content :style="{ padding: '0 24px', minHeight: '580px' }">
-          Content
+          <router-view />
         </a-layout-content>
       </a-layout>
     </a-layout-content>
@@ -42,7 +42,7 @@
 export default {
   data() {
     return {
-      defaultSelectedKey: []
+      defaultSelectedKey: [],
     };
   },
   created() {

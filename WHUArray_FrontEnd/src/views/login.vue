@@ -147,7 +147,7 @@ export default {
     login() {
       // 请求后台登录接口，下面是原项目的旧代码，没有删
       console.log(JSON.stringify(this.loginUserInfo));
-      this.$router.push({ name: "Index" });
+      this.$router.push({ path: "/index" });
       /*this.$axios({
         url: `/api/login`,
         method: "post",
@@ -193,7 +193,7 @@ export default {
 .container {
   margin-bottom: 32px;
   margin-top: 32px;
-  width: 80%
+  width: 80%;
 }
 #login .bg {
   position: fixed;

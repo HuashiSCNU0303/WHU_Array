@@ -1,5 +1,5 @@
 <template>
-  <a-layout-header>
+  <a-layout-header :style="{ position: 'fixed', zIndex: 1, width: '100%' }">
     <a-menu
       theme="light"
       class="header"
@@ -11,9 +11,8 @@
         <img id="logo" src="../assets/logo.png" />
       </a-menu-item>
       <a-menu-item key="1"> <a-icon type="home" />&nbsp;首页 </a-menu-item>
-      <a-menu-item key="2"> <a-icon type="home" />&nbsp;作业 </a-menu-item>
-      <a-menu-item key="3"> <a-icon type="home" />&nbsp;考试 </a-menu-item>
-      <a-menu-item key="4"> <a-icon type="home" />&nbsp;题库 </a-menu-item>
+      <a-menu-item key="2"> <a-icon type="home" />&nbsp;课程 </a-menu-item>
+      <a-menu-item key="3"> <a-icon type="home" />&nbsp;题库 </a-menu-item>
       <a-menu-item id="unselectable-wrapper" class="header-index-right"
         ><user-menu></user-menu>
       </a-menu-item>

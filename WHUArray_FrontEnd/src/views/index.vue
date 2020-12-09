@@ -1,21 +1,16 @@
 <template>
   <a-layout>
-    <navbar></navbar>
+    <nav-bar />
     <router-view />
   </a-layout>
 </template>
 
 <script>
-import navbar from "@/components/header";
+import NavBar from "@/components/header";
+import CommonPageView from "@/components/CommonPageView";
 export default {
-  data() {
-    return {
-      flag: false,
-      user: {},
-    };
-  },
   components: {
-    navbar,
+    NavBar,
   },
 };
 </script>

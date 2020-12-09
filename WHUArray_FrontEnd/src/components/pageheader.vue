@@ -2,27 +2,14 @@
   <div class="page-header">
     <div class="page-header-index-wide">
       <div class="detail">
-        <div class="main" v-if="!$route.meta.hiddenHeaderContent">
+        <div class="main">
           <div class="row">
-            <img v-if="logo" :src="logo" class="logo"/>
-            <h1 v-if="title" class="title">{{ title }}</h1>
-            <div class="action">
-              <slot name="action"></slot>
-            </div>
-          </div>
-          <div class="row">
-            <div v-if="avatar" class="avatar">
-              <a-avatar :src="avatar" />
-            </div>
             <div v-if="this.$slots.content" class="headerContent">
               <slot name="content"></slot>
             </div>
             <div v-if="this.$slots.extra" class="extra">
               <slot name="extra"></slot>
             </div>
-          </div>
-          <div>
-            <slot name="pageMenu"></slot>
           </div>
         </div>
       </div>
@@ -68,18 +55,6 @@ export default {
   .detail {
     display: flex;
     /*margin-bottom: 16px;*/
-
-    .avatar {
-      flex: 0 1 72px;
-      margin: 0 24px 8px 0;
-
-      & > span {
-        border-radius: 72px;
-        display: block;
-        width: 72px;
-        height: 72px;
-      }
-    }
 
     .main {
       width: 100%;
@@ -146,50 +121,4 @@ export default {
   }
 }
 
-.mobile .page-header {
-  .main {
-    .row {
-      flex-wrap: wrap;
-
-      .avatar {
-        flex: 0 1 25%;
-        margin: 0 2% 8px 0;
-      }
-
-      .content,
-      .headerContent {
-        flex: 0 1 70%;
-
-        .link {
-          margin-top: 16px;
-          line-height: 24px;
-
-          a {
-            font-size: 14px;
-            margin-right: 10px;
-          }
-        }
-      }
-
-      .extra {
-        flex: 1 1 auto;
-        margin-left: 0;
-        min-width: 0;
-        text-align: right;
-      }
-
-      .action {
-        margin-left: unset;
-        min-width: 266px;
-        flex: 0 1 auto;
-        text-align: left;
-        margin-bottom: 12px;
-
-        &:empty {
-          display: none;
-        }
-      }
-    }
-  }
-}
 </style>
