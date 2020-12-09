@@ -10,27 +10,49 @@ export default new Router({
     {
       path: "/",
       name: "Login",
-      component: () => import("@/views/login")
+      component: () => import("@/views/Login")
     },
     {
       path: "/index",
-      component: () => import("@/views/index"),
+      component: () => import("@/views/Index"),
       children: [
         {
           path: "",
-          name: "TodoList",
           component: CommonPageView,
           children: [
             {
               path: "",
-              component: () => import("@/views/todolist"),
+              name: "todoList",
+              component: () => import("@/views/TodoList"),
+            }
+          ]
+        },
+        {
+          path: "course",
+          component: CommonPageView,
+          children: [
+            {
+              path: "",
+              name: "course",
+              component: () => import("@/views/Course"),
+            }
+          ]
+        },
+        {
+          path: "problemrepos",
+          component: CommonPageView,
+          children: [
+            {
+              path: "",
+              name: "problemRepos",
+              component: () => import("@/views/ProblemRepos"),
             }
           ]
         },
         {
           path: "mgmtcenter",
-          name: "MgmtCenter",
-          component: () => import("@/views/mgmtcenter")
+          name: "mgmtCenter",
+          component: () => import("@/views/MgmtCenter")
         }
       ]
     }

@@ -2,12 +2,12 @@
   <div>
     <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
-        <slot slot="action" name="action"></slot>
+        <slot slot="title" name="title">
+          <h1>{{ pageTitle }}</h1>
+        </slot>
         <slot slot="content" name="headerContent"></slot>
         <div slot="content" v-if="!this.$slots.headerContent && description">
-          <p style="font-size: 14px; color: rgba(0, 0, 0, 0.65)">
-            {{ description }}
-          </p>
+          <p style="font-size: 14px; color: rgba(0, 0, 0, 0.65)">{{ description }}</p>
         </div>
         <slot slot="extra" name="extra">
           <div class="extra-img">
@@ -22,45 +22,29 @@
           </a-layout-content>
         </a-layout>
       </a-layout-content>
-      <a-layout-footer style="text-align: center">
-        Ant Design ©2018 Created by Ant UED
-      </a-layout-footer>
+      <a-layout-footer style="text-align: center">Ant Design ©2018 Created by Ant UED</a-layout-footer>
     </a-layout-content>
   </div>
 </template>
 
 <script>
-import PageHeader from "@/components/pageheader";
+import PageHeader from "@/components/PageHeader";
 
 export default {
   components: {
     PageHeader,
   },
-  props: {
-    avatar: {
-      type: String,
-      default: null,
-    },
-    title: {
-      type: [String, Boolean],
-      default: true,
-    },
-    logo: {
-      type: String,
-      default: null,
-    },
-  },
-  data() {
+  data () {
     return {
       pageTitle: "",
       description: "",
       extraImage: "",
     };
   },
-  created() {
+  created () {
     this.getPageMeta();
   },
-    mounted () {
+  mounted () {
     this.getPageMeta()
   },
   updated () {
@@ -74,6 +58,7 @@ export default {
         if (content.pageMeta) {
           Object.assign(this, content.pageMeta)
         } else {
+          this.pageTitle = content.pageTitle
           this.description = content.description
           this.extraImage = content.extraImage
         }
@@ -84,34 +69,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.content {
-  margin: 24px 24px 0;
-  .link {
-    margin-top: 16px;
-    &:not(:empty) {
-      margin-bottom: 16px;
-    }
-    a {
-      margin-right: 32px;
-      height: 24px;
-      line-height: 24px;
-      display: inline-block;
-      i {
-        font-size: 24px;
-        margin-right: 8px;
-        vertical-align: middle;
-      }
-      span {
-        height: 24px;
-        line-height: 24px;
-        display: inline-block;
-        vertical-align: middle;
-      }
-    }
-  }
-}
-
 .extra-img {
+  margin-top: -40px;
   text-align: center;
   width: 195px;
 

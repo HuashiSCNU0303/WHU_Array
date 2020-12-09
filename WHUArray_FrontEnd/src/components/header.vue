@@ -4,28 +4,64 @@
       theme="light"
       class="header"
       mode="horizontal"
-      :default-selected-keys="['1']"
+      ref="header"
+      @click="handleTabSwitch"
+      :default-selected-keys="['todoList']"
+      :selected-keys="[currentKey]"
       :style="{ lineHeight: '64px' }"
     >
-      <a-menu-item id="unselectable-wrapper">
+      <a-menu-item id="unselectable-wrapper" key="logo">
         <img id="logo" src="../assets/logo.png" />
       </a-menu-item>
-      <a-menu-item key="1"> <a-icon type="home" />&nbsp;首页 </a-menu-item>
-      <a-menu-item key="2"> <a-icon type="home" />&nbsp;课程 </a-menu-item>
-      <a-menu-item key="3"> <a-icon type="home" />&nbsp;题库 </a-menu-item>
-      <a-menu-item id="unselectable-wrapper" class="header-index-right"
-        ><user-menu></user-menu>
+      <a-menu-item key="todoList">
+        <a-icon type="home" />&nbsp;首页
+      </a-menu-item>
+      <a-menu-item key="course">
+        <a-icon type="home" />&nbsp;课程
+      </a-menu-item>
+      <a-menu-item key="problemRepos">
+        <a-icon type="home" />&nbsp;题库
+      </a-menu-item>
+      <a-menu-item id="unselectable-wrapper" class="header-index-right" key="userMenu">
+        <user-menu @clearSelection="handleClearSelection"></user-menu>
       </a-menu-item>
     </a-menu>
   </a-layout-header>
 </template>
 
 <script>
-import UserMenu from "@/components/usermenu";
+import UserMenu from "@/components/UserMenu";
 export default {
   components: {
     UserMenu,
   },
+  data () {
+    return {
+      currentKey: 'todoList'
+    }
+  },
+  methods: {
+    handleClearSelection () {
+      this.currentKey = ''
+    },
+    handleTabSwitch: function (obj) {
+      const key = obj.key
+      if (key == "logo") {
+        this.currentKey = 'todoList'
+        this.$router.push({
+          name: "todoList"
+        })
+      }
+      else if (key == "userMenu") {
+      }
+      else {
+        this.currentKey = key
+        this.$router.push({
+          name: key
+        })
+      }
+    }
+  }
 };
 </script>
 

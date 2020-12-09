@@ -44,21 +44,24 @@
 export default {
   name: "UserMenu",
   methods: {
-    handleMgmtSwitch(key) {
+    handleMgmtSwitch (key) {
+      this.$emit('clearSelection');
       this.$router.push({
-        name: "MgmtCenter",
+        name: "mgmtCenter",
         params: {
           defaultSelectedKey: key,
         },
-      });
+      },
+        onComplete => { },
+        onAbort => { });
     },
-    handleLogout() {
+    handleLogout () {
       const that = this;
 
       this.$confirm({
         title: "提示",
         content: "真的要注销登录吗 ?",
-        onOk() {
+        onOk () {
           return that
             .Logout({})
             .then(() => {
@@ -71,7 +74,7 @@ export default {
               });
             });
         },
-        onCancel() {},
+        onCancel () { },
       });
     },
   },

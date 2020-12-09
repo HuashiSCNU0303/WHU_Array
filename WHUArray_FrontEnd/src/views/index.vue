@@ -6,8 +6,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/header";
-import CommonPageView from "@/components/CommonPageView";
+import NavBar from "@/components/Header";
 export default {
   components: {
     NavBar,

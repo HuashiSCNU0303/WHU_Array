@@ -4,6 +4,11 @@
       <div class="detail">
         <div class="main">
           <div class="row">
+            <div v-if="this.$slots.title" class="title">
+              <slot name="title"></slot>
+            </div>
+          </div>
+          <div class="row">
             <div v-if="this.$slots.content" class="headerContent">
               <slot name="content"></slot>
             </div>
@@ -54,8 +59,6 @@ export default {
 
   .detail {
     display: flex;
-    /*margin-bottom: 16px;*/
-
     .main {
       width: 100%;
       flex: 0 1 auto;
@@ -71,13 +74,10 @@ export default {
 
       .title {
         font-size: 20px;
-        font-weight: 500;
-
-        font-size: 20px;
         line-height: 28px;
         font-weight: 500;
         color: rgba(0, 0, 0, 0.85);
-        margin-bottom: 16px;
+        margin-bottom: 8px;
         flex: auto;
       }
       .logo {
@@ -120,5 +120,4 @@ export default {
     }
   }
 }
-
 </style>

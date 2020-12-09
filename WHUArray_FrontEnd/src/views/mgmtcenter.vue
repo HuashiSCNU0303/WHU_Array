@@ -18,12 +18,12 @@
               <span>消息通知</span>
             </a-menu-item>
             <a-sub-menu key="bgManagement">
-              <span slot="title"
-                ><a-icon type="notification" />教师后台管理</span
-              >
-              <a-menu-item key="courseMgmt"> 课程管理 </a-menu-item>
-              <a-menu-item key="homeworkMgmt"> 作业管理 </a-menu-item>
-              <a-menu-item key="examMgmt"> 考试管理 </a-menu-item>
+              <span slot="title">
+                <a-icon type="notification" />教师后台管理
+              </span>
+              <a-menu-item key="courseMgmt">课程管理</a-menu-item>
+              <a-menu-item key="homeworkMgmt">作业管理</a-menu-item>
+              <a-menu-item key="examMgmt">考试管理</a-menu-item>
             </a-sub-menu>
           </a-menu>
         </a-layout-sider>
@@ -32,24 +32,31 @@
         </a-layout-content>
       </a-layout>
     </a-layout-content>
-    <a-layout-footer style="text-align: center">
-      Ant Design ©2018 Created by Ant UED
-    </a-layout-footer>
+    <a-layout-footer style="text-align: center">Ant Design ©2018 Created by Ant UED</a-layout-footer>
   </a-layout>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       defaultSelectedKey: [],
     };
   },
-  created() {
+  created () {
+    this.getRouterData();
+  },
+  /*mounted () {
+    this.getRouterData();
+  },*/
+  updated () {
     this.getRouterData();
   },
   methods: {
-    getRouterData() {
+    getRouterData () {
+      if (this.defaultSelectedKey.length != 0) {
+        this.defaultSelectedKey.pop();
+      }
       this.defaultSelectedKey.push(this.$route.params.defaultSelectedKey);
       console.log(this.defaultSelectedKey);
     },
