@@ -51,8 +51,34 @@ export default new Router({
         },
         {
           path: "mgmtcenter",
-          name: "mgmtCenter",
-          component: () => import("@/views/MgmtCenter")
+          component: () => import("@/views/management/MgmtCenter"),
+          children: [
+            {
+              path: "usersetting",
+              name: "userSetting",
+              component: () => import("@/views/management/UserSetting")
+            },
+            {
+              path: "msg",
+              name: "msgNotification",
+              component: () => import("@/views/management/MsgNotification")
+            },
+            {
+              path: "coursemgmt",
+              name: "courseMgmt",
+              component: () => import("@/views/management/CourseMgmt")
+            },
+            {
+              path: "homeworkmgmt",
+              name: "homeworkMgmt",
+              component: () => import("@/views/management/HomeworkMgmt")
+            },
+            {
+              path: "exammgmt",
+              name: "examMgmt",
+              component: () => import("@/views/management/ExamMgmt")
+            },
+          ]
         }
       ]
     }

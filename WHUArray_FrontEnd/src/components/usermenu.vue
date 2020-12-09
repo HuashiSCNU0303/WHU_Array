@@ -47,13 +47,8 @@ export default {
     handleMgmtSwitch (key) {
       this.$emit('clearSelection');
       this.$router.push({
-        name: "mgmtCenter",
-        params: {
-          defaultSelectedKey: key,
-        },
-      },
-        onComplete => { },
-        onAbort => { });
+        name: key,
+      });
     },
     handleLogout () {
       const that = this;

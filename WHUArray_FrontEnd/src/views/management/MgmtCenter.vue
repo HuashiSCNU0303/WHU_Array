@@ -5,8 +5,10 @@
         <a-layout-sider width="200" style="background: #fff">
           <a-menu
             mode="inline"
-            :default-selected-keys="defaultSelectedKey"
+            :default-selected-keys="['userSetting']"
+            :selected-keys="[selectedKey]"
             :default-open-keys="['bgManagement']"
+            @click="handleMgmtSwitch"
             style="height: 100%"
           >
             <a-menu-item key="userSetting">
@@ -28,7 +30,7 @@
           </a-menu>
         </a-layout-sider>
         <a-layout-content :style="{ padding: '0 24px', minHeight: '580px' }">
-          <router-view />
+          <router-view ref="content"/>
         </a-layout-content>
       </a-layout>
     </a-layout-content>
@@ -40,26 +42,27 @@
 export default {
   data () {
     return {
-      defaultSelectedKey: [],
+      selectedKey: '',
     };
   },
-  created () {
-    this.getRouterData();
+  mounted() {
+    this.getSelectedKey();
   },
-  /*mounted () {
-    this.getRouterData();
-  },*/
-  updated () {
-    this.getRouterData();
+  updated() {
+    this.getSelectedKey();
   },
   methods: {
-    getRouterData () {
-      if (this.defaultSelectedKey.length != 0) {
-        this.defaultSelectedKey.pop();
-      }
-      this.defaultSelectedKey.push(this.$route.params.defaultSelectedKey);
-      console.log(this.defaultSelectedKey);
+    getSelectedKey () {
+      const content = this.$refs.content
+      this.selectedKey = content.selectedKey;
+      console.log(content);
     },
+    handleMgmtSwitch: function (obj) {
+      const key = obj.key
+      this.$router.push({
+          name: key
+      })
+    }
   },
 };
 </script>
