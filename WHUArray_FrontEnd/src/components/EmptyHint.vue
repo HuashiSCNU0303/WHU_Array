@@ -1,6 +1,6 @@
 <template>
   <div class="hint">
-    <p><a-avatar icon="user" />&nbsp;&nbsp;{{ hint }}</p>
+    <p><a-avatar icon="user" /> &nbsp; &nbsp; {{ hint }}</p>
   </div>
 </template>
 

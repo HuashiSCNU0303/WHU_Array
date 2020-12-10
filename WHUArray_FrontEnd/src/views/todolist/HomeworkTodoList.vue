@@ -62,7 +62,7 @@ export default {
       setTimeout(() => {
         this.homeworkList = [];
         this.isLoading = false;
-      }, 2000);
+      }, 1000);
     },
   },
 };

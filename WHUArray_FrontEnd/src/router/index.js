@@ -48,15 +48,30 @@ export default new Router({
               path: "",
               name: "course",
               redirect: "/index/course/mycourse",
-              component: () => import("@/views/course/Course"),
+              component: () => import("@/views/course/CourseCenter"),
               children: [
                 {
                   path: "mycourse",
                   component: () => import("@/views/course/MyCourse"),
+                  meta: {
+                    breadcrumb: "我的课程",
+                  },
                 },
                 {
                   path: "addcourse",
                   component: () => import("@/views/course/AddCourse"),
+                },
+              ],
+            },
+            {
+              // 具体某个ID表示的课程
+              path: ":id",
+              redirect: "/index/course/:id/homework",
+              component: () => import("@/views/course/Course"),
+              children: [
+                {
+                  path: "homework",
+                  component: () => import("@/views/course/CourseHomework"),
                 },
               ],
             },

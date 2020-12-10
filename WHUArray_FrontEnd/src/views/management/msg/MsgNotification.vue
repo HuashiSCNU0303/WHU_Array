@@ -80,12 +80,10 @@ export default {
     getMsg() {
       // 获取消息列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        console.log("等待结束");
         this.newMsgList = newMsgList_temp;
         this.oldMsgList = oldMsgList_temp;
         this.isLoading = false;
-      }, 2000);
-      console.log(this.newMsgList);
+      }, 1000);
     },
   },
 };

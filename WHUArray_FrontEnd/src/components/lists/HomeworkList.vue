@@ -63,29 +63,6 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    type: "作业",
-    status: "进行中",
-    courseName: "Linux原理与应用",
-    teacher: "李文海",
-    homeworkName: "期末大作业",
-    endTime: "2020-12-15 20:30",
-    remainingTime: "5天9小时",
-    score: "/",
-  },
-  {
-    type: "作业",
-    status: "已完成",
-    courseName: "数据结构",
-    teacher: "文卫东",
-    homeworkName: "第三次作业",
-    endTime: "2019-12-15 20:30",
-    remainingTime: "/",
-    score: "/",
-  },
-];
-
 export default {
   data() {
     return {

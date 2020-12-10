@@ -1,13 +1,19 @@
 <template>
   <div>
-    <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
+    <center-loading
+      v-if="isLoading == 1"
+      :style="{ height: '100%', paddingTop: '64px' }"
+    />
+    <a-layout-content v-else :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
         <slot slot="title" name="title">
           <h1>{{ pageTitle }}</h1>
         </slot>
         <slot slot="content" name="headerContent"></slot>
         <div slot="content" v-if="!this.$slots.headerContent && description">
-          <p style="font-size: 14px; color: rgba(0, 0, 0, 0.65)">{{ description }}</p>
+          <p style="font-size: 14px; color: rgba(0, 0, 0, 0.65); white-space: pre-wrap">
+            {{ description }}
+          </p>
         </div>
         <slot slot="extra" name="extra">
           <div class="extra-img">
@@ -29,10 +35,13 @@
 
 <script>
 import PageHeader from "@/components/PageHeader";
+import CenterLoading from "@/components/CenterLoading.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
     PageHeader,
+    CenterLoading,
   },
   data() {
     return {
@@ -40,6 +49,20 @@ export default {
       description: "",
       extraImage: "",
     };
+  },
+  watch: {
+    isLoading: function () {
+      console.log("watch " + this.isLoading);
+      if (this.isLoading == 3) {
+        this.getPageMeta();
+        console.log("watch " + this.pageTitle);
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      isLoading: (state) => state.courseHeader.isLoading,
+    }),
   },
   created() {
     this.getPageMeta();
@@ -54,6 +77,7 @@ export default {
     getPageMeta() {
       // eslint-disable-next-line
       const content = this.$refs.content;
+      console.log(content);
       if (content) {
         if (content.pageMeta) {
           Object.assign(this, content.pageMeta);

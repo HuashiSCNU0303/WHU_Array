@@ -1,26 +1,38 @@
 <template>
   <div>
-    <a-card :hoverable="true" style="width: 400px">
-      <a-card-meta>
-        <div style="margin-bottom: 3px" slot="title">{{ currentExamData.title }}</div>
-        <div class="meta-content" slot="description">{{ currentExamData.content }}</div>
-      </a-card-meta>
-      <template class="ant-card-actions" slot="actions">
-        <a
-          >已完成：{{ currentExamData.currentScore }} /
-          {{ currentExamData.fullScore }}分</a
-        >
-        <a>剩余：{{ currentExamData.remainingTime }}分钟</a>
-      </template>
-    </a-card>
+    <a-list :grid="{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }" :dataSource="data">
+      <a-list-item slot="renderItem" slot-scope="item">
+        <a-card :hoverable="true" @click="switchToCourse(item)">
+          <a-card-meta>
+            <div style="margin-bottom: 3px" slot="title">{{ item.name }}</div>
+            <div class="meta-content" slot="description">课程号：{{ item.id }}</div>
+          </a-card-meta>
+          <template class="ant-card-actions" slot="actions">
+            <a>学年：{{ item.time }}</a>
+            <a>任课老师：{{ item.teacher }}</a>
+          </template>
+        </a-card>
+      </a-list-item>
+    </a-list>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {};
+  },
   props: {
-    currentExamData: {
-      type: Object,
+    data: {
+      type: Array,
+    },
+  },
+  methods: {
+    switchToCourse(item) {
+      // 跳转到item.id指向的课程
+      this.$router.push({
+        path: "./" + item.id,
+      });
     },
   },
 };

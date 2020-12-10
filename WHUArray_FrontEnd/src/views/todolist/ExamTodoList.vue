@@ -81,7 +81,7 @@ export default {
         this.items[0].hasCurrentExam = true;
         this.items[1].examList = examList_temp;
         this.isLoading = false;
-      }, 2000);
+      }, 1000);
     },
   },
 };

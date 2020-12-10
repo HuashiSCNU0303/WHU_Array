@@ -8,51 +8,67 @@
 <script>
 const currentCourseList_temp = [
   {
-    type: "考试",
-    status: "准备开始",
-    courseName: "Windows原理与应用",
-    teacher: "刘纪平",
-    examName: "期末考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
+    id: "1",
+    name: "计算机组成与设计",
+    time: "2019-2020",
+    teacher: "赵小刚",
   },
   {
-    type: "考试",
-    status: "已结束",
-    courseName: "Windows原理与应用",
-    teacher: "刘敏忠",
-    examName: "期中考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
+    id: "2",
+    name: "数据结构",
+    time: "2019-2020",
+    teacher: "喻丹丹",
+  },
+  {
+    id: "3",
+    name: "面向对象程序设计",
+    time: "2019-2020",
+    teacher: "林馥",
+  },
+  {
+    id: "4",
+    name: "概率论与数理统计",
+    time: "2019-2020",
+    teacher: "钟六一",
+  },
+  {
+    id: "5",
+    name: "大学英语3",
+    time: "2019-2020",
+    teacher: "喻士贵",
   },
 ];
 
 const endCourseList_temp = [
   {
-    type: "考试",
-    status: "准备开始",
-    courseName: "Windows原理与应用",
-    teacher: "刘纪平",
-    examName: "期末考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
+    id: "6",
+    name: "计算机组成与设计",
+    time: "2019-2020",
+    teacher: "赵小刚",
   },
   {
-    type: "考试",
-    status: "已结束",
-    courseName: "Windows原理与应用",
-    teacher: "刘敏忠",
-    examName: "期中考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
+    id: "7",
+    name: "数据结构",
+    time: "2019-2020",
+    teacher: "喻丹丹",
+  },
+  {
+    id: "8",
+    name: "面向对象程序设计",
+    time: "2019-2020",
+    teacher: "林馥",
+  },
+  {
+    id: "9",
+    name: "概率论与数理统计",
+    time: "2019-2020",
+    teacher: "钟六一",
+  },
+  {
+    id: "10",
+    name: "大学英语3",
+    time: "2019-2020",
+    teacher: "喻士贵",
   },
 ];
 
@@ -88,12 +104,13 @@ export default {
   },
   methods: {
     getCourses() {
+      console.log(this.$route);
       // 获取课程列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
         this.items[0].currentCourseList = currentCourseList_temp;
         this.items[1].endCourseList = endCourseList_temp;
         this.isLoading = false;
-      }, 2000);
+      }, 1000);
     },
   },
 };
