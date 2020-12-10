@@ -6,10 +6,12 @@
         <a-icon type="caret-right" :rotate="props.isActive ? 90 : 0" />
       </template>
       <a-collapse-panel key="1" header="新消息" :style="customStyle">
-        <msg-list :data="newMsgList"></msg-list>
+        <center-loading v-if="isLoading == true" />
+        <msg-list v-else :data="newMsgList"></msg-list>
       </a-collapse-panel>
       <a-collapse-panel key="2" header="已读消息" :style="customStyle">
-        <msg-list :data="oldMsgList"></msg-list>
+        <center-loading v-if="isLoading == true" />
+        <msg-list v-else :data="oldMsgList"></msg-list>
       </a-collapse-panel>
     </a-collapse>
   </div>
@@ -17,7 +19,8 @@
 
 <script>
 import BigTitle from "@/components/BigTitle.vue";
-import MsgList from "@/components/lists/MsgList.vue";
+import MsgList from "@/views/management/msg/MsgList.vue";
+import CenterLoading from "@/components/CenterLoading.vue";
 const newMsgList_temp = [
   {
     title: "Ant Design Title 1",
@@ -59,6 +62,7 @@ export default {
     return {
       newMsgList: [], // 未读消息
       oldMsgList: [], // 已读消息
+      isLoading: true,
       selectedKey: "msgNotification",
       customStyle:
         "background: #fff; padding-bottom: 18px; border-bottom: 1px solid #e8e8e8; overflow: hidden",
@@ -67,6 +71,7 @@ export default {
   components: {
     BigTitle,
     MsgList,
+    CenterLoading,
   },
   mounted() {
     this.getMsg();
@@ -78,6 +83,7 @@ export default {
         console.log("等待结束");
         this.newMsgList = newMsgList_temp;
         this.oldMsgList = oldMsgList_temp;
+        this.isLoading = false;
       }, 2000);
       console.log(this.newMsgList);
     },

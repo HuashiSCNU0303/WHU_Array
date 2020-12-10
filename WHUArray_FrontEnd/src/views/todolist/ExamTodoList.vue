@@ -1,28 +1,7 @@
 <template>
   <div>
     <big-title><p>考试列表</p></big-title>
-    <a-collapse :default-active-key="selectedKeys" :bordered="false">
-      <template #expandIcon="props">
-        <a-icon type="caret-right" :rotate="props.isActive ? 90 : 0" />
-      </template>
-      <a-collapse-panel key="1" header="当前进行中的考试" :style="customStyle">
-        <div class="content">
-          <exam-card
-            v-if="hasCurrentExam == true"
-            :currentExamData="currentExamData"
-          ></exam-card>
-          <!--没有考试的这个样式还得改改-->
-          <div v-else><p>当前没有进行中的考试</p></div>
-        </div>
-      </a-collapse-panel>
-      <a-collapse-panel key="2" header="准备开始的考试" :style="customStyle">
-        <div class="content">
-          <exam-list v-if="examList.length > 0" :data="examList"></exam-list>
-          <!--没有考试的这个样式还得改改-->
-          <div v-else><p>当前没有准备开始的考试</p></div>
-        </div>
-      </a-collapse-panel>
-    </a-collapse>
+    <all-expand-col-panel :isLoading="isLoading" :type="type" :items="items" />
   </div>
 </template>
 
@@ -30,6 +9,8 @@
 import ExamList from "@/components/lists/ExamList";
 import ExamCard from "@/components/cards/ExamCard.vue";
 import BigTitle from "@/components/BigTitle.vue";
+import CenterLoading from "@/components/CenterLoading.vue";
+import AllExpandColPanel from "@/components/AllExpandColPanel.vue";
 
 const examList_temp = [
   {
@@ -59,18 +40,29 @@ const examList_temp = [
 export default {
   data() {
     return {
-      currentExamData: {},
-      hasCurrentExam: null,
-      examList: [],
-      selectedKeys: ["1", "2"],
-      customStyle:
-        "background: #fff; padding-bottom: 18px; border-bottom: 1px solid #e8e8e8; overflow: hidden",
+      items: [
+        {
+          header: "当前进行中的考试",
+          currentExamData: {},
+          hasCurrentExam: null,
+          emptyHint: "当前没有进行中的考试",
+        },
+        {
+          header: "准备开始的考试",
+          examList: [],
+          emptyHint: "当前没有准备开始的考试",
+        },
+      ],
+      type: "exam",
+      isLoading: true,
     };
   },
   components: {
     ExamList,
     ExamCard,
     BigTitle,
+    CenterLoading,
+    AllExpandColPanel,
   },
   mounted() {
     this.getExams();
@@ -79,15 +71,16 @@ export default {
     getExams() {
       // 获取考试列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.currentExamData = {
+        this.items[0].currentExamData = {
           title: "系统级程序设计 期末考试",
           content: "韩波",
           currentScore: "46",
           fullScore: "100",
           remainingTime: "30",
         };
-        this.hasCurrentExam = true;
-        this.examList = examList_temp;
+        this.items[0].hasCurrentExam = true;
+        this.items[1].examList = examList_temp;
+        this.isLoading = false;
       }, 2000);
     },
   },

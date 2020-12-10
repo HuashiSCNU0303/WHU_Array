@@ -1,21 +1,33 @@
 <template>
   <div>
-    <work-list-panel></work-list-panel>
+    <side-menu-panel :items="items"></side-menu-panel>
   </div>
 </template>
 
 <script>
-import WorkListPanel from "@/components/WorkListPanel";
+import SideMenuPanel from "@/components/SideMenuPanel";
 export default {
   data() {
     return {
+      items: [
+        {
+          key: "homework",
+          iconType: "setting",
+          text: "待完成作业",
+        },
+        {
+          key: "exam",
+          iconType: "message",
+          text: "待完成考试",
+        },
+      ],
       pageTitle: "待办事项列表",
       description: "下面是你最近需要完成的作业或考试列表，默认按照剩余时间从小到大排序",
       extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
     };
   },
   components: {
-    WorkListPanel,
+    SideMenuPanel,
   },
 };
 </script>

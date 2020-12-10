@@ -5,17 +5,14 @@
         <a-layout-sider width="150" style="background: #fff">
           <a-menu
             mode="inline"
-            :default-selected-keys="['homework']"
-            @select="handleWorkSwitch"
+            :default-selected-keys="[items[0].key]"
+            @select="handleSwitch"
             style="height: 100%"
           >
-            <a-menu-item key="homework">
-              <a-icon type="setting" />
-              <span>待完成作业</span>
-            </a-menu-item>
-            <a-menu-item key="exam">
-              <a-icon type="message" />
-              <span>待完成考试</span>
+            <a-menu-item v-for="item in items" :key="item.key">
+              <a-icon v-if="typeof item.iconType !== 'undefined'" :type="item.iconType" />
+              <slot v-else name="icon" />
+              <span>{{ item.text }}</span>
             </a-menu-item>
           </a-menu>
         </a-layout-sider>
@@ -29,11 +26,21 @@
 
 <script>
 export default {
+  props: {
+    items: {
+      type: Array,
+      default: [
+        {
+          key: "",
+        },
+      ],
+    },
+  },
   methods: {
-    handleWorkSwitch: function (obj) {
+    handleSwitch: function (obj) {
       const key = obj.key;
       this.$router.push({
-        path: "./" + key,
+        path: "./" + key.toLowerCase(),
       });
     },
   },

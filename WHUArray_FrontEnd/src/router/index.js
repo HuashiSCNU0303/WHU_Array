@@ -47,7 +47,18 @@ export default new Router({
             {
               path: "",
               name: "course",
+              redirect: "/index/course/mycourse",
               component: () => import("@/views/course/Course"),
+              children: [
+                {
+                  path: "mycourse",
+                  component: () => import("@/views/course/MyCourse"),
+                },
+                {
+                  path: "addcourse",
+                  component: () => import("@/views/course/AddCourse"),
+                },
+              ],
             },
           ],
         },
@@ -58,7 +69,7 @@ export default new Router({
             {
               path: "",
               name: "problemRepos",
-              component: () => import("@/views/ProblemRepos"),
+              component: () => import("@/views/problemrepos/ProblemRepos"),
             },
           ],
         },
@@ -74,7 +85,7 @@ export default new Router({
             {
               path: "msg",
               name: "msgNotification",
-              component: () => import("@/views/management/MsgNotification"),
+              component: () => import("@/views/management/msg/MsgNotification"),
             },
             {
               path: "coursemgmt",

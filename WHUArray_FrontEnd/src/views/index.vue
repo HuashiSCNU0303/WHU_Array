@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/Header";
+import NavBar from "@/components/header/Header";
 export default {
   components: {
     NavBar,

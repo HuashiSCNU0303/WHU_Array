@@ -11,7 +11,7 @@
       :style="{ lineHeight: '64px' }"
     >
       <a-menu-item id="unselectable-wrapper" key="logo">
-        <img id="logo" src="../assets/logo.png" />
+        <img id="logo" src="@/assets/logo.png" />
       </a-menu-item>
       <a-menu-item key="todoList"> <a-icon type="home" />&nbsp;待办列表 </a-menu-item>
       <a-menu-item key="course"> <a-icon type="home" />&nbsp;我的课程 </a-menu-item>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import UserMenu from "@/components/UserMenu";
+import UserMenu from "@/components/header/UserMenu";
 export default {
   components: {
     UserMenu,
