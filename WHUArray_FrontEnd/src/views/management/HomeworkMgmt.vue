@@ -1,15 +1,19 @@
 <template>
   <div>
-    <p>作业管理</p>
+    <big-title><p>作业管理</p></big-title>
   </div>
 </template>
 
 <script>
+import BigTitle from "@/components/BigTitle.vue";
 export default {
   data () {
     return {
       selectedKey: "homeworkMgmt"
     }
+  },
+    components: {
+    BigTitle
   },
 }
 </script>

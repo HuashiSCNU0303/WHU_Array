@@ -15,12 +15,14 @@
           </div>
         </slot>
       </page-header>
-      <a-layout-content style="padding: 30px 50px">
-        <a-layout style="padding: 24px 0; background: #fff">
+      <a-layout-content style="padding: 24px">
+        <a-layout style="padding: 12px 0; background: #fff">
           <router-view ref="content" />
         </a-layout>
       </a-layout-content>
-      <a-layout-footer style="text-align: center">Ant Design ©2018 Created by Ant UED</a-layout-footer>
+      <a-layout-footer style="text-align: center"
+        >Ant Design ©2018 Created by Ant UED</a-layout-footer
+      >
     </a-layout-content>
   </div>
 </template>
@@ -32,33 +34,33 @@ export default {
   components: {
     PageHeader,
   },
-  data () {
+  data() {
     return {
       pageTitle: "",
       description: "",
       extraImage: "",
     };
   },
-  created () {
+  created() {
     this.getPageMeta();
   },
-  mounted () {
-    this.getPageMeta()
+  mounted() {
+    this.getPageMeta();
   },
-  updated () {
-    this.getPageMeta()
+  updated() {
+    this.getPageMeta();
   },
   methods: {
-    getPageMeta () {
+    getPageMeta() {
       // eslint-disable-next-line
-      const content = this.$refs.content
+      const content = this.$refs.content;
       if (content) {
         if (content.pageMeta) {
-          Object.assign(this, content.pageMeta)
+          Object.assign(this, content.pageMeta);
         } else {
-          this.pageTitle = content.pageTitle
-          this.description = content.description
-          this.extraImage = content.extraImage
+          this.pageTitle = content.pageTitle;
+          this.description = content.description;
+          this.extraImage = content.extraImage;
         }
       }
     },

@@ -2,12 +2,15 @@
   <div>
     <a-card :hoverable="true" style="width: 400px">
       <a-card-meta>
-        <div style="margin-bottom: 3px" slot="title">{{ title }}</div>
-        <div class="meta-content" slot="description">{{ content }}</div>
+        <div style="margin-bottom: 3px" slot="title">{{ currentExamData.title }}</div>
+        <div class="meta-content" slot="description">{{ currentExamData.content }}</div>
       </a-card-meta>
       <template class="ant-card-actions" slot="actions">
-        <a>已完成：{{ currentScore }} / {{ score }}分</a>
-        <a>剩余：{{ elapse }}分钟</a>
+        <a
+          >已完成：{{ currentExamData.currentScore }} /
+          {{ currentExamData.fullScore }}分</a
+        >
+        <a>剩余：{{ currentExamData.remainingTime }}分钟</a>
       </template>
     </a-card>
   </div>
@@ -15,14 +18,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      title: "系统级程序设计 期末考试",
-      content: "韩波",
-      currentScore: "46",
-      score: "100",
-      elapse: "30",
-    };
+  props: {
+    currentExamData: {
+      type: Object,
+    },
   },
 };
 </script>

@@ -17,7 +17,7 @@
           <a-menu-item key="msgNotification">
             <a href="javascript:;" @click="handleMgmtSwitch('msgNotification')">
               <a-icon type="message" />
-              <span>消息通知</span>
+              <span>消息提醒</span>
             </a>
           </a-menu-item>
           <a-menu-divider />
@@ -44,19 +44,19 @@
 export default {
   name: "UserMenu",
   methods: {
-    handleMgmtSwitch (key) {
-      this.$emit('clearSelection');
+    handleMgmtSwitch(key) {
+      this.$emit("clearSelection");
       this.$router.push({
         name: key,
       });
     },
-    handleLogout () {
+    handleLogout() {
       const that = this;
 
       this.$confirm({
         title: "提示",
         content: "真的要注销登录吗 ?",
-        onOk () {
+        onOk() {
           return that
             .Logout({})
             .then(() => {
@@ -69,7 +69,7 @@ export default {
               });
             });
         },
-        onCancel () { },
+        onCancel() {},
       });
     },
   },

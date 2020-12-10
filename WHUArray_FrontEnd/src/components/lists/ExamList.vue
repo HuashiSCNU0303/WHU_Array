@@ -79,7 +79,7 @@ const columns = [
     key: "endTime",
   },
   {
-    title: "剩余时间",
+    title: "距离开始还有",
     dataIndex: "remainingTime",
     key: "remainingTime",
   },
@@ -90,37 +90,16 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    type: "考试",
-    status: "准备开始",
-    courseName: "Windows原理与应用",
-    teacher: "刘纪平",
-    examName: "期末考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
-  },
-  {
-    type: "考试",
-    status: "已结束",
-    courseName: "Windows原理与应用",
-    teacher: "刘敏忠",
-    examName: "期中考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
-  },
-];
-
 export default {
   data() {
     return {
-      data,
       columns,
     };
+  },
+  props: {
+    data: {
+      type: Array, //指定传入的类型
+    },
   },
 };
 </script>
