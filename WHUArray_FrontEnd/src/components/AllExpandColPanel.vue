@@ -33,6 +33,7 @@
               <exam-list
                 v-if="items[1].examList.length > 0"
                 :data="items[1].examList"
+                :currentPage="currentPage"
               ></exam-list>
               <div v-else><empty-hint :hint="items[1].emptyHint" /></div>
             </div>
@@ -75,6 +76,9 @@ export default {
     isLoading: {
       type: Boolean,
     },
+    currentPage: {
+      type: String,
+    }
   },
   components: {
     ExamList,

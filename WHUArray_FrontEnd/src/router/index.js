@@ -73,6 +73,10 @@ export default new Router({
                   path: "homework",
                   component: () => import("@/views/course/CourseHomework"),
                 },
+                {
+                  path: "exam",
+                  component: () => import("@/views/course/CourseExam"),
+                },
               ],
             },
           ],

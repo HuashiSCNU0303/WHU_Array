@@ -1,23 +1,23 @@
 <template>
   <div>
-    <center-loading
+    <!--<center-loading
       v-if="isLoading == 1"
       :style="{ height: '100%', paddingTop: '64px' }"
-    />
-    <a-layout-content v-else :style="{ height: '100%', paddingTop: '64px' }">
+    />-->
+    <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
         <slot slot="title" name="title">
-          <h1>{{ pageTitle }}</h1>
+          <h1>{{ header.pageTitle }}</h1>
         </slot>
         <slot slot="content" name="headerContent"></slot>
-        <div slot="content" v-if="!this.$slots.headerContent && description">
-          <p style="font-size: 14px; color: rgba(0, 0, 0, 0.65); white-space: pre-wrap">
-            {{ description }}
-          </p>
+        <div slot="content" v-if="!this.$slots.headerContent && header.description" v-html="header.description">
         </div>
         <slot slot="extra" name="extra">
           <div class="extra-img">
-            <img v-if="typeof extraImage !== 'undefined'" :src="extraImage" />
+            <img
+              v-if="typeof header.extraImage !== 'undefined'"
+              :src="header.extraImage"
+            />
           </div>
         </slot>
       </page-header>
@@ -44,49 +44,21 @@ export default {
     CenterLoading,
   },
   data() {
-    return {
-      pageTitle: "",
-      description: "",
-      extraImage: "",
-    };
-  },
-  watch: {
-    isLoading: function () {
-      console.log("watch " + this.isLoading);
-      if (this.isLoading == 3) {
-        this.getPageMeta();
-        console.log("watch " + this.pageTitle);
-      }
-    },
+    return {};
   },
   computed: {
     ...mapState({
-      isLoading: (state) => state.courseHeader.isLoading,
+      header: (state) => state.currentPageHeader.header,
     }),
   },
-  created() {
-    this.getPageMeta();
-  },
-  mounted() {
-    this.getPageMeta();
-  },
-  updated() {
-    this.getPageMeta();
-  },
-  methods: {
-    getPageMeta() {
-      // eslint-disable-next-line
-      const content = this.$refs.content;
-      console.log(content);
-      if (content) {
-        if (content.pageMeta) {
-          Object.assign(this, content.pageMeta);
-        } else {
-          this.pageTitle = content.pageTitle;
-          this.description = content.description;
-          this.extraImage = content.extraImage;
-        }
-      }
+
+  watch: {
+    header: {
+      handler: function () {
+        console.log("InCommonPageView");
+        console.log(this.header);
+      },
+      deep: true,
     },
   },
 };
@@ -101,5 +73,11 @@ export default {
   img {
     width: 100%;
   }
+}
+
+.description {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: pre-wrap;
 }
 </style>

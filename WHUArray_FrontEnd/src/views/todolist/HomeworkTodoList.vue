@@ -60,7 +60,7 @@ export default {
     getHomeworks() {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.homeworkList = [];
+        this.homeworkList = homeworkList_temp;
         this.isLoading = false;
       }, 1000);
     },
@@ -68,9 +68,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.loading {
-  text-align: center;
-  margin: 40px 0;
-}
-</style>
+<style scoped></style>

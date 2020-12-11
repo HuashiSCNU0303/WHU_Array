@@ -1,6 +1,9 @@
 <template>
   <div>
     <a-table :columns="columns" :data-source="data">
+      <span slot="courseName" slot-scope="courseName">
+        <a @click="handleCourseSwitch">{{ courseName }}</a>
+      </span>
       <span slot="typeTags" slot-scope="typeTags">
         <a-tag
           :key="typeTags"
@@ -52,10 +55,10 @@ const columns = [
     scopedSlots: { customRender: "statusTags" },
   },
   {
-    // 可以点击进入看课程详情
     title: "课程名",
     dataIndex: "courseName",
     key: "courseName",
+    scopedSlots: { customRender: "courseName" },
   },
   {
     title: "教师",
@@ -63,7 +66,6 @@ const columns = [
     key: "teacher",
   },
   {
-    // 可以进入考试的题目列表（当然并没有开放）
     title: "考试名",
     dataIndex: "examName",
     key: "examName",
@@ -99,6 +101,19 @@ export default {
   props: {
     data: {
       type: Array, //指定传入的类型
+    },
+    currentPage: {
+      type: String,
+    },
+  },
+  mounted() {
+    if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseExam") {
+      columns.splice(2, 2);
+    }
+  },
+  methods: {
+    handleCourseSwitch() {
+      // 跳转到id对应的课程
     },
   },
 };

@@ -20,10 +20,15 @@ export default {
           text: "加入课程",
         },
       ],
-      pageTitle: "题库",
-      description: "这里有以前各个课程的作业与考试题，供大家参考",
-      extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
+      header: {
+        pageTitle: "题库",
+        description: "这里有以前各个课程的作业与考试题，供大家参考",
+        extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
+      },
     };
+  },
+  mounted() {
+    this.$store.dispatch("setCurrentPageHeader", this.header);
   },
 };
 </script>

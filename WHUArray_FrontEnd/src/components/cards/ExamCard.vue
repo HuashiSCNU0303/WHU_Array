@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card :hoverable="true" style="width: 400px">
+    <a-card :hoverable="true" style="width: 400px" @click="handleSwitch">
       <a-card-meta>
         <div style="margin-bottom: 3px" slot="title">{{ currentExamData.title }}</div>
         <div class="meta-content" slot="description">{{ currentExamData.content }}</div>
@@ -23,6 +23,11 @@ export default {
       type: Object,
     },
   },
+  methods: {
+    handleSwitch() {
+      // 跳转到id对应的那一场考试
+    }
+  }
 };
 </script>
 

@@ -1,7 +1,12 @@
 <template>
   <div>
     <big-title><p>考试列表</p></big-title>
-    <all-expand-col-panel :isLoading="isLoading" :type="type" :items="items" />
+    <all-expand-col-panel
+      :isLoading="isLoading"
+      :type="type"
+      :items="items"
+      :currentPage="currentPage"
+    />
   </div>
 </template>
 
@@ -52,6 +57,7 @@ export default {
       ],
       type: "exam",
       isLoading: true,
+      currentPage: "CourseExam",
     };
   },
   components: {
@@ -66,7 +72,7 @@ export default {
       // 获取考试列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
         this.items[0].currentExamData = {
-          title: "系统级程序设计 期末考试",
+          title: "期末考试",
           content: "韩波",
           currentScore: "46",
           fullScore: "100",
@@ -81,13 +87,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.content {
-  margin-left: -16px !important;
-  margin-right: -16px !important;
-}
-
-.ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
-  left: 0px !important;
-}
-</style>
+<style scoped></style>

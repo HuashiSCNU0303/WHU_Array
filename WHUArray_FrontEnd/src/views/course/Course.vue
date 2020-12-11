@@ -23,37 +23,31 @@ export default {
           text: "待完成考试",
         },
       ],
-      pageTitle: "",
-      description: "",
-      extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
+      header: {
+        pageTitle: "",
+        description: "",
+        extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
+      },
     };
   },
   computed: {
     ...mapState({
-      isLoading: (state) => state.courseHeader.isLoading,
+      currentCourse: (state) => state.currentCourse.course,
     }),
   },
   mounted() {
-    if (this.$store.state.courseHeader.isLoading == 2) {
-      this.getCourseInfo();
-    }
+    this.header.pageTitle = this.currentCourse.name;
+    this.header.description =
+      this.currentCourse.time +
+      "学年，由" +
+      this.currentCourse.teacher +
+      "老师授课<br />课程号：" +
+      this.currentCourse.id +
+      "<br />课程简介：" +
+      this.currentCourse.description;
+    this.$store.dispatch("setCurrentPageHeader", this.header);
   },
-  methods: {
-    getCourseInfo() {
-      // 获取课程信息，下面只是模拟一下请求后端获得结果而已.
-      this.$store.dispatch("setCourseHeader", 1);
-      const courseId = this.$route.params.id;
-      const promise = new Promise(function (resolve, reject) {
-        resolve("hello");
-      });
-      promise.then((res) => {
-        this.pageTitle = "计算机组成与设计";
-        this.description = "2019-2020学年，由赵小刚老师授课\n课程号：" + courseId;
-        console.log(this.pageTitle);
-        this.$store.dispatch("setCourseHeader", 3);
-      });
-    },
-  },
+  methods: {},
 };
 </script>
 

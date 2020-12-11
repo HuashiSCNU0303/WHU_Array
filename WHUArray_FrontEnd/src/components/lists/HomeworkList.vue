@@ -1,6 +1,12 @@
 <template>
   <div>
     <a-table :columns="columns" :data-source="data">
+      <span slot="courseName" slot-scope="courseName">
+        <a @click="handleCourseSwitch">{{ courseName }}</a>
+      </span>
+      <span slot="homeworkName" slot-scope="homeworkName">
+        <a @click="handleHomeworkSwitch">{{ homeworkName }}</a>
+      </span>
       <span slot="typeTags" slot-scope="typeTags">
         <a-tag :key="typeTags" :color="typeTags === '考试' ? 'green' : 'volcano'">
           {{ typeTags }}
@@ -30,10 +36,10 @@ const columns = [
     scopedSlots: { customRender: "statusTags" },
   },
   {
-    // 可以点击进入看课程详情
     title: "课程名",
     dataIndex: "courseName",
     key: "courseName",
+    scopedSlots: { customRender: "courseName" },
   },
   {
     title: "教师",
@@ -41,10 +47,10 @@ const columns = [
     key: "teacher",
   },
   {
-    // 可以进入作业的题目列表（已开放）
     title: "作业名",
     dataIndex: "homeworkName",
     key: "homeworkName",
+    scopedSlots: { customRender: "homeworkName" },
   },
   {
     title: "结束时间",
@@ -70,8 +76,24 @@ export default {
     };
   },
   props: {
+    currentPage: {
+      type: String,
+    },
     data: {
-      type: Array, //指定传入的类型
+      type: Array,
+    },
+  },
+  mounted() {
+    if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseHomework") {
+      columns.splice(2, 2);
+    }
+  },
+  methods: {
+    handleHomeworkSwitch() {
+      // 跳转到具体作业
+    },
+    handleCourseSwitch() {
+      // 跳转到具体课程
     },
   },
 };

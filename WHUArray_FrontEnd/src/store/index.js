@@ -3,10 +3,16 @@ import VueX from "vuex";
 
 Vue.use(VueX);
 
-import CourseHeader from "./modules/CourseHeader"
+import CurrentPageHeader from "./modules/CurrentPageHeader"
+import CurrentCourse from "./modules/CurrentCourse"
+import CurrentHomework from "./modules/CurrentHomework"
+import CurrentExam from "./modules/CurrentExam"
 
 export default new VueX.Store({
   modules: {
-    courseHeader: CourseHeader
+    currentCourse: CurrentCourse,
+    currentPageHeader: CurrentPageHeader,
+    currentExam: CurrentExam,
+    currentHomework: CurrentHomework,
   }
 })
