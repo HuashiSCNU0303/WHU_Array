@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import BigTitle from "@/components/BigTitle.vue";
+import BigTitle from "@/components/widgets/BigTitle.vue";
 import AllExpandColPanel from "@/components/AllExpandColPanel.vue";
 
 const examList_temp = [

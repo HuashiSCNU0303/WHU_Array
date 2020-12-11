@@ -6,18 +6,31 @@
     />-->
     <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
+        <slot
+          v-if="typeof header.breadCrumbLayer !== 'undefined'"
+          slot="breadcrumb"
+          name="breadcrumb"
+        >
+          <bread-crumb-nav :currentLayer="header.breadCrumbLayer" />
+        </slot>
         <slot slot="title" name="title">
           <h1>{{ header.pageTitle }}</h1>
         </slot>
         <slot slot="content" name="headerContent"></slot>
-        <div slot="content" v-if="!this.$slots.headerContent && header.description" v-html="header.description">
-        </div>
+        <div
+          slot="content"
+          v-if="!this.$slots.headerContent && header.description"
+          v-html="header.description"
+        ></div>
         <slot slot="extra" name="extra">
-          <div class="extra-img">
-            <img
-              v-if="typeof header.extraImage !== 'undefined'"
-              :src="header.extraImage"
-            />
+          <div v-if="typeof header.extraImage !== 'undefined'" class="extra-img">
+            <img :src="header.extraImage" />
+          </div>
+          <div
+            v-else-if="typeof header.countdownIndicator !== 'undefined'"
+            class="countdown"
+          >
+            <countdown :currentAnchorTime="1607704233000" />
           </div>
         </slot>
       </page-header>
@@ -35,13 +48,18 @@
 
 <script>
 import PageHeader from "@/components/PageHeader";
-import CenterLoading from "@/components/CenterLoading.vue";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
+import Countdown from "@/components/widgets/Countdown.vue";
+import BreadCrumbNav from "@/components/BreadCrumbNav.vue";
+
 import { mapState } from "vuex";
 
 export default {
   components: {
     PageHeader,
     CenterLoading,
+    BreadCrumbNav,
+    Countdown,
   },
   data() {
     return {};
@@ -50,16 +68,6 @@ export default {
     ...mapState({
       header: (state) => state.currentPageHeader.header,
     }),
-  },
-
-  watch: {
-    header: {
-      handler: function () {
-        console.log("InCommonPageView");
-        console.log(this.header);
-      },
-      deep: true,
-    },
   },
 };
 </script>
@@ -75,9 +83,11 @@ export default {
   }
 }
 
-.description {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.65);
-  white-space: pre-wrap;
+.countdown {
+  margin-top: -20px;
+  padding-bottom: 16px;
+  margin-left: -100px;
+  text-align: center;
+  width: 195px;
 }
 </style>

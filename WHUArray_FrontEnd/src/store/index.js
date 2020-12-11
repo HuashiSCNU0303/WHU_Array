@@ -3,10 +3,12 @@ import VueX from "vuex";
 
 Vue.use(VueX);
 
-import CurrentPageHeader from "./modules/CurrentPageHeader"
-import CurrentCourse from "./modules/CurrentCourse"
-import CurrentHomework from "./modules/CurrentHomework"
-import CurrentExam from "./modules/CurrentExam"
+import CurrentPageHeader from "./modules/currentobj/CurrentPageHeader";
+import CurrentCourse from "./modules/currentobj/CurrentCourse";
+import CurrentHomework from "./modules/currentobj/CurrentHomework";
+import CurrentExam from "./modules/currentobj/CurrentExam";
+import CurrentProblem from "./modules/currentobj/CurrentProblem";
+import TableColPrototypes from "./modules/TableColPrototypes";
 
 export default new VueX.Store({
   modules: {
@@ -14,5 +16,7 @@ export default new VueX.Store({
     currentPageHeader: CurrentPageHeader,
     currentExam: CurrentExam,
     currentHomework: CurrentHomework,
-  }
-})
+    currentProblem: CurrentProblem,
+    tableColProto: TableColPrototypes,
+  },
+});

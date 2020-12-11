@@ -4,6 +4,11 @@
       <div class="detail">
         <div class="main">
           <div class="row">
+            <div v-if="this.$slots.breadcrumb" class="breadcrumb">
+              <slot name="breadcrumb"></slot>
+            </div>
+          </div>
+          <div class="row">
             <div v-if="this.$slots.title" class="title">
               <slot name="title"></slot>
             </div>
@@ -28,23 +33,23 @@ export default {
     title: {
       type: [String, Boolean],
       default: true,
-      required: false
+      required: false,
     },
     logo: {
       type: String,
-      default: '',
-      required: false
+      default: "",
+      required: false,
     },
     avatar: {
       type: String,
-      default: '',
-      required: false
-    }
+      default: "",
+      required: false,
+    },
   },
-  data () {
-    return {}
-  }
-}
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -6,54 +6,53 @@
       <!--搜索模块-->
       <course-list :data="courseList" />
     </div>
-    <empty-hint v-else :hint="emptyHint" />
+    <icon-hint v-else :hint="emptyHint" />
   </div>
 </template>
 
 <script>
-
 const courseList_temp = [
   {
     courseId: "11",
     courseName: "数字逻辑与数字电路",
     teacher: "涂卫平",
     grade: "2018级",
-    courseDescription: "数字电路"
+    courseDescription: "数字电路",
   },
   {
     courseId: "12",
     courseName: "离散数学",
     teacher: "吴志健",
     grade: "2018级",
-    courseDescription: "离散数学"
+    courseDescription: "离散数学",
   },
-    {
+  {
     courseId: "13",
     courseName: "高等数学B2",
     teacher: "刘伟安",
     grade: "2018级",
-    courseDescription: "高数"
+    courseDescription: "高数",
   },
-    {
+  {
     courseId: "14",
     courseName: "线性代数B",
     teacher: "黄学英",
     grade: "2019级",
-    courseDescription: "线代"
+    courseDescription: "线代",
   },
-    {
+  {
     courseId: "15",
     courseName: "面向对象程序设计",
     teacher: "桂浩",
     grade: "2019级",
-    courseDescription: "JAVA"
+    courseDescription: "JAVA",
   },
 ];
 
-import BigTitle from "@/components/BigTitle.vue";
-import CenterLoading from "@/components/CenterLoading.vue";
-import CourseList from '@/components/lists/CourseList.vue';
-import EmptyHint from '@/components/EmptyHint.vue';
+import BigTitle from "@/components/widgets/BigTitle.vue";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
+import CourseList from "@/components/lists/CourseList.vue";
+import IconHint from "@/components/widgets/IconHint.vue";
 export default {
   data() {
     return {
@@ -66,7 +65,7 @@ export default {
     BigTitle,
     CenterLoading,
     CourseList,
-    EmptyHint,
+    IconHint,
     CenterLoading,
   },
   mounted() {
@@ -83,6 +82,3 @@ export default {
   },
 };
 </script>
-
-<
-    CourseCardListstyle scoped></style>

@@ -33,69 +33,11 @@
 </template>
 
 <script>
-const columns = [
-  /*{
-    dataIndex: "name",
-    key: "name",
-    // title是属性，将column里的title这个属性配置为name="customTitle"的具名槽
-    slots: { title: "customTitle" },
-    // customRender是属性，将column里的customRender这个属性配置为name="name"的具名作用域槽
-    scopedSlots: { customRender: "name" },
-  },*/
-  {
-    title: "类别",
-    dataIndex: "type",
-    key: "type",
-    scopedSlots: { customRender: "typeTags" },
-  },
-  {
-    title: "状态",
-    dataIndex: "status",
-    key: "status",
-    scopedSlots: { customRender: "statusTags" },
-  },
-  {
-    title: "课程名",
-    dataIndex: "courseName",
-    key: "courseName",
-    scopedSlots: { customRender: "courseName" },
-  },
-  {
-    title: "教师",
-    dataIndex: "teacher",
-    key: "teacher",
-  },
-  {
-    title: "考试名",
-    dataIndex: "examName",
-    key: "examName",
-  },
-  {
-    title: "开始时间",
-    dataIndex: "startTime",
-    key: "startTime",
-  },
-  {
-    title: "结束时间",
-    dataIndex: "endTime",
-    key: "endTime",
-  },
-  {
-    title: "距离开始还有",
-    dataIndex: "remainingTime",
-    key: "remainingTime",
-  },
-  {
-    title: "分数",
-    dataIndex: "score",
-    key: "score",
-  },
-];
-
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      columns,
+      columns: [{}],
     };
   },
   props: {
@@ -106,9 +48,16 @@ export default {
       type: String,
     },
   },
+  computed: {
+    ...mapState({
+      examListCol: (state) => state.tableColProto.examListCol,
+    }),
+  },
   mounted() {
+    // 深度复制，不能简单用赋值号，不然只复制引用过去
+    this.columns = JSON.parse(JSON.stringify(this.examListCol));
     if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseExam") {
-      columns.splice(2, 2);
+      this.columns.splice(2, 2);
     }
   },
   methods: {

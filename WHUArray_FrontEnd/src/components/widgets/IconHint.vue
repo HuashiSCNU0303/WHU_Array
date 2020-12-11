@@ -1,12 +1,15 @@
 <template>
   <div class="hint">
-    <p><a-avatar icon="user" /> &nbsp; &nbsp; {{ hint }}</p>
+    <p><a-avatar :icon="icon" /> &nbsp; &nbsp; {{ hint }}</p>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    icon: {
+      type: String
+    },
     hint: {
       type: String,
     },
@@ -17,6 +20,6 @@ export default {
 <style scoped>
 .hint {
   text-align: center;
-  margin: 40px 0;
+  margin: 30px 0;
 }
 </style>

@@ -13,14 +13,14 @@
                 v-if="items[0].hasCurrentExam == true"
                 :currentExamData="items[0].currentExamData"
               />
-              <div v-else><empty-hint :hint="items[0].emptyHint" /></div>
+              <div v-else><icon-hint :hint="items[0].emptyHint" /></div>
             </div>
             <div v-else>
               <course-card-list
                 v-if="items[0].currentCourseList.length > 0"
                 :data="items[0].currentCourseList"
               ></course-card-list>
-              <div v-else><empty-hint :hint="items[0].emptyHint" /></div>
+              <div v-else><icon-hint :hint="items[0].emptyHint" /></div>
             </div>
           </div>
         </div>
@@ -35,14 +35,14 @@
                 :data="items[1].examList"
                 :currentPage="currentPage"
               ></exam-list>
-              <div v-else><empty-hint :hint="items[1].emptyHint" /></div>
+              <div v-else><icon-hint :hint="items[1].emptyHint" /></div>
             </div>
             <div v-else>
               <course-card-list
                 v-if="items[1].endCourseList.length > 0"
                 :data="items[1].endCourseList"
               ></course-card-list>
-              <div v-else><empty-hint :hint="items[1].emptyHint" /></div>
+              <div v-else><icon-hint :hint="items[1].emptyHint" /></div>
             </div>
           </div>
         </div>
@@ -54,10 +54,10 @@
 <script>
 import ExamList from "@/components/lists/ExamList";
 import ExamCard from "@/components/cards/ExamCard.vue";
-import BigTitle from "@/components/BigTitle.vue";
-import CenterLoading from "@/components/CenterLoading.vue";
+import BigTitle from "@/components/widgets/BigTitle.vue";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
 import CourseCardList from "@/components/lists/CourseCardList.vue";
-import EmptyHint from "./EmptyHint.vue";
+import IconHint from "@/components/widgets/IconHint.vue";
 
 export default {
   data() {
@@ -78,7 +78,7 @@ export default {
     },
     currentPage: {
       type: String,
-    }
+    },
   },
   components: {
     ExamList,
@@ -86,7 +86,7 @@ export default {
     BigTitle,
     CenterLoading,
     CourseCardList,
-    EmptyHint,
+    IconHint,
   },
   methods: {},
 };

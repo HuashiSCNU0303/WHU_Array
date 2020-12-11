@@ -1,49 +1,34 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="data">
-    </a-table>
+    <a-table :columns="columns" :data-source="data"> </a-table>
   </div>
 </template>
 
 <script>
-const columns = [
-  {
-    title: "课程号",
-    dataIndex: "courseId",
-    key: "courseId",
-  },
-  {
-    title: "课程名",
-    dataIndex: "courseName",
-    key: "courseName",
-  },
-  {
-    title: "教师",
-    dataIndex: "teacher",
-    key: "teacher",
-  },
-  {
-    title: "年级",
-    dataIndex: "grade",
-    key: "grade",
-  },
-  {
-    title: "课程描述",
-    dataIndex: "courseDescription",
-    key: "courseDescription",
-  },
-];
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      columns,
+      columns: [{}],
     };
+  },
+  computed: {
+    ...mapState({
+      courseListCol: (state) => state.tableColProto.courseListCol,
+    }),
   },
   props: {
     data: {
       type: Array, //指定传入的类型
     },
+  },
+  mounted() {
+    // 深度复制，不能简单用赋值号，不然只复制引用过去
+    this.columns = JSON.parse(JSON.stringify(this.courseListCol));
+    if (typeof this.currentPage !== "undefined" && this.currentPage == "Course") {
+      this.columns.splice(2, 2);
+    }
   },
 };
 </script>

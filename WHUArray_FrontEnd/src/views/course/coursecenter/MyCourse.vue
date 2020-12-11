@@ -82,9 +82,9 @@ const endCourseList_temp = [
   },
 ];
 
-import BigTitle from "@/components/BigTitle.vue";
-import CenterLoading from "@/components/CenterLoading.vue";
-import AllExpandColPanel from "../../components/AllExpandColPanel.vue";
+import BigTitle from "@/components/widgets/BigTitle.vue";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
+import AllExpandColPanel from "@/components/AllExpandColPanel.vue";
 export default {
   data() {
     return {

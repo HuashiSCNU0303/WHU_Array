@@ -4,7 +4,7 @@
 
 <script>
 import SideMenuPanel from "@/components/SideMenuPanel.vue";
-import CenterLoading from "@/components/CenterLoading.vue";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -24,6 +24,7 @@ export default {
         },
       ],
       header: {
+        breadCrumbLayer: "",
         pageTitle: "",
         description: "",
         extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
@@ -36,6 +37,7 @@ export default {
     }),
   },
   mounted() {
+    this.header.breadCrumbLayer = "Course";
     this.header.pageTitle = this.currentCourse.name;
     this.header.description =
       this.currentCourse.time +

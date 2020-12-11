@@ -48,18 +48,18 @@ export default new Router({
               path: "",
               name: "course",
               redirect: "/index/course/mycourse",
-              component: () => import("@/views/course/CourseCenter"),
+              component: () => import("@/views/course/coursecenter/CourseCenter"),
               children: [
                 {
                   path: "mycourse",
-                  component: () => import("@/views/course/MyCourse"),
+                  component: () => import("@/views/course/coursecenter/MyCourse"),
                   meta: {
                     breadcrumb: "我的课程",
                   },
                 },
                 {
                   path: "addcourse",
-                  component: () => import("@/views/course/AddCourse"),
+                  component: () => import("@/views/course/coursecenter/AddCourse"),
                 },
               ],
             },
@@ -67,15 +67,15 @@ export default new Router({
               // 具体某个ID表示的课程
               path: ":id",
               redirect: "/index/course/:id/homework",
-              component: () => import("@/views/course/Course"),
+              component: () => import("@/views/course/course/Course"),
               children: [
                 {
                   path: "homework",
-                  component: () => import("@/views/course/CourseHomework"),
+                  component: () => import("@/views/course/course/CourseHomework"),
                 },
                 {
                   path: "exam",
-                  component: () => import("@/views/course/CourseExam"),
+                  component: () => import("@/views/course/course/CourseExam"),
                 },
               ],
             },
@@ -91,6 +91,28 @@ export default new Router({
               component: () => import("@/views/problemrepos/ProblemRepos"),
             },
           ],
+        },
+        {
+          // 具体某个id指定的作业
+          path: "homework/:id",
+          component: CommonPageView,
+          children: [
+            {
+              path: "",
+              component: () => import("@/views/course/Homework"),
+            }
+          ]
+        },
+        {
+          // 具体某个id指定的考试
+          path: "exam/:id",
+          component: CommonPageView,
+          children: [
+            {
+              path: "",
+              component: () => import("@/views/course/Exam"),
+            }
+          ]
         },
         {
           path: "mgmtcenter",

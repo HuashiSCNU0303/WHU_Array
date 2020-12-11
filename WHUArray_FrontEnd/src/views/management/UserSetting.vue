@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import BigTitle from "@/components/BigTitle.vue";
+import BigTitle from "@/components/widgets/BigTitle.vue";
 export default {
   data() {
     return {

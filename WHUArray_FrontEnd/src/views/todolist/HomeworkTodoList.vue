@@ -6,15 +6,15 @@
       v-else-if="homeworkList.length > 0"
       :data="homeworkList"
     ></homework-list>
-    <div v-else><empty-hint :hint="emptyHint" /></div>
+    <div v-else><icon-hint :hint="emptyHint" /></div>
   </div>
 </template>
 
 <script>
 import HomeworkList from "@/components/lists/HomeworkList.vue";
-import BigTitle from "@/components/BigTitle";
-import CenterLoading from "@/components/CenterLoading.vue";
-import EmptyHint from "@/components/EmptyHint.vue";
+import BigTitle from "@/components/widgets/BigTitle";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
+import IconHint from "@/components/widgets/IconHint.vue";
 
 const homeworkList_temp = [
   {
@@ -51,7 +51,7 @@ export default {
     HomeworkList,
     BigTitle,
     CenterLoading,
-    EmptyHint,
+    IconHint,
   },
   mounted() {
     this.getHomeworks();

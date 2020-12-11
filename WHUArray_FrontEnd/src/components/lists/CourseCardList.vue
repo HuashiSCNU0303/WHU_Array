@@ -29,19 +29,7 @@ export default {
   },
   methods: {
     switchToCourse(item) {
-      this.getCourseInfo(item);
-    },
-    getCourseInfo(item) {
-      // 获取课程信息，下面只是模拟一下请求后端获得结果而已.
-      const promise = new Promise(function (resolve, reject) {
-        resolve("hello");
-      });
-      promise.then((res) => {
-        this.$store.dispatch("setCurrentCourse", item);
-        this.$router.push({
-          path: "./" + item.id,
-        });
-      });
+      this.utils.toggle.handleCourseSwitch(this, item);
     },
   },
 };

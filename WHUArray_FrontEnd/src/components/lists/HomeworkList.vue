@@ -22,57 +22,12 @@
 </template>
 
 <script>
-const columns = [
-  {
-    title: "类别",
-    dataIndex: "type",
-    key: "type",
-    scopedSlots: { customRender: "typeTags" },
-  },
-  {
-    title: "状态",
-    dataIndex: "status",
-    key: "status",
-    scopedSlots: { customRender: "statusTags" },
-  },
-  {
-    title: "课程名",
-    dataIndex: "courseName",
-    key: "courseName",
-    scopedSlots: { customRender: "courseName" },
-  },
-  {
-    title: "教师",
-    dataIndex: "teacher",
-    key: "teacher",
-  },
-  {
-    title: "作业名",
-    dataIndex: "homeworkName",
-    key: "homeworkName",
-    scopedSlots: { customRender: "homeworkName" },
-  },
-  {
-    title: "结束时间",
-    dataIndex: "endTime",
-    key: "endTime",
-  },
-  {
-    title: "距离截止还有",
-    dataIndex: "remainingTime",
-    key: "remainingTime",
-  },
-  {
-    title: "分数",
-    dataIndex: "score",
-    key: "score",
-  },
-];
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      columns,
+      columns: [{}],
     };
   },
   props: {
@@ -83,14 +38,28 @@ export default {
       type: Array,
     },
   },
+  computed: {
+    ...mapState({
+      homeworkListCol: (state) => state.tableColProto.homeworkListCol,
+    }),
+  },
   mounted() {
+    this.columns = JSON.parse(JSON.stringify(this.homeworkListCol));
     if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseHomework") {
-      columns.splice(2, 2);
+      this.columns.splice(2, 2);
     }
   },
   methods: {
     handleHomeworkSwitch() {
       // 跳转到具体作业
+      var item = {
+        id: 1,
+        name: "第一次作业",
+        status: "进行中",
+        endTime: "2020-12-14 08:00",
+        score: 0,
+      };
+      this.utils.toggle.handleHomeworkSwitch(this, item);
     },
     handleCourseSwitch() {
       // 跳转到具体课程

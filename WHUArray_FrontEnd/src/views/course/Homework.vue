@@ -1,11 +1,15 @@
 <template>
   <div class="content">
     <center-loading v-if="isLoading == true" />
-    <problem-list v-else :data="problemList"></problem-list>
+    <problem-list v-else :data="problemList" :currentPage="currentPage" />
   </div>
 </template>
 
 <script>
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
+import ProblemList from "../../components/lists/ProblemList.vue";
+import { mapState } from "vuex";
+
 const problemList_temp = [
   {
     problemId: 1,
@@ -27,10 +31,9 @@ const problemList_temp = [
   },
 ];
 
-import ProblemList from "@/components/lists/ProblemList.vue";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
 export default {
   components: {
+    CenterLoading,
     ProblemList,
     CenterLoading,
   },
@@ -38,14 +41,25 @@ export default {
     return {
       problemList: [],
       isLoading: true,
+      currentPage: "Homework",
       header: {
-        pageTitle: "题库",
-        description: "这里有以前各个课程的作业与考试题，供大家参考",
-        extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
+        countdownIndicator: true,
+        breadCrumbLayer: "Homework",
+        pageTitle: "",
+        description: "",
       },
     };
   },
+  computed: {
+    ...mapState({
+      currentCourse: (state) => state.currentCourse.course,
+      currentHomework: (state) => state.currentHomework.homework,
+    }),
+  },
   mounted() {
+    this.header.breadCrumbLayer = "Homework";
+    this.header.pageTitle = this.currentCourse.name + "\n" + this.currentHomework.name;
+    this.header.description = "截止时间：" + this.currentHomework.endTime;
     this.$store.dispatch("setCurrentPageHeader", this.header);
     this.getProblems();
   },

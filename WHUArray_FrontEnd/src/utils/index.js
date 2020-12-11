@@ -1,7 +1,9 @@
 import Vue from "vue";
 
-import Switch from "./modules/Switch"
+import toggle from "./modules/Toggle"
+import countdown from "./modules/Countdown"
 
 export default {
-  Switch,
+  toggle,
+  countdown,
 }

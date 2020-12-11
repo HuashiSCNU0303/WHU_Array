@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import BigTitle from "@/components/BigTitle.vue";
+import BigTitle from "@/components/widgets/BigTitle.vue";
 import MsgList from "@/views/management/msg/MsgList.vue";
-import CenterLoading from "@/components/CenterLoading.vue";
+import CenterLoading from "@/components/widgets/CenterLoading.vue";
 const newMsgList_temp = [
   {
     title: "Ant Design Title 1",
