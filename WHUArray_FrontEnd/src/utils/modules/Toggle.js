@@ -24,7 +24,7 @@ export default {
   handleExamSwitch (self, examId) {
 
   },
-  handleProblemSwitch (self, item) {
+  handleProblemSwitch (self, item, prePage) {
     const promise = new Promise(function (resolve, reject) {
       resolve("hello");
     });
@@ -32,6 +32,9 @@ export default {
       self.$store.dispatch("setCurrentProblem", item);
       self.$router.push({
         path: "/index/problem/" + item.id,
+        query: {
+          source: prePage,
+        },
       });
     });
   },

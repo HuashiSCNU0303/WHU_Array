@@ -20,14 +20,16 @@ import BigTitle from "./widgets/BigTitle"
 import CenterLoading from "./widgets/CenterLoading"
 import Countdown from "./widgets/Countdown"
 import IconHint from "./widgets/IconHint"
+import ScoreDisplay from "./widgets/ScoreDisplay"
 
 Vue.component("big-title", BigTitle);
 Vue.component("center-loading", CenterLoading);
 Vue.component("countdown", Countdown);
 Vue.component("icon-hint", IconHint);
+Vue.component("score-display", ScoreDisplay);
 
 export default {
   CourseList, ExamList, HomeworkList, ProblemList,
   AllExpandColPanel, SideMenuPanel,
-  BigTitle, CenterLoading, Countdown, IconHint,
+  BigTitle, CenterLoading, Countdown, IconHint, ScoreDisplay,
 }

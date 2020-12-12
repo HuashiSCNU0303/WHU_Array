@@ -23,6 +23,7 @@ export default {
       header: {
         pageTitle: "待办事项列表",
         description: "下面是你最近需要完成的作业或考试列表，默认按照剩余时间从小到大排序",
+        extraType: "image",
         extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
       },
     };

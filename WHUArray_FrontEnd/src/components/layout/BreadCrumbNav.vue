@@ -98,7 +98,7 @@ export default {
             id: this.homework.id,
           });
           this.courseItemData.push({
-            name: this.problem.name,
+            name: this.problem.id + "号题目",
           });
           break;
         }
@@ -114,13 +114,13 @@ export default {
             id: this.exam.id,
           });
           this.courseItemData.push({
-            name: this.problem.name,
+            name: this.problem.id + "号题目",
           });
           break;
         }
         case "ProblemInRepos": {
           this.problemReposItemData.push({
-            name: this.problem.name,
+            name: this.problem.id + "号题目",
           });
           break;
         }

@@ -100,8 +100,8 @@ export default new Router({
             {
               path: "",
               component: () => import("@/views/course/Homework"),
-            }
-          ]
+            },
+          ],
         },
         {
           // 具体某个id指定的考试
@@ -111,8 +111,8 @@ export default new Router({
             {
               path: "",
               component: () => import("@/views/course/Exam"),
-            }
-          ]
+            },
+          ],
         },
         {
           // 具体某个id指定的题目
@@ -121,9 +121,9 @@ export default new Router({
           children: [
             {
               path: "",
-              component: () => import("@/views/Problem"),
-            }
-          ]
+              component: () => import("@/views/problem/Problem"),
+            },
+          ],
         },
         {
           path: "mgmtcenter",

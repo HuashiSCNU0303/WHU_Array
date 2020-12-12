@@ -23,19 +23,19 @@
           v-html="header.description"
         ></div>
         <slot slot="extra" name="extra">
-          <div
-            v-if="typeof header.extraImage !== 'undefined'"
-            class="extra-img"
-            :key="refreshKey"
-          >
+          <div v-if="header.extraType == 'image'" class="extra-img" :key="refreshKey">
             <img :src="header.extraImage" />
           </div>
           <div
-            v-else-if="typeof header.countdownIndicator !== 'undefined'"
+            v-else-if="header.extraType == 'countdown'"
             class="countdown"
             :key="refreshKey"
           >
-            <countdown :currentAnchorTime="1607704233000" />
+            <countdown :currentAnchorTime="1607763514000" />
+            <score-display class="score-display" :data="header.breadCrumbLayer" />
+          </div>
+          <div v-else-if="header.extraType == 'score'">
+            <score-display class="score-display score" />
           </div>
         </slot>
       </page-header>
@@ -97,10 +97,21 @@ export default {
 }
 
 .countdown {
-  margin-top: -20px;
+  margin-top: -64px;
   padding-bottom: 16px;
-  margin-left: -100px;
+  margin-left: -200px;
   text-align: center;
-  width: 195px;
+  width: 350px;
+}
+
+.score-display {
+  margin-top: 16px;
+}
+
+.score {
+  margin-top: -32px;
+  padding-bottom: 48px;
+  margin-left: -300px;
+  text-align: center;
 }
 </style>

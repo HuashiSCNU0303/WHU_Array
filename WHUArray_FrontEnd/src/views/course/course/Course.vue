@@ -24,6 +24,7 @@ export default {
         breadCrumbLayer: "",
         pageTitle: "",
         description: "",
+        extraType: "image",
         extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
       },
     };

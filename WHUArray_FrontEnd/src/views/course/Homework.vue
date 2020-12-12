@@ -14,7 +14,7 @@ const problemList_temp = [
     problemName: "两数之和",
     problemCourse: "算法设计与分析",
     problemWork: "第一次作业",
-    problemTag: ["算法",],
+    problemTags: ["算法"],
     isDone: true,
     score: 90,
   },
@@ -23,9 +23,9 @@ const problemList_temp = [
     problemName: "设计链表",
     problemCourse: "数据结构",
     problemWork: "期末考试",
-    problemTag: ["数据结构",],
+    problemTags: ["数据结构"],
     isDone: false,
-    score: 0,
+    score: -1,
   },
 ];
 
@@ -36,7 +36,7 @@ export default {
       isLoading: true,
       currentPage: "Homework",
       header: {
-        countdownIndicator: true,
+        extraType: "countdown",
         breadCrumbLayer: "Homework",
         pageTitle: "",
         description: "",

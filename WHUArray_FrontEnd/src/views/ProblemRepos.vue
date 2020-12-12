@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <center-loading v-if="isLoading == true" />
-    <problem-list v-else :data="problemList"></problem-list>
+    <problem-list v-else :data="problemList" :currentPage="currentPage"></problem-list>
   </div>
 </template>
 
@@ -23,22 +23,20 @@ const problemList_temp = [
     problemWork: "期末考试",
     problemTags: ["数据结构",],
     isDone: false,
-    score: 0,
+    score: -1,
   },
 ];
 
 export default {
-  components: {
-    ProblemList,
-    CenterLoading,
-  },
   data() {
     return {
       problemList: [],
       isLoading: true,
+      currentPage: "ProblemRepos",
       header: {
         pageTitle: "题库",
         description: "这里有以前各个课程的作业与考试题，供大家参考",
+        extraType: "image",
         extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
       },
     };

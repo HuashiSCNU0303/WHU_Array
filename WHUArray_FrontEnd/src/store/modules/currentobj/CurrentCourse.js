@@ -14,10 +14,16 @@ export default {
       state.course = newObj;
       // console.log(state.course);
     },
+    setCourseEndTime (state, value) {
+      state.time = value;
+    }
   },
   actions: {
     setCurrentCourse (context, value) {
       context.commit("setCurrentCourse", value);
     },
+    setCourseEndTime (context, value) {
+      context.commit("setCourseEndTime", value);
+    }
   },
 };

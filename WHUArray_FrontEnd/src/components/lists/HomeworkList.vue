@@ -56,8 +56,8 @@ export default {
         id: 1,
         name: "第一次作业",
         status: "进行中",
-        endTime: "2020-12-14 08:00",
-        score: 0,
+        endTime: 1607741914000,
+        score: -1,
       };
       this.utils.toggle.handleHomeworkSwitch(this, item);
     },

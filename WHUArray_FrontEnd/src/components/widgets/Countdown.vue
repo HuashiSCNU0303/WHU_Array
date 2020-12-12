@@ -3,15 +3,15 @@
     <div v-if="showTime == true">
       <div class="title">
         <span><a-icon type="clock-circle" spin />&nbsp;倒计时</span>
+        <span>&nbsp; </span>
+        <span v-html="remainingTimeStr"></span>
       </div>
-      <div v-html="remainingTimeStr" class="content"></div>
     </div>
     <icon-hint v-else :hint="hint" :icon="user" style="margin: 0" />
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -25,9 +25,6 @@ export default {
   props: {
     currentAnchorTime: {
       type: Number,
-    },
-    isSubmitted: {
-      type: Boolean,
     },
   },
   mounted() {
@@ -52,13 +49,12 @@ export default {
 <style scoped>
 .title {
   color: #1890ff;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 28px;
   padding-bottom: 12px;
-  margin-top: -40px;
 }
-.content {
+/*.content {
   color: rgba(0, 0, 0, 0.65);
   font-size: 16px;
-}
+}*/
 </style>

@@ -19,15 +19,30 @@
       <a-menu-item id="unselectable-wrapper" class="header-index-right" key="userMenu">
         <user-menu @clearSelection="handleClearSelection"></user-menu>
       </a-menu-item>
+      <a-menu-item
+        v-if="showCountdown"
+        id="unselectable-wrapper"
+        class="header-index-right"
+        key="countdown"
+      >
+        <countdown-popover />
+      </a-menu-item>
     </a-menu>
   </a-layout-header>
 </template>
 
 <script>
 import UserMenu from "@/components/header/UserMenu";
+import CountdownPopover from "@/components/header/CountdownPopover.vue";
 export default {
   components: {
     UserMenu,
+    CountdownPopover,
+  },
+  props: {
+    showCountdown: {
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -45,7 +60,7 @@ export default {
         this.$router.push({
           path: "/index",
         });
-      } else if (key == "userMenu") {
+      } else if (key == "userMenu" || key == "countdown") {
       } else {
         this.currentKey = key;
         this.$router.push({

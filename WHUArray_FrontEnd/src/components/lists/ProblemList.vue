@@ -15,7 +15,7 @@
       </div>
     </span>
     <span slot="score" slot-scope="score">
-      <div v-if="score != 0">{{ score }}</div>
+      <div v-if="score != -1">{{ score }}</div>
     </span>
     <span slot="problemTags" slot-scope="problemTags">
       <a-tag v-for="problemTag in problemTags" :key="problemTag" :color="'volcano'">
@@ -60,10 +60,29 @@ export default {
               isDone: record.isDone,
               score: record.score,
             };
-            this.utils.toggle.handleProblemSwitch(this, item);
+            var source = this.getSource();
+            this.utils.toggle.handleProblemSwitch(this, item, source);
           },
         },
       };
+    },
+    getSource() {
+      var result = "";
+      switch (this.currentPage) {
+        case "ProblemRepos": {
+          result = "repos";
+          break;
+        }
+        case "Homework": {
+          result = "homework";
+          break;
+        }
+        case "Exam": {
+          result = "exam";
+          break;
+        }
+      }
+      return result;
     },
   },
   mounted() {
