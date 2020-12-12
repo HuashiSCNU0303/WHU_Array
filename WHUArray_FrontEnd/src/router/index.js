@@ -121,7 +121,18 @@ export default new Router({
           children: [
             {
               path: "",
+              redirect: "./detail",
               component: () => import("@/views/problem/Problem"),
+              children: [
+                {
+                  path: "detail",
+                  component: () => import("@/views/problem/ProblemDetail"),
+                },
+                {
+                  path: "comment",
+                  component: () => import("@/views/problem/ProblemComment"),
+                },
+              ],
             },
           ],
         },
