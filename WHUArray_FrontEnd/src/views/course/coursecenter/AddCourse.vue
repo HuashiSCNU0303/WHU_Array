@@ -49,10 +49,6 @@ const courseList_temp = [
   },
 ];
 
-import BigTitle from "@/components/widgets/BigTitle.vue";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
-import CourseList from "@/components/lists/CourseList.vue";
-import IconHint from "@/components/widgets/IconHint.vue";
 export default {
   data() {
     return {
@@ -60,13 +56,6 @@ export default {
       isLoading: true, // 标识一下正在加载的状态
       emptyHint: "当前没有可以选择的课程",
     };
-  },
-  components: {
-    BigTitle,
-    CenterLoading,
-    CourseList,
-    IconHint,
-    CenterLoading,
   },
   mounted() {
     this.getHomeworks();

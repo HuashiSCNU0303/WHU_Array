@@ -52,12 +52,8 @@
 </template>
 
 <script>
-import ExamList from "@/components/lists/ExamList";
 import ExamCard from "@/components/cards/ExamCard.vue";
-import BigTitle from "@/components/widgets/BigTitle.vue";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
 import CourseCardList from "@/components/lists/CourseCardList.vue";
-import IconHint from "@/components/widgets/IconHint.vue";
 
 export default {
   data() {
@@ -81,12 +77,8 @@ export default {
     },
   },
   components: {
-    ExamList,
     ExamCard,
-    BigTitle,
-    CenterLoading,
     CourseCardList,
-    IconHint,
   },
   methods: {},
 };

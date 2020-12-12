@@ -18,9 +18,8 @@
 </template>
 
 <script>
-import BigTitle from "@/components/widgets/BigTitle.vue";
 import MsgList from "@/views/management/msg/MsgList.vue";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
+
 const newMsgList_temp = [
   {
     title: "Ant Design Title 1",
@@ -69,9 +68,7 @@ export default {
     };
   },
   components: {
-    BigTitle,
     MsgList,
-    CenterLoading,
   },
   mounted() {
     this.getMsg();

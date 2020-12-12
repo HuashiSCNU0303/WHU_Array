@@ -6,11 +6,12 @@
       </div>
       <div v-html="remainingTimeStr" class="content"></div>
     </div>
-    <icon-hint v-else :hint="hint" :icon="user" />
+    <icon-hint v-else :hint="hint" :icon="user" style="margin: 0" />
   </div>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -18,18 +19,20 @@ export default {
       remainingTimeStr: "/&nbsp;分&nbsp;/&nbsp;秒",
       showTime: true,
       hint: "已经结束啦",
+      user: "user",
     };
   },
   props: {
     currentAnchorTime: {
       type: Number,
     },
+    isSubmitted: {
+      type: Boolean,
+    },
   },
   mounted() {
     var timeStamp = new Date().valueOf();
     this.remainingTime = this.currentAnchorTime - timeStamp;
-    console.log(this.currentAnchorTime);
-    console.log(this.remainingTime);
     if (this.remainingTime <= 0) {
       this.showTime = false;
     } else {

@@ -3,7 +3,7 @@ import Router from "vue-router";
 
 Vue.use(Router);
 
-import CommonPageView from "@/components/CommonPageView";
+import CommonPageView from "@/components/layout/CommonPageView";
 
 export default new Router({
   routes: [
@@ -88,7 +88,7 @@ export default new Router({
             {
               path: "",
               name: "problemRepos",
-              component: () => import("@/views/problemrepos/ProblemRepos"),
+              component: () => import("@/views/ProblemRepos"),
             },
           ],
         },
@@ -111,6 +111,17 @@ export default new Router({
             {
               path: "",
               component: () => import("@/views/course/Exam"),
+            }
+          ]
+        },
+        {
+          // 具体某个id指定的题目
+          path: "problem/:id",
+          component: CommonPageView,
+          children: [
+            {
+              path: "",
+              component: () => import("@/views/Problem"),
             }
           ]
         },

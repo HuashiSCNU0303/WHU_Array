@@ -28,15 +28,11 @@
 </template>
 
 <script>
-import BigTitle from "@/components/widgets/BigTitle.vue";
 export default {
   data() {
     return {
       selectedKey: "userSetting",
     };
-  },
-  components: {
-    BigTitle,
   },
 };
 </script>

@@ -6,11 +6,13 @@ import router from "./router";
 import "ant-design-vue/dist/antd.css";
 import Antd from "ant-design-vue";
 import VueBreadcrumbs from "vue-breadcrumbs";
-import store from "./store/index"
-import utils from "./utils/index"
+import store from "./store/index";
+import utils from "./utils/index";
+import CommonComs from "./components/index";
 
 Vue.use(VueBreadcrumbs);
 Vue.use(Antd);
+// Vue.use(CommonComs);
 
 Vue.config.productionTip = false;
 Vue.prototype.utils = utils;

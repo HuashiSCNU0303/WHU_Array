@@ -114,6 +114,7 @@ export default {
         title: "题目名",
         dataIndex: "problemName",
         key: "problemName",
+        scopedSlots: { customRender: "problemName" },
       },
       {
         title: "来源课程",
@@ -127,8 +128,9 @@ export default {
       },
       {
         title: "标签",
-        dataIndex: "problemTag",
-        key: "problemTag",
+        dataIndex: "problemTags",
+        key: "problemTags",
+        scopedSlots: { customRender: "problemTags" },
       },
       {
         title: "是否已做",

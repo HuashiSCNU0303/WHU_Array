@@ -3,12 +3,9 @@
 </template>
 
 <script>
-import SideMenuPanel from "@/components/SideMenuPanel.vue";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
 import { mapState } from "vuex";
 
 export default {
-  components: { SideMenuPanel, CenterLoading },
   data() {
     return {
       items: [

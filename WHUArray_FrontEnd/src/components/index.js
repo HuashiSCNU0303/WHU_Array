@@ -1,0 +1,33 @@
+import Vue from "vue";
+
+import CourseList from "./lists/CourseList"
+import ExamList from "./lists/ExamList"
+import HomeworkList from "./lists/HomeworkList"
+import ProblemList from "./lists/ProblemList"
+
+Vue.component("course-list", CourseList);
+Vue.component("exam-list", ExamList);
+Vue.component("homework-list", HomeworkList);
+Vue.component("problem-list", ProblemList);
+
+import AllExpandColPanel from "./panels/AllExpandColPanel"
+import SideMenuPanel from "./panels/SideMenuPanel"
+
+Vue.component("all-expand-col-panel", AllExpandColPanel);
+Vue.component("side-menu-panel", SideMenuPanel);
+
+import BigTitle from "./widgets/BigTitle"
+import CenterLoading from "./widgets/CenterLoading"
+import Countdown from "./widgets/Countdown"
+import IconHint from "./widgets/IconHint"
+
+Vue.component("big-title", BigTitle);
+Vue.component("center-loading", CenterLoading);
+Vue.component("countdown", Countdown);
+Vue.component("icon-hint", IconHint);
+
+export default {
+  CourseList, ExamList, HomeworkList, ProblemList,
+  AllExpandColPanel, SideMenuPanel,
+  BigTitle, CenterLoading, Countdown, IconHint,
+}

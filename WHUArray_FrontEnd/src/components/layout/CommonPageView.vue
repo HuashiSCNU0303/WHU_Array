@@ -11,7 +11,7 @@
           slot="breadcrumb"
           name="breadcrumb"
         >
-          <bread-crumb-nav :currentLayer="header.breadCrumbLayer" />
+          <bread-crumb-nav :currentLayer="header.breadCrumbLayer" :key="refreshKey" />
         </slot>
         <slot slot="title" name="title">
           <h1>{{ header.pageTitle }}</h1>
@@ -23,12 +23,17 @@
           v-html="header.description"
         ></div>
         <slot slot="extra" name="extra">
-          <div v-if="typeof header.extraImage !== 'undefined'" class="extra-img">
+          <div
+            v-if="typeof header.extraImage !== 'undefined'"
+            class="extra-img"
+            :key="refreshKey"
+          >
             <img :src="header.extraImage" />
           </div>
           <div
             v-else-if="typeof header.countdownIndicator !== 'undefined'"
             class="countdown"
+            :key="refreshKey"
           >
             <countdown :currentAnchorTime="1607704233000" />
           </div>
@@ -47,27 +52,35 @@
 </template>
 
 <script>
-import PageHeader from "@/components/PageHeader";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
-import Countdown from "@/components/widgets/Countdown.vue";
-import BreadCrumbNav from "@/components/BreadCrumbNav.vue";
+import PageHeader from "@/components/layout/PageHeader";
+import BreadCrumbNav from "@/components/layout/BreadCrumbNav.vue";
 
 import { mapState } from "vuex";
 
 export default {
+  data() {
+    return {
+      refreshKey: false,
+    };
+  },
   components: {
     PageHeader,
-    CenterLoading,
     BreadCrumbNav,
-    Countdown,
-  },
-  data() {
-    return {};
   },
   computed: {
     ...mapState({
       header: (state) => state.currentPageHeader.header,
     }),
+  },
+  methods: {
+    updateComponents() {
+      this.refreshKey = this.refreshKey ? false : true;
+    },
+  },
+  watch: {
+    header: function () {
+      this.updateComponents();
+    },
   },
 };
 </script>

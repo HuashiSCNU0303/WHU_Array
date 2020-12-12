@@ -12,11 +12,6 @@
 </template>
 
 <script>
-import HomeworkList from "@/components/lists/HomeworkList.vue";
-import BigTitle from "@/components/widgets/BigTitle";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
-import IconHint from "@/components/widgets/IconHint.vue";
-
 const homeworkList_temp = [
   {
     type: "作业",
@@ -44,12 +39,6 @@ export default {
       emptyHint: "当前没有未完成的作业",
       currentPage: "CourseHomework",
     };
-  },
-  components: {
-    HomeworkList,
-    BigTitle,
-    CenterLoading,
-    IconHint,
   },
   mounted() {
     this.getHomeworks();

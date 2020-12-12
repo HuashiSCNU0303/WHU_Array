@@ -48,11 +48,11 @@ export default {
     handleSwitch(item) {
       const type = item.type;
       if (type == "Course") {
-        utils.toggle.handleCourseSwitch(this, item);
+        this.utils.toggle.handleCourseSwitch(this, item);
       } else if (type == "Homework") {
-        utils.toggle.handleHomeworkSwitch(this, item);
+        this.utils.toggle.handleHomeworkSwitch(this, item);
       } else if (type == "Exam") {
-        utils.toggle.handleExamSwitch(this, item);
+        this.utils.toggle.handleExamSwitch(this, item);
       }
     },
     createBreadCrumb() {
@@ -129,12 +129,12 @@ export default {
         this.currentLayer == "ProblemInRepos"
           ? this.problemReposItemData
           : this.courseItemData;
-      console.log(this.items);
     },
   },
   mounted() {
     this.createBreadCrumb();
   },
+  updated() {},
 };
 </script>
 

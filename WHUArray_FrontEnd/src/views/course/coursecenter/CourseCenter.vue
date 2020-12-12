@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import SideMenuPanel from "@/components/SideMenuPanel.vue";
 export default {
-  components: { SideMenuPanel },
   data() {
     return {
       items: [

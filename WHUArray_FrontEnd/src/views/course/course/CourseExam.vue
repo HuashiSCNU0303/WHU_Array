@@ -11,9 +11,6 @@
 </template>
 
 <script>
-import BigTitle from "@/components/widgets/BigTitle.vue";
-import AllExpandColPanel from "@/components/AllExpandColPanel.vue";
-
 const examList_temp = [
   {
     type: "考试",
@@ -59,10 +56,6 @@ export default {
       isLoading: true,
       currentPage: "CourseExam",
     };
-  },
-  components: {
-    BigTitle,
-    AllExpandColPanel,
   },
   mounted() {
     this.getExams();

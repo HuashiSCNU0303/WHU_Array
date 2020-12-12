@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import SideMenuPanel from "@/components/SideMenuPanel";
 export default {
   data() {
     return {
@@ -27,9 +26,6 @@ export default {
         extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
       },
     };
-  },
-  components: {
-    SideMenuPanel,
   },
   mounted() {
     this.$store.dispatch("setCurrentPageHeader", this.header);

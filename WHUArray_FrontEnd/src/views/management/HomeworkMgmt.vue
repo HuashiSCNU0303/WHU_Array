@@ -5,15 +5,11 @@
 </template>
 
 <script>
-import BigTitle from "@/components/widgets/BigTitle.vue";
 export default {
   data () {
     return {
       selectedKey: "homeworkMgmt"
     }
-  },
-    components: {
-    BigTitle
   },
 }
 </script>

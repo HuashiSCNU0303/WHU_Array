@@ -7,7 +7,7 @@
 
 <script>
 const currentCourseList_temp = [
-{
+  {
     id: "1",
     name: "计算机组成与设计",
     time: "2019-2020",
@@ -82,9 +82,6 @@ const endCourseList_temp = [
   },
 ];
 
-import BigTitle from "@/components/widgets/BigTitle.vue";
-import CenterLoading from "@/components/widgets/CenterLoading.vue";
-import AllExpandColPanel from "@/components/AllExpandColPanel.vue";
 export default {
   data() {
     return {
@@ -104,17 +101,12 @@ export default {
       isLoading: true,
     };
   },
-  components: {
-    BigTitle,
-    CenterLoading,
-    AllExpandColPanel,
-  },
   mounted() {
     this.getCourses();
   },
   methods: {
     getCourses() {
-      console.log(this.$route);
+      // console.log(this.$route);
       // 获取课程列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
         this.items[0].currentCourseList = currentCourseList_temp;

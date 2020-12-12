@@ -24,4 +24,15 @@ export default {
   handleExamSwitch (self, examId) {
 
   },
+  handleProblemSwitch (self, item) {
+    const promise = new Promise(function (resolve, reject) {
+      resolve("hello");
+    });
+    promise.then((res) => {
+      self.$store.dispatch("setCurrentProblem", item);
+      self.$router.push({
+        path: "/index/problem/" + item.id,
+      });
+    });
+  },
 }
