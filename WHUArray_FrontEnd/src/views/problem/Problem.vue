@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <a-row>
-      <a-col :span="10">
+      <a-col :span="11">
         <div id="problem-info">
           <a-row>
             <a-tabs type="card" @change="handleTabSwitch">
@@ -12,7 +12,7 @@
           <router-view />
         </div>
       </a-col>
-      <a-col :span="14" style="border-left: 2px solid #e8e8e8">
+      <a-col :span="13" style="border-left: 2px solid #e8e8e8">
         <div id="code-block">
           <a-row>
             <span>选择语言：</span>
@@ -158,7 +158,7 @@ export default {
 
 <style scoped>
 .content {
-  padding: 24px;
+  padding: 16px;
   max-height: 1000px;
 }
 #problem-info {
@@ -169,7 +169,8 @@ export default {
 }
 
 .editor {
-  margin-top: 16px;
+  margin-top: 8px;
+  padding-top: 8px;
   height: 400px;
   border-top: 2px solid #e8e8e8;
   border-left: 2px solid #e8e8e8;

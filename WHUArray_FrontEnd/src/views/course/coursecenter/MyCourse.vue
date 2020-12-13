@@ -1,7 +1,20 @@
 <template>
   <div>
     <big-title><p>我的课程</p></big-title>
-    <all-expand-col-panel :isLoading="isLoading" :type="type" :items="items" />
+    <all-expand-col-panel :isLoading="isLoading" :headers="headers">
+      <div slot="panel1_content">
+        <course-card-list
+          v-if="currentCourseList.length > 0"
+          :data="currentCourseList"
+          @courseClicked="switchToCourse"
+        />
+        <div v-else><icon-hint :hint="emptyHints[0]" /></div>
+      </div>
+      <div slot="panel2_content">
+        <course-card-list v-if="endCourseList.length > 0" :data="endCourseList" />
+        <div v-else><icon-hint :hint="emptyHints[1]" /></div>
+      </div>
+    </all-expand-col-panel>
   </div>
 </template>
 
@@ -85,19 +98,10 @@ const endCourseList_temp = [
 export default {
   data() {
     return {
-      items: [
-        {
-          header: "进行中的课程",
-          currentCourseList: [],
-          emptyHint: "当前没有进行中的课程",
-        },
-        {
-          header: "已结束的课程",
-          endCourseList: [],
-          emptyHint: "当前没有已结束的课程",
-        },
-      ],
-      type: "mycourse",
+      headers: ["进行中的课程", "已结束的课程"],
+      emptyHints: ["当前没有进行中的课程", "当前没有已结束的课程"],
+      currentCourseList: [],
+      endCourseList: [],
       isLoading: true,
     };
   },
@@ -109,10 +113,13 @@ export default {
       // console.log(this.$route);
       // 获取课程列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.items[0].currentCourseList = currentCourseList_temp;
-        this.items[1].endCourseList = endCourseList_temp;
+        this.currentCourseList = currentCourseList_temp;
+        this.endCourseList = endCourseList_temp;
         this.isLoading = false;
       }, 1000);
+    },
+    switchToCourse(item) {
+      this.utils.toggle.handleCourseSwitch(this, item);
     },
   },
 };

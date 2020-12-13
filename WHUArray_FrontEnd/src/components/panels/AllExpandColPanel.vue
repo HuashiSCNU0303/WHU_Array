@@ -4,46 +4,19 @@
       <template #expandIcon="props">
         <a-icon type="caret-right" :rotate="props.isActive ? 90 : 0" />
       </template>
-      <a-collapse-panel key="1" :header="items[0].header" :style="customStyle">
+      <a-collapse-panel key="1" :header="headers[0]" :style="customStyle">
         <div class="content">
           <center-loading v-if="isLoading == true" />
           <div v-else>
-            <div v-if="type == 'exam'">
-              <exam-card
-                v-if="items[0].hasCurrentExam == true"
-                :currentExamData="items[0].currentExamData"
-              />
-              <div v-else><icon-hint :hint="items[0].emptyHint" /></div>
-            </div>
-            <div v-else>
-              <course-card-list
-                v-if="items[0].currentCourseList.length > 0"
-                :data="items[0].currentCourseList"
-              ></course-card-list>
-              <div v-else><icon-hint :hint="items[0].emptyHint" /></div>
-            </div>
+            <slot name="panel1_content" />
           </div>
         </div>
       </a-collapse-panel>
-      <a-collapse-panel key="2" :header="items[1].header" :style="customStyle">
+      <a-collapse-panel key="2" :header="headers[1]" :style="customStyle">
         <div class="content">
           <center-loading v-if="isLoading == true" />
           <div v-else>
-            <div v-if="type == 'exam'">
-              <exam-list
-                v-if="items[1].examList.length > 0"
-                :data="items[1].examList"
-                :currentPage="currentPage"
-              ></exam-list>
-              <div v-else><icon-hint :hint="items[1].emptyHint" /></div>
-            </div>
-            <div v-else>
-              <course-card-list
-                v-if="items[1].endCourseList.length > 0"
-                :data="items[1].endCourseList"
-              ></course-card-list>
-              <div v-else><icon-hint :hint="items[1].emptyHint" /></div>
-            </div>
+            <slot name="panel2_content" />
           </div>
         </div>
       </a-collapse-panel>
@@ -52,9 +25,6 @@
 </template>
 
 <script>
-import ExamCard from "@/components/cards/ExamCard.vue";
-import CourseCardList from "@/components/lists/CourseCardList.vue";
-
 export default {
   data() {
     return {
@@ -63,22 +33,12 @@ export default {
     };
   },
   props: {
-    items: {
+    headers: {
       type: Array,
-    },
-    type: {
-      type: String,
     },
     isLoading: {
       type: Boolean,
     },
-    currentPage: {
-      type: String,
-    },
-  },
-  components: {
-    ExamCard,
-    CourseCardList,
   },
   methods: {},
 };

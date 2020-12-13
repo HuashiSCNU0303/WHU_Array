@@ -4,8 +4,7 @@
     <center-loading v-if="isLoading == true" />
     <homework-list
       v-else-if="homeworkList.length > 0"
-      :data="homeworkList"
-    ></homework-list>
+      :data="homeworkList" />
     <div v-else><icon-hint :hint="emptyHint" /></div>
   </div>
 </template>

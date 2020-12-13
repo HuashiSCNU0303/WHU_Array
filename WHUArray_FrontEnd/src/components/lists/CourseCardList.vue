@@ -2,7 +2,7 @@
   <div>
     <a-list :grid="{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }" :dataSource="data">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a-card :hoverable="true" @click="switchToCourse(item)">
+        <a-card :hoverable="true" @click="handleClick(item)">
           <a-card-meta>
             <div style="margin-bottom: 3px" slot="title">{{ item.name }}</div>
             <div class="meta-content" slot="description">课程号：{{ item.id }}</div>
@@ -28,8 +28,8 @@ export default {
     },
   },
   methods: {
-    switchToCourse(item) {
-      this.utils.toggle.handleCourseSwitch(this, item);
+    handleClick(item) {
+      this.$emit("courseClicked", item);
     },
   },
 };

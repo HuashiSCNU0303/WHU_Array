@@ -47,6 +47,7 @@ export default {
   },
   mounted() {
     this.getSelectedKey();
+    this.$store.dispatch("setCurrentPageHeader", {});
   },
   updated() {
     this.getSelectedKey();

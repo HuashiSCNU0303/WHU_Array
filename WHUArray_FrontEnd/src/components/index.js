@@ -1,10 +1,16 @@
 import Vue from "vue";
 
+import ExamCard from "./cards/ExamCard"
+
+Vue.component("exam-card", ExamCard);
+
+import CourseCardList from "./lists/CourseCardList"
 import CourseList from "./lists/CourseList"
 import ExamList from "./lists/ExamList"
 import HomeworkList from "./lists/HomeworkList"
 import ProblemList from "./lists/ProblemList"
 
+Vue.component("course-card-list", CourseCardList);
 Vue.component("course-list", CourseList);
 Vue.component("exam-list", ExamList);
 Vue.component("homework-list", HomeworkList);
@@ -29,7 +35,8 @@ Vue.component("icon-hint", IconHint);
 Vue.component("score-display", ScoreDisplay);
 
 export default {
-  CourseList, ExamList, HomeworkList, ProblemList,
+  ExamCard,
+  CourseCardList, CourseList, ExamList, HomeworkList, ProblemList,
   AllExpandColPanel, SideMenuPanel,
   BigTitle, CenterLoading, Countdown, IconHint, ScoreDisplay,
 }

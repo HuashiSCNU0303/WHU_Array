@@ -1,7 +1,16 @@
 <template>
   <div>
     <big-title><p>考试列表</p></big-title>
-    <all-expand-col-panel :isLoading="isLoading" :type="type" :items="items" />
+    <all-expand-col-panel :isLoading="isLoading" :headers="headers">
+      <div slot="panel1_content">
+        <exam-card v-if="currentExamData != null" :currentExamData="currentExamData" />
+        <div v-else><icon-hint :hint="emptyHints[0]" /></div>
+      </div>
+      <div slot="panel2_content">
+        <exam-list v-if="examList.length > 0" :data="examList" />
+        <div v-else><icon-hint :hint="emptyHints[1]" /></div>
+      </div>
+    </all-expand-col-panel>
   </div>
 </template>
 
@@ -34,20 +43,10 @@ const examList_temp = [
 export default {
   data() {
     return {
-      items: [
-        {
-          header: "当前进行中的考试",
-          currentExamData: {},
-          hasCurrentExam: null,
-          emptyHint: "当前没有进行中的考试",
-        },
-        {
-          header: "准备开始的考试",
-          examList: [],
-          emptyHint: "当前没有准备开始的考试",
-        },
-      ],
-      type: "exam",
+      currentExamData: null,
+      examList: [],
+      emptyHints: ["当前没有进行中的考试", "当前没有准备开始的考试"],
+      headers: ["当前进行中的考试", "准备开始的考试"],
       isLoading: true,
     };
   },
@@ -58,15 +57,14 @@ export default {
     getExams() {
       // 获取考试列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.items[0].currentExamData = {
+        this.examList = examList_temp;
+        this.currentExamData = {
           title: "系统级程序设计 期末考试",
           content: "韩波",
           currentScore: "46",
           fullScore: "100",
           remainingTime: "30",
         };
-        this.items[0].hasCurrentExam = true;
-        this.items[1].examList = examList_temp;
         this.isLoading = false;
       }, 1000);
     },
