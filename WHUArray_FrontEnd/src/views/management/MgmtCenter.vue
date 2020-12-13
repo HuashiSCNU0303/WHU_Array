@@ -19,7 +19,7 @@
               <a-icon type="message" />
               <span>消息提醒</span>
             </a-menu-item>
-            <a-sub-menu key="bgManagement">
+            <a-sub-menu v-if="user.role == 2" key="bgManagement">
               <span slot="title"> <a-icon type="notification" />教师后台管理 </span>
               <a-menu-item key="courseMgmt">课程管理</a-menu-item>
               <a-menu-item key="homeworkMgmt">作业管理</a-menu-item>
@@ -39,15 +39,22 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       selectedKey: "",
     };
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.currentUser.user,
+    }),
+  },
   mounted() {
     this.getSelectedKey();
     this.$store.dispatch("setCurrentPageHeader", {});
+    this.$store.dispatch("setCurrentPageType", null);
   },
   updated() {
     this.getSelectedKey();

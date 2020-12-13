@@ -30,6 +30,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("setCurrentPageHeader", this.header);
+    this.$store.dispatch("setCurrentBreadCrumb", null);
   },
 };
 </script>

@@ -7,7 +7,9 @@
           <img src="../assets/logo.png" />
         </a-row>
         <a-row>
-          <p class="header-text"><b>一个基于SpringBoot+Vue开发的在线编程作业/考试平台</b></p>
+          <p class="header-text">
+            <b>一个基于SpringBoot+Vue开发的在线编程作业/考试平台</b>
+          </p>
         </a-row>
       </a-col>
       <a-col :span="7" :offset="1">
@@ -118,8 +120,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "login",
+  computed: {
+    ...mapState({
+      user: (state) => state.currentUser.user,
+    }),
+  },
   data() {
     return {
       labelPosition: "left",
@@ -134,19 +142,24 @@ export default {
       loginUserInfo: {
         username: "fasg",
         password: "2431",
-        role: "1",
+        role: 1,
       },
       registerUserInfo: {
         username: "1",
         password: "2",
-        role: "2",
+        role: 2,
       },
     };
   },
   methods: {
     login() {
-      // 请求后台登录接口，下面是原项目的旧代码，没有删
-      console.log(JSON.stringify(this.loginUserInfo));
+      console.log(this.loginUserInfo);
+      // 请求后台登录接口，下面注释掉的是原项目的旧代码，没有删
+      var user = {
+        username: this.loginUserInfo.username,
+        role: this.loginUserInfo.role,
+      };
+      this.$store.dispatch("setCurrentUser", user);
       this.$router.push({ path: "/index" });
       /*this.$axios({
         url: `/api/login`,
@@ -228,8 +241,8 @@ export default {
   text-align: center;
   font-size: 25px;
   color: #fff;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+    Arial, sans-serif;
 }
 .bottom .submit {
   display: flex;

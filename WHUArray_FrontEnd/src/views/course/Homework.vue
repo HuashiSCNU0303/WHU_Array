@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <center-loading v-if="isLoading == true" />
-    <problem-list v-else :data="problemList" :currentPage="currentPage" />
+    <problem-list v-else :data="problemList" :currentPage="pageType" />
   </div>
 </template>
 
@@ -34,29 +34,50 @@ export default {
     return {
       problemList: [],
       isLoading: true,
-      currentPage: "Homework",
       header: {
         extraType: "countdown",
-        breadCrumbLayer: "Homework",
         pageTitle: "",
         description: "",
       },
+      breadCrumb: [{}],
     };
   },
   computed: {
     ...mapState({
-      currentCourse: (state) => state.currentCourse.course,
-      currentHomework: (state) => state.currentHomework.homework,
+      pageType: (state) => state.currentPage.type,
+      course: (state) => state.currentCourse.course,
+      homework: (state) => state.currentHomework.homework,
     }),
   },
   mounted() {
-    this.header.breadCrumbLayer = "Homework";
-    this.header.pageTitle = this.currentCourse.name + "\n" + this.currentHomework.name;
-    this.header.description = "截止时间：" + this.currentHomework.endTime;
+    this.setHeader();
+    this.setBreadCrumb();
     this.$store.dispatch("setCurrentPageHeader", this.header);
+    this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
+    this.$store.dispatch("setCurrentPageType", "Homework");
     this.getProblems();
   },
   methods: {
+    setHeader() {
+      this.header.pageTitle = this.course.name + "\n" + this.homework.name;
+      this.header.description = "截止时间：" + this.homework.endTime;
+    },
+    setBreadCrumb() {
+      this.breadCrumb = [
+        {
+          name: "我的课程",
+          href: "/index/course",
+        },
+        {
+          name: this.course.name,
+          type: "Course",
+          id: this.course.id,
+        },
+        {
+          name: this.homework.name,
+        },
+      ];
+    },
     getProblems() {
       // 获取题目列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {

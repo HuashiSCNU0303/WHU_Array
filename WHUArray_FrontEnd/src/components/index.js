@@ -34,9 +34,14 @@ Vue.component("countdown", Countdown);
 Vue.component("icon-hint", IconHint);
 Vue.component("score-display", ScoreDisplay);
 
+import CourseInfoModal from "./modals/CourseInfoModal"
+
+Vue.component("course-info-modal", CourseInfoModal);
+
 export default {
   ExamCard,
   CourseCardList, CourseList, ExamList, HomeworkList, ProblemList,
   AllExpandColPanel, SideMenuPanel,
   BigTitle, CenterLoading, Countdown, IconHint, ScoreDisplay,
+  CourseInfoModal,
 }

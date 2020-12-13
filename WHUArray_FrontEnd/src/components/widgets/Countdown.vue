@@ -23,13 +23,13 @@ export default {
     };
   },
   props: {
-    currentAnchorTime: {
+    time: {
       type: Number,
     },
   },
   mounted() {
     var timeStamp = new Date().valueOf();
-    this.remainingTime = this.currentAnchorTime - timeStamp;
+    this.remainingTime = this.time - timeStamp;
     if (this.remainingTime <= 0) {
       this.showTime = false;
     } else {
@@ -53,8 +53,4 @@ export default {
   line-height: 28px;
   padding-bottom: 12px;
 }
-/*.content {
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 16px;
-}*/
 </style>

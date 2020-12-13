@@ -21,33 +21,43 @@ export default {
         },
       ],
       header: {
-        breadCrumbLayer: "",
         pageTitle: "",
         description: "",
         extraType: "image",
         extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
       },
+      breadCrumb: [{}]
     };
   },
   computed: {
     ...mapState({
-      currentCourse: (state) => state.currentCourse.course,
+      course: (state) => state.currentCourse.course,
     }),
   },
   mounted() {
-    this.header.breadCrumbLayer = "Course";
-    this.header.pageTitle = this.currentCourse.name;
-    this.header.description =
-      this.currentCourse.time +
-      "学年，由" +
-      this.currentCourse.teacher +
-      "老师授课<br />课程号：" +
-      this.currentCourse.id +
-      "<br />课程简介：" +
-      this.currentCourse.description;
+    this.setHeader();
+    this.setBreadCrumb();
     this.$store.dispatch("setCurrentPageHeader", this.header);
+    this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
+    this.$store.dispatch("setCurrentPageType", "Course");
   },
-  methods: {},
+  methods: {
+    setHeader() {
+      this.header.pageTitle = this.course.name;
+      this.header.description = this.course.time + "学年，由" + this.course.teacher + "老师授课<br />课程号：" + this.course.id + "<br />课程简介：" + this.course.description;
+    },
+    setBreadCrumb() {
+      this.breadCrumb = [
+        {
+          name: "我的课程",
+          href: "/index/course",
+        },
+        {
+          name: this.course.name,
+        },
+      ]
+    }
+  },
 };
 </script>
 

@@ -12,16 +12,11 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
-      header: (state) => state.currentPageHeader.header,
+      header: (state) => state.currentPage.header,
+      pageType: (state) => state.currentPage.type,
     }),
     showCountdown: function () {
-      if (typeof this.header.breadCrumbLayer === "undefined") {
-        return false;
-      }
-      return (
-        this.header.breadCrumbLayer == "ProblemInHomework" ||
-        this.header.breadCrumbLayer == "ProblemInExam"
-      );
+      return this.pageType == "ProblemInHomework" || this.pageType == "ProblemInExam";
     },
   },
   components: {

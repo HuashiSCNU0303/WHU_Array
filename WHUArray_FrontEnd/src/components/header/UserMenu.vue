@@ -21,13 +21,13 @@
             </a>
           </a-menu-item>
           <a-menu-divider />
-          <a-menu-item key="bgManagement">
+          <a-menu-item v-if="user.role == 2" key="bgManagement">
             <a href="javascript:;" @click="handleMgmtSwitch('courseMgmt')">
               <a-icon type="area-chart" />
               <span>教师后台</span>
             </a>
           </a-menu-item>
-          <a-menu-divider />
+          <a-menu-divider v-if="user.role == 2" />
           <a-menu-item key="logOut">
             <a href="javascript:;" @click="handleLogout">
               <a-icon type="logout" />
@@ -41,8 +41,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "UserMenu",
+  computed: {
+    ...mapState({
+      user: (state) => state.currentUser.user,
+    }),
+  },
   methods: {
     handleMgmtSwitch(key) {
       this.$emit("clearSelection");

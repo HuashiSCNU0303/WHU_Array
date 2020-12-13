@@ -6,12 +6,8 @@
     />-->
     <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
-        <slot
-          v-if="typeof header.breadCrumbLayer !== 'undefined'"
-          slot="breadcrumb"
-          name="breadcrumb"
-        >
-          <bread-crumb-nav :currentLayer="header.breadCrumbLayer" :key="refreshKey" />
+        <slot v-if="breadCrumb != null" slot="breadcrumb" name="breadcrumb">
+          <bread-crumb-nav :items="breadCrumb" :key="refreshKey" />
         </slot>
         <slot slot="title" name="title">
           <h1>{{ header.pageTitle }}</h1>
@@ -31,11 +27,21 @@
             class="countdown"
             :key="refreshKey"
           >
-            <countdown :currentAnchorTime="1607763514000" />
-            <score-display class="score-display" :data="header.breadCrumbLayer" />
+            <countdown :time="countdownTime" />
+            <score-display
+              class="score-display"
+              :score="score"
+              :time="countdownTime"
+              :type="pageType"
+            />
           </div>
           <div v-else-if="header.extraType == 'score'">
-            <score-display class="score-display score" />
+            <score-display
+              class="score-display score"
+              :score="score"
+              :time="countdownTime"
+              :type="pageType"
+            />
           </div>
         </slot>
       </page-header>
@@ -69,8 +75,42 @@ export default {
   },
   computed: {
     ...mapState({
-      header: (state) => state.currentPageHeader.header,
+      breadCrumb: (state) => state.currentPage.breadCrumb,
+      pageType: (state) => state.currentPage.type,
+      header: (state) => state.currentPage.header,
+      homework: (state) => state.currentHomework.homework,
+      exam: (state) => state.currentExam.exam,
+      problem: (state) => state.currentProblem.problem,
     }),
+    countdownTime: function () {
+      if (this.header.extraType != "countdown") {
+        return null;
+      }
+      switch (this.pageType) {
+        case "Homework": {
+          return this.homework.endTime;
+        }
+        case "Exam": {
+          return this.exam.endTime;
+        }
+      }
+    },
+    score: function () {
+      if (this.header.extraType == "image") {
+        return null;
+      }
+      switch (this.pageType) {
+        case "Homework": {
+          return this.homework.score;
+        }
+        case "Exam": {
+          return this.exam.score;
+        }
+        default: {
+          return this.problem.score;
+        }
+      }
+    },
   },
   methods: {
     updateComponents() {

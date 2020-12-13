@@ -15,25 +15,11 @@ import { mapState } from "vuex";
 
 export default {
   data() {
-    return {
-      courseItemData: [
-        {
-          name: "我的课程",
-          href: "/index/course",
-        },
-      ],
-      problemReposItemData: [
-        {
-          name: "题库",
-          href: "/index/problemrepos",
-        },
-      ],
-      items: [{}],
-    };
+    return {};
   },
   props: {
-    currentLayer: {
-      type: String,
+    items: {
+      type: Array,
     },
   },
   computed: {
@@ -55,7 +41,7 @@ export default {
         this.utils.toggle.handleExamSwitch(this, item);
       }
     },
-    createBreadCrumb() {
+    /*createBreadCrumb() {
       switch (this.currentLayer) {
         case "Course": {
           // 改成课程样式的面包屑
@@ -129,10 +115,10 @@ export default {
         this.currentLayer == "ProblemInRepos"
           ? this.problemReposItemData
           : this.courseItemData;
-    },
+    },*/
   },
   mounted() {
-    this.createBreadCrumb();
+    // this.createBreadCrumb();
   },
   updated() {},
 };

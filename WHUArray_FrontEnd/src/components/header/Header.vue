@@ -34,6 +34,7 @@
 <script>
 import UserMenu from "@/components/header/UserMenu";
 import CountdownPopover from "@/components/header/CountdownPopover.vue";
+
 export default {
   components: {
     UserMenu,

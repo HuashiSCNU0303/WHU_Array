@@ -89,12 +89,13 @@ export default {
         },
       },
       header: {
-        breadCrumbLayer: "",
         pageTitle: "",
         description: "",
         extraType: "score",
         score: -1,
       },
+      pageType: "",
+      breadCrumb: [{}],
     };
   },
   components: {
@@ -110,38 +111,87 @@ export default {
   },
   mounted() {
     const source = this.$route.query.source;
-    if (source == "repos") {
-      this.showCountdown = false;
-    }
-    const data = this.getData(source);
-    this.header.breadCrumbLayer = data[0];
-    this.header.pageTitle = this.problem.name;
-    this.header.description = "来源：" + data[1];
-    this.header.score = this.problem.score;
+    const sourceStr = this.handleSource(source);
+    this.setHeader(sourceStr);
+
     this.$store.dispatch("setCurrentPageHeader", this.header);
+    this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
+    this.$store.dispatch("setCurrentPageType", this.pageType);
   },
   methods: {
-    getData(source) {
-      var layer = "",
-        sourceStr = "";
+    setHeader(sourceStr) {
+      this.header.pageTitle = this.problem.name;
+      this.header.description = "来源：" + sourceStr;
+      this.header.score = this.problem.score;
+    },
+    handleSource(source) {
+      var sourceStr = "";
       switch (source) {
         case "repos": {
-          layer = "ProblemInRepos";
+          this.pageType = "ProblemInRepos";
+          this.showCountdown = false;
+          this.breadCrumb = [
+            {
+              name: "题库",
+              href: "/index/problemrepos",
+            },
+            {
+              name: this.problem.id + "号题目",
+            },
+          ];
           sourceStr = this.problem.course + "\n" + this.problem.work;
           break;
         }
         case "homework": {
-          layer = "ProblemInHomework";
+          this.pageType = "ProblemInHomework";
+          this.breadCrumb = [
+            {
+              name: "我的课程",
+              href: "/index/course",
+            },
+            {
+              name: this.course.name,
+              type: "Course",
+              id: this.course.id,
+            },
+            {
+              name: this.homework.name,
+              type: "Homework",
+              id: this.homework.id,
+            },
+            {
+              name: this.problem.id + "号题目",
+            },
+          ];
           sourceStr = this.course.name + "\n" + this.homework.name;
           break;
         }
         case "exam": {
-          layer = "ProblemInExam";
+          this.pageType = "ProblemInExam";
+          this.breadCrumb = [
+            {
+              name: "我的课程",
+              href: "/index/course",
+            },
+            {
+              name: this.course.name,
+              type: "Course",
+              id: this.course.id,
+            },
+            {
+              name: this.exam.name,
+              type: "Exam",
+              id: this.exam.id,
+            },
+            {
+              name: this.problem.id + "号题目",
+            },
+          ];
           sourceStr = this.course.name + "\n" + this.exam.name;
           break;
         }
       }
-      return [layer, sourceStr];
+      return sourceStr;
     },
     handleLangChange(value) {
       this.selectedLang = value;

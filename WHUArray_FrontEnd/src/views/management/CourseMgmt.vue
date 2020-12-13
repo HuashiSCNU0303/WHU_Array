@@ -19,43 +19,17 @@
         <div v-else><icon-hint :hint="emptyHints[1]" /></div>
       </div>
     </all-expand-col-panel>
-    <a-modal v-model="modalVisible" title="修改课程信息">
+    <course-info-modal :role="role" :visible="modalVisible">
       <template slot="footer">
         <a-button key="back" @click="modalVisible = false"> 返回 </a-button>
-        <a-button key="endCourse" type="primary" ghost @Click="handleCourseChange"> 结课 </a-button>
-        <a-button key="submit" type="primary" @Click="handleCourseChange"> 提交 </a-button>
+        <a-button key="endCourse" type="primary" ghost @Click="handleCourseChange">
+          结课
+        </a-button>
+        <a-button key="submit" type="primary" @Click="handleCourseChange">
+          提交
+        </a-button>
       </template>
-      <a-form>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="课程号"
-        >
-          1111
-        </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="课程名"
-        >
-          <a-input placeholder="给自己起个名字" />
-        </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="年级"
-        >
-          2018级
-        </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="课程描述"
-        >
-          <a-textarea rows="4" placeholder="You are not alone." />
-        </a-form-item>
-      </a-form>
-    </a-modal>
+    </course-info-modal>
   </div>
 </template>
 
@@ -65,6 +39,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      role: "teacher",
       selectedKey: "courseMgmt",
       currentPage: "CourseMgmt",
       headers: ["教授中的课程", "已结束的课程"],
@@ -73,10 +48,6 @@ export default {
       endCourseList: [],
       modalVisible: false,
       isLoading: true,
-      formItemLayout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 },
-      },
     };
   },
   computed: {
@@ -99,9 +70,7 @@ export default {
     openModifyModal(item) {
       this.modalVisible = true;
     },
-    handleCourseChange() {
-      
-    },
+    handleCourseChange() {},
   },
 };
 </script>

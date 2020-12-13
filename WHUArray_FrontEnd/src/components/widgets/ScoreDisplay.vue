@@ -7,7 +7,7 @@
     >
     <a-tag v-else><a-icon type="frown" />&nbsp;未提交</a-tag>
     <a-button
-      v-if="type != 'Problem'"
+      v-if="type == 'Homework' || type == 'Exam'"
       type="primary"
       @click="handleClick"
       :disabled="btnDisabled"
@@ -24,35 +24,21 @@
 export default {
   data() {
     return {
-      type: "",
       btnDisabled: false,
     };
   },
   props: {
-    data: {
+    score: {
+      type: Number,
+    },
+    time: {
+      type: Number,
+    },
+    type: {
       type: String,
     }
   },
-  computed: {
-    score: function () {
-      if (this.type == "Homework") {
-        return this.$store.state.currentHomework.homework.score;
-      } else if (this.type == "Exam") {
-        return this.$store.state.currentExam.exam.score;
-      } else {
-        return this.$store.state.currentProblem.problem.score;
-      }
-    },
-    time: function () {
-      if (this.type == "Homework") {
-        return this.$store.state.currentHomework.homework.endTime;
-      } else if (this.type == "Exam") {
-        return this.$store.state.currentExam.exam.endTime;
-      }
-    },
-  },
   mounted() {
-    this.setType();
     this.setBtnDisabled();
   },
   methods: {
@@ -71,24 +57,10 @@ export default {
         }, 1000);
       }
     },
-    setType() {
-      // const layer = this.header.breadCrumbLayer;
-      const layer = this.data;
-      if (layer == "Homework") {
-        // 作业界面
-        this.type = layer;
-      } else if (layer == "Exam") {
-        // 考试界面
-        this.type = layer;
-      } else {
-        // 问题界面
-        this.type = "Problem";
-      }
-    },
     handleClick() {
       if (this.type == "Homework") {
         // 提交作业
-        this.$store.dispatch("set");
+        // this.$store.dispatch("set");
       } else if (this.type == "Exam") {
         // 交卷
       }

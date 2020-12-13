@@ -29,23 +29,6 @@
 
 <script>
 export default {
-  props: {
-    title: {
-      type: [String, Boolean],
-      default: true,
-      required: false,
-    },
-    logo: {
-      type: String,
-      default: "",
-      required: false,
-    },
-    avatar: {
-      type: String,
-      default: "",
-      required: false,
-    },
-  },
   data() {
     return {};
   },
