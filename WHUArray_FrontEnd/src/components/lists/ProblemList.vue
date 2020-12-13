@@ -1,5 +1,5 @@
 <template>
-  <a-table :columns="columns" :data-source="data" :customRow="handleProblemSwitch">
+  <a-table :columns="columns" :data-source="data" :custom-row="handleProblemSwitch" :row-key="getRecordId">
     <span slot="problemName" slot-scope="problemName">
       <a>{{ problemName }}</a>
     </span>
@@ -51,7 +51,7 @@ export default {
       return {
         on: {
           click: () => {
-            var item = {
+            /*var item = {
               id: record.problemId,
               name: record.problemName,
               course: record.problemCourse,
@@ -59,9 +59,9 @@ export default {
               tag: record.problemTags,
               isDone: record.isDone,
               score: record.score,
-            };
+            };*/
             var source = this.getSource();
-            this.utils.toggle.handleProblemSwitch(this, item, source);
+            this.utils.toggle.handleProblemSwitch(this, record, source);
           },
         },
       };
@@ -83,6 +83,9 @@ export default {
         }
       }
       return result;
+    },
+    getRecordId(record) {
+      return record.id;
     },
   },
   mounted() {

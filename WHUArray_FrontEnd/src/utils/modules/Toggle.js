@@ -1,9 +1,13 @@
 export default {
   handleCourseSwitch (self, item) {
     const promise = new Promise(function (resolve, reject) {
+      // 调接口，异步操作，下面类似
       resolve("hello");
     });
     promise.then((res) => {
+      if (item.description == "") {
+        item.description = item.name;
+      }
       self.$store.dispatch("setCurrentCourse", item);
       self.$router.push({
         path: "/index/course/" + item.id,

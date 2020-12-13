@@ -15,31 +15,6 @@
 </template>
 
 <script>
-const examList_temp = [
-  {
-    type: "考试",
-    status: "准备开始",
-    courseName: "Windows原理与应用",
-    teacher: "刘纪平",
-    examName: "期末考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
-  },
-  {
-    type: "考试",
-    status: "已结束",
-    courseName: "Windows原理与应用",
-    teacher: "刘敏忠",
-    examName: "期中考试",
-    startTime: "2020-12-14 18:30",
-    endTime: "2020-12-14 20:30",
-    remainingTime: "4天18小时",
-    score: "/",
-  },
-];
-
 export default {
   data() {
     return {
@@ -57,7 +32,7 @@ export default {
     getExams() {
       // 获取考试列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.examList = examList_temp;
+        this.examList = this.$store.state.examList.examList;
         this.currentExamData = {
           title: "系统级程序设计 期末考试",
           content: "韩波",

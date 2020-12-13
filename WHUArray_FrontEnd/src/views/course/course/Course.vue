@@ -12,12 +12,12 @@ export default {
         {
           key: "homework",
           iconType: "setting",
-          text: "待完成作业",
+          text: "所有作业",
         },
         {
           key: "exam",
           iconType: "message",
-          text: "待完成考试",
+          text: "所有考试",
         },
       ],
       header: {

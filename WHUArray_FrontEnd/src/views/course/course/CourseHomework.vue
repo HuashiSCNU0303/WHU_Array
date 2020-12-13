@@ -12,25 +12,6 @@
 </template>
 
 <script>
-const homeworkList_temp = [
-  {
-    type: "作业",
-    status: "进行中",
-    homeworkName: "期末大作业",
-    endTime: "2020-12-15 20:30",
-    remainingTime: "5天9小时",
-    score: "/",
-  },
-  {
-    type: "作业",
-    status: "已完成",
-    homeworkName: "第三次作业",
-    endTime: "2019-12-15 20:30",
-    remainingTime: "/",
-    score: "90",
-  },
-];
-
 export default {
   data() {
     return {
@@ -47,7 +28,7 @@ export default {
     getHomeworks() {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.homeworkList = homeworkList_temp;
+        this.homeworkList = this.$store.state.homeworkList.homeworkList;
         this.isLoading = false;
       }, 1000);
     },

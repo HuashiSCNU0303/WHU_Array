@@ -10,12 +10,6 @@ export default {
           scopedSlots: { customRender: "name" },
         },*/
       {
-        title: "类别",
-        dataIndex: "type",
-        key: "type",
-        scopedSlots: { customRender: "typeTags" },
-      },
-      {
         title: "状态",
         dataIndex: "status",
         key: "status",
@@ -34,7 +28,7 @@ export default {
       },
       {
         title: "考试名",
-        dataIndex: "examName",
+        dataIndex: "name",
         key: "examName",
       },
       {
@@ -56,15 +50,10 @@ export default {
         title: "分数",
         dataIndex: "score",
         key: "score",
+        scopedSlots: { customRender: "score" },
       },
     ],
     homeworkListCol: [
-      {
-        title: "类别",
-        dataIndex: "type",
-        key: "type",
-        scopedSlots: { customRender: "typeTags" },
-      },
       {
         title: "状态",
         dataIndex: "status",
@@ -84,7 +73,7 @@ export default {
       },
       {
         title: "作业名",
-        dataIndex: "homeworkName",
+        dataIndex: "name",
         key: "homeworkName",
         scopedSlots: { customRender: "homeworkName" },
       },
@@ -102,33 +91,34 @@ export default {
         title: "分数",
         dataIndex: "score",
         key: "score",
+        scopedSlots: { customRender: "score" },
       },
     ],
     problemListCol: [
       {
         title: "题目号",
-        dataIndex: "problemId",
+        dataIndex: "id",
         key: "problemId",
       },
       {
         title: "题目名",
-        dataIndex: "problemName",
+        dataIndex: "name",
         key: "problemName",
         scopedSlots: { customRender: "problemName" },
       },
       {
         title: "来源课程",
-        dataIndex: "problemCourse",
+        dataIndex: "courseName",
         key: "problemCourse",
       },
       {
         title: "来源作业/考试名",
-        dataIndex: "problemWork",
+        dataIndex: "workName",
         key: "problemWork",
       },
       {
         title: "标签",
-        dataIndex: "problemTags",
+        dataIndex: "tags",
         key: "problemTags",
         scopedSlots: { customRender: "problemTags" },
       },
@@ -148,12 +138,12 @@ export default {
     courseListCol: [
       {
         title: "课程号",
-        dataIndex: "courseId",
+        dataIndex: "id",
         key: "courseId",
       },
       {
         title: "课程名",
-        dataIndex: "courseName",
+        dataIndex: "name",
         key: "courseName",
       },
       {
@@ -168,15 +158,16 @@ export default {
       },
       {
         title: "课程描述",
-        dataIndex: "courseDescription",
+        dataIndex: "description",
         key: "courseDescription",
+      },
+      {
+        title: "是否已选",
+        dataIndex: "isSelected",
+        key: "isSelected",
       },
     ],
   },
-  mutations: {
-
-  },
-  actions: {
-
-  }
-}
+  mutations: {},
+  actions: {},
+};

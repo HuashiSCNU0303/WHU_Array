@@ -31,6 +31,7 @@ export default {
   mounted() {
     this.$store.dispatch("setCurrentPageHeader", this.header);
     this.$store.dispatch("setCurrentBreadCrumb", null);
+    this.$store.dispatch("setCurrentPageType", "TodoList");
   },
 };
 </script>

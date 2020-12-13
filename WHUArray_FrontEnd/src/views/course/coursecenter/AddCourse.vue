@@ -11,44 +11,6 @@
 </template>
 
 <script>
-const courseList_temp = [
-  {
-    courseId: "11",
-    courseName: "数字逻辑与数字电路",
-    teacher: "涂卫平",
-    grade: "2018级",
-    courseDescription: "数字电路",
-  },
-  {
-    courseId: "12",
-    courseName: "离散数学",
-    teacher: "吴志健",
-    grade: "2018级",
-    courseDescription: "离散数学",
-  },
-  {
-    courseId: "13",
-    courseName: "高等数学B2",
-    teacher: "刘伟安",
-    grade: "2018级",
-    courseDescription: "高数",
-  },
-  {
-    courseId: "14",
-    courseName: "线性代数B",
-    teacher: "黄学英",
-    grade: "2019级",
-    courseDescription: "线代",
-  },
-  {
-    courseId: "15",
-    courseName: "面向对象程序设计",
-    teacher: "桂浩",
-    grade: "2019级",
-    courseDescription: "JAVA",
-  },
-];
-
 export default {
   data() {
     return {
@@ -64,7 +26,7 @@ export default {
     getHomeworks() {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.courseList = courseList_temp;
+        this.courseList = this.$store.state.courseList.addCourseList;
         this.isLoading = false;
       }, 1000);
     },

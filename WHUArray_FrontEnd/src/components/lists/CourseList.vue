@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="data"> </a-table>
+    <a-table :columns="columns" :data-source="data" :row-key="getRecordId"> </a-table>
   </div>
 </template>
 
@@ -34,8 +34,13 @@ export default {
     }
     if (this.currentPage == "CourseMgmt") {
       this.columns.splice(2, 1);
+      this.columns.splice(4, 1);
     }
-    console.log(this.data);
+  },
+  methods: {
+    getRecordId(record) {
+      return record.id;
+    },
   },
 };
 </script>

@@ -54,7 +54,7 @@ export default {
   mounted() {
     this.getSelectedKey();
     this.$store.dispatch("setCurrentPageHeader", {});
-    this.$store.dispatch("setCurrentPageType", null);
+    this.$store.dispatch("setCurrentPageType", "MgmtCenter");
   },
   updated() {
     this.getSelectedKey();

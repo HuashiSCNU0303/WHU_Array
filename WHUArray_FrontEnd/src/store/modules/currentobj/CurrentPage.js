@@ -11,15 +11,12 @@ export default {
   mutations: {
     setCurrentPageHeader (state, value) {
       state.header = value;
-      console.log(state.header);
     },
     setCurrentBreadCrumb (state, value) {
       state.breadCrumb = value;
-      console.log(state.breadCrumb);
     },
     setCurrentPageType (state, value) {
       state.type = value;
-      // console.log(state.header);
     },
   },
   actions: {

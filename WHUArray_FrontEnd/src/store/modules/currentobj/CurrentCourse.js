@@ -6,6 +6,7 @@ export default {
       teacher: "",
       time: "",
       description: "",
+      isSelected: "",
     },
   },
   mutations: {

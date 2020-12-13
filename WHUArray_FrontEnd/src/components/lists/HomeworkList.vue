@@ -1,21 +1,19 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="data">
-      <span slot="courseName" slot-scope="courseName">
-        <a @click="handleCourseSwitch">{{ courseName }}</a>
+    <a-table :row-key="getRecordId" :columns="columns" :data-source="data">
+      <span slot="courseName" slot-scope="text, record">
+        <a @click="handleCourseSwitch(record)">{{ text }}</a>
       </span>
-      <span slot="homeworkName" slot-scope="homeworkName">
-        <a @click="handleHomeworkSwitch">{{ homeworkName }}</a>
-      </span>
-      <span slot="typeTags" slot-scope="typeTags">
-        <a-tag :key="typeTags" :color="typeTags === '考试' ? 'green' : 'volcano'">
-          {{ typeTags }}
-        </a-tag>
+      <span slot="homeworkName" slot-scope="text, record">
+        <a @click="handleHomeworkSwitch(record)">{{ text }}</a>
       </span>
       <span slot="statusTags" slot-scope="statusTags">
         <a-tag :key="statusTags" :color="statusTags === '进行中' ? 'volcano' : 'green'">
           {{ statusTags }}
         </a-tag>
+      </span>
+      <span slot="score" slot-scope="score">
+        <div v-if="score != -1">{{ score }}</div>
       </span>
     </a-table>
   </div>
@@ -46,23 +44,27 @@ export default {
   mounted() {
     this.columns = JSON.parse(JSON.stringify(this.homeworkListCol));
     if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseHomework") {
-      this.columns.splice(2, 2);
+      this.columns.splice(1, 2);
     }
   },
   methods: {
-    handleHomeworkSwitch() {
+    handleHomeworkSwitch(record) {
       // 跳转到具体作业
-      var item = {
-        id: 1,
-        name: "第一次作业",
-        status: "进行中",
-        endTime: 1607741914000,
-        score: -1,
-      };
-      this.utils.toggle.handleHomeworkSwitch(this, item);
+      this.utils.toggle.handleHomeworkSwitch(this, record);
     },
-    handleCourseSwitch() {
+    handleCourseSwitch(record) {
       // 跳转到具体课程
+      var item = {
+        id: record.courseId,
+        name: record.courseName,
+        teacher: record.teacher,
+        time: "2019-2020",
+        description: "",
+      };
+      this.utils.toggle.handleCourseSwitch(this, item);
+    },
+    getRecordId(record) {
+      return record.id;
     },
   },
 };

@@ -34,6 +34,7 @@
 <script>
 import UserMenu from "@/components/header/UserMenu";
 import CountdownPopover from "@/components/header/CountdownPopover.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -67,6 +68,24 @@ export default {
         this.$router.push({
           name: key,
         });
+      }
+    },
+  },
+  computed: {
+    ...mapState({
+      pageType: (state) => state.currentPage.type,
+    }),
+  },
+  watch: {
+    pageType: function (val) {
+      if (val == "TodoList") {
+        this.currentKey = "todoList";
+      } else if (val == "ProblemRepos") {
+        this.currentKey = "problemRepos";
+      } else if (val == "MgmtCenter") {
+        this.currentKey = "";
+      } else {
+        this.currentKey = "course";
       }
     },
   },

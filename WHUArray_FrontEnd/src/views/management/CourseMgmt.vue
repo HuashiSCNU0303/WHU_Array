@@ -39,7 +39,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      role: "teacher",
+      role: 2,
       selectedKey: "courseMgmt",
       currentPage: "CourseMgmt",
       headers: ["教授中的课程", "已结束的课程"],
