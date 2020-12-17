@@ -4,21 +4,21 @@
     <div>
       <a-row :gutter="16">
         <a-col :md="24" :lg="16">
-          <a-form layout="vertical">
+          <a-form layout="vertical" :model="updateStudent">
             <a-form-item label="昵称">
-              <a-input placeholder="给自己起个名字" />
+              <a-input :placeholder="updateStudent.nickname" v-model="updateStudent.nickname"/>
             </a-form-item>
             <a-form-item label="Bio">
               <a-textarea rows="4" placeholder="You are not alone." />
             </a-form-item>
 
             <a-form-item label="电子邮件" :required="false">
-              <a-input placeholder="exp@admin.com" />
+              <a-input :placeholder="updateStudent.mail" v-model="updateStudent.mail"/>
             </a-form-item>
 
             <a-form-item>
-              <a-button type="primary">提交</a-button>
-              <a-button style="margin-left: 8px">保存</a-button>
+              <a-button type="primary" @click="submit">提交</a-button>
+              <!-- <a-button style="margin-left: 8px">保存</a-button> -->
             </a-form-item>
           </a-form>
         </a-col>
@@ -28,12 +28,78 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import axios from 'axios';
 export default {
+  computed: {
+    ...mapState({
+      user: (state) => state.currentUser.user,
+    }),
+  },
   data() {
     return {
       selectedKey: "userSetting",
+      updateStudent: {
+        id: '',
+        name: "",
+        password: "",
+        role: "",
+        studentId: "",
+        nickname: "",
+        mail: "",
+        telephone: "",
+        userFace: "",
+      }
     };
   },
+  mounted() {
+    this.getStudent();
+  },
+  methods: {
+    getStudent() {
+      console.log(this.user.role);
+      let _this = this;
+      switch(this.user.role) {
+        case 1: //老师，不知道是不是在这写
+          break;
+        case 2: 
+        // 有一说一，这里界面刷新的时候会把前端的currentUser刷掉，建议老师和学生各做一个界面，用前端存的数据只有在界面没刷新之前有用，或者在mounted设置用户的角色
+        // 感觉最好把两个角色分开
+          axios.get("http://localhost:8009/student/findStudentByName", {
+            params: {
+              name: this.user.username,
+            },
+            headers: {
+              'Authorization': localStorage.getItem("token")
+            }
+          })
+          .then((res) => {
+            console.log(res.data);
+            _this.updateStudent = res.data;
+          }).catch((error) => {
+            console.log(error);
+          })
+      }
+    },
+    submit() {
+      this.updateStudent.role = "ROLE_" + this.updateStudent.role;
+      console.log(this.updateStudent.role);
+      axios.put("http://localhost:8009/student/updateStudent", {
+          ...this.updateStudent
+        },
+        {
+          headers: {
+            'Authorization': localStorage.getItem("token")
+          },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+  }
 };
 </script>
 

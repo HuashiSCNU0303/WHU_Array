@@ -1,10 +1,11 @@
 export default {
   state: {
     homework: {
-      id: -1,
-      name: "",
-      status: "",
-      endTime: "",
+      homeworkId: -1,
+      homeworkName: "",
+      // status: "",
+      homeworkTime: "",
+      homrworlContent: "",
       score: -1,
     }
   },
@@ -15,7 +16,7 @@ export default {
       console.log(state.homework);
     },
     setHomeworkEndTime (state, value) {
-      state.endTime = value;
+      state.homeworkTime = value;
     }
   },
   actions: {

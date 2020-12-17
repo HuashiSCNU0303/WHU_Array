@@ -19,43 +19,6 @@
 </template>
 
 <script>
-const currentCourseList_temp = [
-  {
-    id: "1",
-    name: "计算机组成与设计",
-    time: "2019-2020",
-    teacher: "赵小刚",
-    description: "计组",
-  },
-  {
-    id: "2",
-    name: "数据结构",
-    time: "2019-2020",
-    teacher: "喻丹丹",
-    description: "数据结构",
-  },
-  {
-    id: "3",
-    name: "面向对象程序设计",
-    time: "2019-2020",
-    teacher: "林馥",
-    description: "JAVA",
-  },
-  {
-    id: "4",
-    name: "概率论与数理统计",
-    time: "2019-2020",
-    teacher: "钟六一",
-    description: "概率论",
-  },
-  {
-    id: "5",
-    name: "大学英语3",
-    time: "2019-2020",
-    teacher: "喻士贵",
-    description: "大英",
-  },
-];
 
 const endCourseList_temp = [
   {
@@ -94,7 +57,7 @@ const endCourseList_temp = [
     description: "大英",
   },
 ];
-
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -110,13 +73,26 @@ export default {
   },
   methods: {
     getCourses() {
+      let _this = this;
+      console.log(localStorage.getItem("token"));
+      axios.get("http://127.0.0.1:8009/course/all", {
+        headers: {
+          'Authorization': localStorage.getItem("token")
+        }
+      }).then((res) => {
+        console.log(res.data);
+        _this.currentCourseList = res.data;
+        _this.isLoading = false;
+      }).catch((error) => {
+        console.log(error);
+      })
       // console.log(this.$route);
       // 获取课程列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        this.currentCourseList = currentCourseList_temp;
-        this.endCourseList = endCourseList_temp;
-        this.isLoading = false;
-      }, 1000);
+      // setTimeout(() => {
+      //   this.currentCourseList = currentCourseList_temp;
+      //   this.endCourseList = endCourseList_temp;
+      //   this.isLoading = false;
+      // }, 1000);
     },
     switchToCourse(item) {
       this.utils.toggle.handleCourseSwitch(this, item);

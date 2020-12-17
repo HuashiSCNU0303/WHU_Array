@@ -12,7 +12,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import axios from 'axios';
 export default {
+  computed: {
+    ...mapState({
+      course: (state) => state.currentCourse.course,
+    }),
+  },
   data() {
     return {
       homeworkList: [],
@@ -26,11 +33,26 @@ export default {
   },
   methods: {
     getHomeworks() {
-      // 获取作业列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        this.homeworkList = this.$store.state.homeworkList.homeworkList;
+      let courseId = this.course.id;
+      let _this = this;
+      let getUrl = "http://localhost:8009/course/"  + courseId + "/allHomework";
+      axios.get(getUrl, {
+        headers: {
+          'Authorization': localStorage.getItem("token")
+        }
+      })
+      .then((res) => {
+        console.log(res.data);
+        this.homeworkList = res.data;
         this.isLoading = false;
-      }, 1000);
+      }).catch((error) => {
+        console.log(error);
+      })
+      // // 获取作业列表，下面只是模拟一下请求后端获得结果而已
+      // setTimeout(() => {
+      //   this.homeworkList = this.$store.state.homeworkList.homeworkList;
+      //   this.isLoading = false;
+      // }, 1000);
     },
   },
 };

@@ -21,7 +21,7 @@ export default {
     promise.then((res) => {
       self.$store.dispatch("setCurrentHomework", item);
       self.$router.push({
-        path: "/index/homework/" + item.id,
+        path: "/index/homework/" + item.homeworkId,
       });
     });
   },

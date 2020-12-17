@@ -7,6 +7,7 @@
 
 <script>
 import { mapState } from "vuex";
+import axios from 'axios';
 
 export default {
   data() {
@@ -53,16 +54,29 @@ export default {
           id: this.course.id,
         },
         {
-          name: this.homework.name,
+          name: this.homework.homeworkName,
         },
       ];
     },
     getProblems() {
       // 获取题目列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        this.problemList = this.$store.state.problemList.problemList;
-        this.isLoading = false;
-      }, 1000);
+      let _this = this;
+      let homeworkId = this.homework.homeworkId;
+      let getUrl = "http://localhost:8009/homework/" + homeworkId + "/allQuestion";
+      axios.get(getUrl, {
+        headers: {
+          'Authorization': localStorage.getItem("token")
+        }
+      })
+      .then((res) => {
+        // console.log(res.data);
+        _this.problemList = res.data;
+        _this.isLoading = false;
+      })
+      // setTimeout(() => {
+      //   this.problemList = this.$store.state.problemList.problemList;
+      //   this.isLoading = false;
+      // }, 1000);
     },
   },
 };

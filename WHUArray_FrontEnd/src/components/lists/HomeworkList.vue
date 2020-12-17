@@ -64,7 +64,7 @@ export default {
       this.utils.toggle.handleCourseSwitch(this, item);
     },
     getRecordId(record) {
-      return record.id;
+      return record.homeworkId;
     },
   },
 };

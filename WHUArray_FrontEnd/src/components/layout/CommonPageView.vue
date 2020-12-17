@@ -51,7 +51,7 @@
         </a-layout>
       </a-layout-content>
       <a-layout-footer style="text-align: center"
-        >Ant Design ©2018 Created by Ant UED</a-layout-footer
+        >版权所有&nbsp;©2020&nbsp;武汉大学计算机学院</a-layout-footer
       >
     </a-layout-content>
   </div>

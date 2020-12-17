@@ -51,9 +51,9 @@
                   :label-col="labelCol"
                   :wrapper-col="wrapperCol"
                 >
-                  <a-radio-group v-model="loginUserInfo.role">
-                    <a-radio value="1">学生</a-radio>
-                    <a-radio value="2">老师</a-radio>
+                  <a-radio-group v-model="role">
+                    <a-radio value="1">老师</a-radio>
+                    <a-radio value="2">学生</a-radio>
                   </a-radio-group>
                 </a-form-model-item>
                 <div class="submit">
@@ -97,9 +97,9 @@
                   :label-col="labelCol"
                   :wrapper-col="wrapperCol"
                 >
-                  <a-radio-group v-model="registerUserInfo.role">
-                    <a-radio value="1">学生</a-radio>
-                    <a-radio value="2">老师</a-radio>
+                  <a-radio-group v-model="role">
+                    <a-radio value="1">老师</a-radio>
+                    <a-radio value="2">学生</a-radio>
                   </a-radio-group>
                 </a-form-model-item>
                 <div class="submit">
@@ -113,7 +113,7 @@
     </a-row>
     <a-row class="footer">
       <a-col>
-        <p class="msg2">版权所有&nbsp;©2019&nbsp;武汉大学计算机学院</p>
+        <p class="msg2">版权所有&nbsp;©2020&nbsp;武汉大学计算机学院</p>
       </a-col>
     </a-row>
   </div>
@@ -121,6 +121,7 @@
 
 <script>
 import { mapState } from "vuex";
+import axios from 'axios'
 export default {
   name: "login",
   computed: {
@@ -140,66 +141,159 @@ export default {
         span: "12",
       },
       loginUserInfo: {
-        username: "fasg",
-        password: "2431",
-        role: 1,
+        username: "",
+        password: "",
       },
       registerUserInfo: {
-        username: "1",
-        password: "2",
-        role: 2,
+        username: "",
+        password: "",
       },
+      role: "",
     };
   },
   methods: {
     login() {
-      console.log(this.loginUserInfo);
-      // 请求后台登录接口，下面注释掉的是原项目的旧代码，没有删
-      var user = {
-        username: this.loginUserInfo.username,
-        role: this.loginUserInfo.role,
-      };
-      this.$store.dispatch("setCurrentUser", user);
-      this.$router.push({ path: "/index" });
-      /*this.$axios({
-        url: `/api/login`,
-        method: "post",
-        data: {
-          ...this.userInfo,
-        },
-      }).then((res) => {
-        let resData = res.data.data;
-        if (resData != null) {
-          switch (resData.role) {
-            case "1": //教师
-              this.$cookies.set("cname", resData.teacherName);
-              this.$cookies.set("cid", resData.teacherId);
-              this.$cookies.set("role", 1);
-              this.$router.push({ path: "/index" }); //跳转到教师用户
-              break;
-            case "2": //学生
-              this.$cookies.set("cname", resData.studentName);
-              this.$cookies.set("cid", resData.studentId);
-              this.$router.push({ path: "/student" });
-              break;
-          }
-        }
-        if (resData == null) {
-          //错误提示
-          this.$message({
-            showClose: true,
-            type: "error",
-            message: "用户名或者密码错误",
+      console.log(this.role);
+      switch(this.role) {
+        case "1": //教师
+          var user = {
+            username: this.loginUserInfo.username,
+            role: 1,
+          };
+          this.$store.dispatch("setCurrentUser", user);
+          axios.post("http://localhost:8009/auth/login", { //remember暂时为true
+              ...this.loginUserInfo,
+              rememberMe: true,
+          }).then((res) => {
+            console.log(res);
+            let token = res.headers.authorization;
+            localStorage.setItem('token', token);
+            this.$router.push({ path: "/index" }); //教师端的主页地址
           });
-        }
-      });*/
-    },
+          break;
+        case "2": //学生
+          var user = {
+            username: this.loginUserInfo.username,
+            role: 2,
+          };
+          this.$store.dispatch("setCurrentUser", user);
+          axios.post("http://localhost:8009/auth/login", { //remember暂时为true
+              ...this.loginUserInfo,
+              rememberMe: true,
+          }).then((res) => {
+            console.log(res);
+            let status = res.status;
+            console.log(status);
+            if(status != null && status === 200) {
+              console.log("come");
+              let token = res.headers['authorization'];
+              console.log(token);
+              localStorage.setItem('token', token);
+              this.$router.push({ path: "/index" }); //学生端的主页地址
+            }
+          }).catch((error) => {
+            console.log(error);
+            if(error.response.status === 401) {
+              alert("用户名或密码错误");
+            };
+          });
+          break;
+      }
+    },      
     register() {
       // 请求后台注册接口
+      switch(this.role) {
+        case "1":
+          axios.post("http://localhost:8009/teacher/reg", this.registerUserInfo)
+          .then((res) => {
+            console.log(res);
+          }).catch((error) => {
+            console.log(error);
+          })
+          this.autoLogin("1");
+          break;
+        case "2":
+          axios.post("http://localhost:8009/student/reg", this.registerUserInfo)
+          .then((res) => {
+            console.log(res);
+          }).catch((error) => {
+            console.log(error);
+          })
+          this.autoLogin("2");
+          break;
+      }
     },
+    autoLogin(role) {
+      var jumpUrl = role == "1"? "/index": "/index"; //左边为教师端跳转网址，右边为学生端
+      axios.post("http://localhost:8009/auth/login", { //remember暂时为true
+              ...this.registerUserInfo,
+              rememberMe: true,
+          }).then((res) => {
+            console.log(res);
+            let status = res.status;
+            console.log(status);
+            if(status != null && status === 200) {
+              console.log("come");
+              let token = res.headers.authorization;
+              console.log(token);
+              localStorage.setItem('token', token);
+              this.$router.push({ path: jumpUrl });
+            }
+          }).catch((error) => {
+            if(error.response.status === 401) {
+              alert("用户名或密码错误");
+            };
+          });
+    }
   },
+
   mounted() {},
 };
+
+
+// 这里复制一个login()免得我写错了。。
+// login() {
+//       console.log(this.loginUserInfo);
+//       // 请求后台登录接口，下面注释掉的是原项目的旧代码，没有删
+//       var user = {
+//         username: this.loginUserInfo.username,
+//         role: this.loginUserInfo.role,
+//       };
+//       this.$store.dispatch("setCurrentUser", user);
+//       this.$router.push({ path: "/index" });
+//       this.$axios({
+//         url: `/auth/login`,
+//         method: "post",
+//         data: {
+//           ...this.userInfo,
+//         },
+//       }).then((res) => {
+//         let resData = res.data.data;
+//         if (resData != null) {
+//           switch (resData.role) {
+//             case "1": //教师
+//               this.$cookies.set("cname", resData.teacherName);
+//               this.$cookies.set("cid", resData.teacherId);
+//               this.$cookies.set("role", 1);
+//               this.$router.push({ path: "/index" }); //跳转到教师用户
+//               break;
+//             case "2": //学生
+//               this.$cookies.set("cname", resData.studentName);
+//               this.$cookies.set("cid", resData.studentId);
+//               this.$router.push({ path: "/student" });
+//               break;
+//           }
+//         }
+//         if (resData == null) {
+//           //错误提示
+//           this.$message({
+//             showClose: true,
+//             type: "error",
+//             message: "用户名或者密码错误",
+//           });
+//         }
+//       });
+//     },
 </script>
 
 <style scoped>
@@ -258,3 +352,5 @@ export default {
   margin-top: 70px;
 }
 </style>
+
+

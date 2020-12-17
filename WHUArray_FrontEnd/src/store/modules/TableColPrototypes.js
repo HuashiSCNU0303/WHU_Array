@@ -73,14 +73,14 @@ export default {
       },
       {
         title: "作业名",
-        dataIndex: "name",
+        dataIndex: "homeworkName",
         key: "homeworkName",
         scopedSlots: { customRender: "homeworkName" },
       },
       {
         title: "结束时间",
-        dataIndex: "endTime",
-        key: "endTime",
+        dataIndex: "homeworkTime",
+        key: "homeworkTime",
       },
       {
         title: "距离截止还有",
@@ -97,14 +97,14 @@ export default {
     problemListCol: [
       {
         title: "题目号",
-        dataIndex: "id",
-        key: "problemId",
+        dataIndex: "questionId",
+        key: "questionId",
       },
       {
         title: "题目名",
-        dataIndex: "name",
-        key: "problemName",
-        scopedSlots: { customRender: "problemName" },
+        dataIndex: "questionName",
+        key: "questionName",
+        scopedSlots: { customRender: "questionName" },
       },
       {
         title: "来源课程",
