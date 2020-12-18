@@ -15,11 +15,11 @@
     <select id="findHomeworkById" resultType="com.array.commonmodule.bean.HomeWork">
         select * from homework where homewrokId=#{homeworkId}
     </select>
-    <select id="findAllHomework" resultType="com.array.commonmodule.bean.HomeWork">
+    <select id="findAllHomeWork" resultType="com.array.commonmodule.bean.HomeWork">
         select * from homework
     </select>
     <select id="findQuestionByHomeworkId" resultType="com.array.commonmodule.bean.Question">
-        select * from question where homewrokId=#{homeworkId}
+        select * from question where homeworkId=#{homeworkId}
     </select>
 </mapper>
 <!--        private Long homeworkId;-->

@@ -1,6 +1,7 @@
 package com.array.coursedataservice.controller;
 
 import com.array.commonmodule.bean.HomeWork;
+import com.array.commonmodule.bean.Question;
 import com.array.coursedataservice.mapper.HomeworkMapper;
 import com.array.coursedataservice.service.HomeworkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,10 @@ public class HomeworkController {
     @GetMapping("/all")
     public List<HomeWork> findAllHomeWork() {
         return homeworkService.findAllHomeWork();
+    }
+
+    @GetMapping("/{homeworkId}/allQuestion")
+    public List<Question> findQuestionByHomeWorkId(@PathVariable("homeworkId") Long homeworkId) {
+        return homeworkService.findQuestionByHomeworkId(homeworkId);
     }
 }

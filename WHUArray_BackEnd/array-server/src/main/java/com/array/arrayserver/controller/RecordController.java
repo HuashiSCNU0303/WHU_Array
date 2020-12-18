@@ -13,6 +13,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/record")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class RecordController {
     @Autowired
     RecordClientFeign recordClientFeign;

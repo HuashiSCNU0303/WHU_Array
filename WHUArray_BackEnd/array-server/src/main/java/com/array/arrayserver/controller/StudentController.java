@@ -15,6 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/student")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class StudentController {
     @Autowired
     StudentService studentService;
@@ -36,6 +37,7 @@ public class StudentController {
 
     @PostMapping("/reg")
     public RespBean reg(@RequestBody UserVo userVo) {
+        System.out.println("测试测试：" + userVo.getName());
         int result = studentService.reg(userVo);
         if (result == 0) {
             //成功
@@ -48,6 +50,10 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/findStudentByName")
+    public Student findStudentByName(@RequestParam String name) {
+        return studentService.findStudentByName(name);
+    }
 
     @DeleteMapping("/{studentId}")
     public int deleteStudentById(@PathVariable("studentId") Long id) {

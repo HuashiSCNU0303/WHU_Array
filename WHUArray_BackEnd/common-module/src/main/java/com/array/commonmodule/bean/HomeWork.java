@@ -10,6 +10,7 @@ public class HomeWork {
     private Long homeworkId;
     private Long courseId;
     private String homeworkContent;
+    private String homeworkName;
     private Timestamp homeworkTime;
 
     public HomeWork() {
@@ -33,6 +34,13 @@ public class HomeWork {
                 '}';
     }
 
+    public String getHomeworkName() {
+        return homeworkName;
+    }
+
+    public void setHomeworkName(String homeworkName) {
+        this.homeworkName = homeworkName;
+    }
 
     public Long getHomeworkId() {
         return homeworkId;

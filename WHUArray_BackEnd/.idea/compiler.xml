@@ -6,16 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="course-data-service" />
-        <module name="user-data-service" />
-        <module name="eureka-server" />
-        <module name="array-server" />
         <module name="message-service" />
+        <module name="array-server" />
         <module name="common-module" />
+        <module name="teacher-data-service" />
+        <module name="student-data-service" />
+        <module name="course-data-service" />
+        <module name="eureka-server" />
+        <module name="user-data-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="course-servise" target="1.8" />
+      <module name="teacher-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -26,6 +29,8 @@
       <module name="course-servise" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="message-service" options="-parameters" />
+      <module name="student-data-service" options="-parameters" />
+      <module name="teacher-data-service" options="-parameters" />
       <module name="user-data-service" options="-parameters" />
     </option>
   </component>

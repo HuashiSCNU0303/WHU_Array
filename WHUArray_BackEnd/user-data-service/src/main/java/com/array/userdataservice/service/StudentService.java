@@ -45,6 +45,7 @@ public class StudentService {
 
 
     public int updateStudent(Student student) {
+        System.out.println(student.getId());
         return studentMapper.updateStudent(student);
     }
 

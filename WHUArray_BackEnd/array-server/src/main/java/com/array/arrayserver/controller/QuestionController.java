@@ -12,6 +12,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/question")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class QuestionController {
     @Autowired
     QuestionClientFeign questionClientFeign;

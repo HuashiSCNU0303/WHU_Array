@@ -1,5 +1,5 @@
 export default {
-  handleCourseSwitch (self, item) {
+  handleCourseSwitch (self, role, item) {
     const promise = new Promise(function (resolve, reject) {
       // 调接口，异步操作，下面类似
       resolve("hello");
@@ -10,7 +10,7 @@ export default {
       }
       self.$store.dispatch("setCurrentCourse", item);
       self.$router.push({
-        path: "/index/course/" + item.id,
+        path: "/" + role + "/course/" + item.id,
       });
     });
   },
@@ -25,9 +25,7 @@ export default {
       });
     });
   },
-  handleExamSwitch (self, examId) {
-
-  },
+  handleExamSwitch (self, examId) { },
   handleProblemSwitch (self, item, prePage) {
     const promise = new Promise(function (resolve, reject) {
       resolve("hello");
@@ -35,11 +33,11 @@ export default {
     promise.then((res) => {
       self.$store.dispatch("setCurrentProblem", item);
       self.$router.push({
-        path: "/index/problem/" + item.id,
+        path: "/problem/" + item.id,
         query: {
           source: prePage,
         },
       });
     });
   },
-}
+};

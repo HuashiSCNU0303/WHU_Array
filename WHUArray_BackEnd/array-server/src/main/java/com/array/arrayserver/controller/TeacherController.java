@@ -15,6 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/teacher")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class TeacherController {
     @Autowired
     TeacherService teacherService;

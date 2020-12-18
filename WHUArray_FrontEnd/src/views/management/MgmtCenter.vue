@@ -19,12 +19,6 @@
               <a-icon type="message" />
               <span>消息提醒</span>
             </a-menu-item>
-            <a-sub-menu v-if="user.role == 2" key="bgManagement">
-              <span slot="title"> <a-icon type="notification" />教师后台管理 </span>
-              <a-menu-item key="courseMgmt">课程管理</a-menu-item>
-              <a-menu-item key="homeworkMgmt">作业管理</a-menu-item>
-              <a-menu-item key="examMgmt">考试管理</a-menu-item>
-            </a-sub-menu>
           </a-menu>
         </a-layout-sider>
         <a-layout-content :style="{ padding: '0 24px', minHeight: '380px' }">
@@ -63,7 +57,6 @@ export default {
     getSelectedKey() {
       const content = this.$refs.content;
       this.selectedKey = content.selectedKey;
-      console.log(content);
     },
     handleMgmtSwitch: function (obj) {
       const key = obj.key;

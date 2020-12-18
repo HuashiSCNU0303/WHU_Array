@@ -5,10 +5,7 @@
 <mapper namespace="com.array.messageservice.mapper.MessageMapper">
     <insert id="addMessage" parameterType="com.array.commonmodule.bean.Message">
         insert into message set messageId=#{messageId},messageContent=#{messageContent};
-        insert into message_user(messageId,userId,state)
-        <foreach collection="userIds" item="userId" separator=",">
-            (#messageId,userId,0)
-        </foreach>
+
     </insert>
     <delete id="deleteMessage">
         delete from message where messageId=#{messageId}

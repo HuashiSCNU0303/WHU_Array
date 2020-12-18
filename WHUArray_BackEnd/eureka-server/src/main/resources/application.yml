@@ -6,7 +6,7 @@ eureka:
     hostname: localhost
   client:
     registerWithEureka: false
-    fetchRegistry: false
+    fetchRegistry: false # 原来是true，改成false试试看
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 

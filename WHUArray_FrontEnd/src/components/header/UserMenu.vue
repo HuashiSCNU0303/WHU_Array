@@ -14,20 +14,13 @@
             </a>
           </a-menu-item>
           <a-menu-divider />
-          <a-menu-item key="msgNotification">
-            <a href="javascript:;" @click="handleMgmtSwitch('msgNotification')">
+          <a-menu-item key="msg">
+            <a href="javascript:;" @click="handleMgmtSwitch('msg')">
               <a-icon type="message" />
               <span>消息提醒</span>
             </a>
           </a-menu-item>
           <a-menu-divider />
-          <a-menu-item v-if="user.role == 2" key="bgManagement">
-            <a href="javascript:;" @click="handleMgmtSwitch('courseMgmt')">
-              <a-icon type="area-chart" />
-              <span>教师后台</span>
-            </a>
-          </a-menu-item>
-          <a-menu-divider v-if="user.role == 2" />
           <a-menu-item key="logOut">
             <a href="javascript:;" @click="handleLogout">
               <a-icon type="logout" />
@@ -54,7 +47,7 @@ export default {
     handleMgmtSwitch(key) {
       this.$emit("clearSelection");
       this.$router.push({
-        name: key,
+        path: "/" + this.user.role + "/mgmt/" + key.toLowerCase(),
       });
     },
     handleLogout() {

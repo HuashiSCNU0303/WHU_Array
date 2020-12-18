@@ -63,10 +63,10 @@
             </a-tab-pane>
             <a-tab-pane key="2">
               <span slot="tab"><a-icon type="user-add" />&nbsp;注册</span>
-              <a-form-model ref="registerUserInfo" :model="loginUserInfo">
+              <a-form-model ref="registerUserInfo" :model="registerUserInfo">
                 <a-form-model-item>
                   <a-input
-                    v-model="registerUserInfo.username"
+                    v-model="registerUserInfo.name"
                     type="text"
                     placeholder="请输入帐户名"
                   >
@@ -121,7 +121,7 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "login",
   computed: {
@@ -145,7 +145,7 @@ export default {
         password: "",
       },
       registerUserInfo: {
-        username: "",
+        name: "",
         password: "",
       },
       role: "",
@@ -154,102 +154,129 @@ export default {
   methods: {
     login() {
       console.log(this.role);
-      switch(this.role) {
+      switch (this.role) {
         case "1": //教师
           var user = {
             username: this.loginUserInfo.username,
-            role: 1,
+            role: "teacher",
           };
           this.$store.dispatch("setCurrentUser", user);
-          axios.post("http://localhost:8009/auth/login", { //remember暂时为true
+          this.$router.push({
+            path: "/teacher",
+          });
+          /*axios
+            .post("http://localhost:8009/auth/login", {
+              // remember暂时为true
               ...this.loginUserInfo,
               rememberMe: true,
-          }).then((res) => {
-            console.log(res);
-            let token = res.headers.authorization;
-            localStorage.setItem('token', token);
-            this.$router.push({ path: "/index" }); //教师端的主页地址
-          });
+            })
+            .then((res) => {
+              console.log(res);
+              let token = res.headers.authorization;
+              localStorage.setItem("token", token);
+              this.$router.push({ path: "/index" }); //教师端的主页地址
+            });*/
           break;
         case "2": //学生
           var user = {
             username: this.loginUserInfo.username,
-            role: 2,
+            role: "student",
           };
           this.$store.dispatch("setCurrentUser", user);
-          axios.post("http://localhost:8009/auth/login", { //remember暂时为true
+          this.$router.push({ path: "/student" });
+          /*axios
+            .post("http://localhost:8009/auth/login", {
+              //remember暂时为true
               ...this.loginUserInfo,
               rememberMe: true,
-          }).then((res) => {
-            console.log(res);
-            let status = res.status;
-            console.log(status);
-            if(status != null && status === 200) {
-              console.log("come");
-              let token = res.headers['authorization'];
-              console.log(token);
-              localStorage.setItem('token', token);
-              this.$router.push({ path: "/index" }); //学生端的主页地址
-            }
-          }).catch((error) => {
-            console.log(error);
-            if(error.response.status === 401) {
-              alert("用户名或密码错误");
-            };
-          });
+            })
+            .then((res) => {
+              console.log(res);
+              let status = res.status;
+              console.log(status);
+              if (status != null && status === 200) {
+                // 登录成功
+                console.log("come");
+                let token = res.headers["authorization"];
+                console.log(token);
+                localStorage.setItem("token", token);
+                // 设置当前user
+                var user = {
+                  username: this.loginUserInfo.username,
+                  role: 1,
+                };
+                this.$store.dispatch("setCurrentUser", user);
+                // 跳转
+                this.$router.push({ path: "/index" });
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              if (error.response.status === 401) {
+                alert("用户名或密码错误");
+              }
+            });*/
           break;
       }
-    },      
+    },
     register() {
       // 请求后台注册接口
-      switch(this.role) {
+      console.log(this.registerUserInfo.name);
+      switch (this.role) {
         case "1":
-          axios.post("http://localhost:8009/teacher/reg", this.registerUserInfo)
-          .then((res) => {
-            console.log(res);
-          }).catch((error) => {
-            console.log(error);
-          })
+          axios
+            .post("http://localhost:8009/teacher/reg", this.registerUserInfo)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           this.autoLogin("1");
           break;
         case "2":
-          axios.post("http://localhost:8009/student/reg", this.registerUserInfo)
-          .then((res) => {
-            console.log(res);
-          }).catch((error) => {
-            console.log(error);
-          })
+          axios
+            .post("http://localhost:8009/student/reg", this.registerUserInfo)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           this.autoLogin("2");
           break;
       }
     },
     autoLogin(role) {
-      var jumpUrl = role == "1"? "/index": "/index"; //左边为教师端跳转网址，右边为学生端
-      axios.post("http://localhost:8009/auth/login", { //remember暂时为true
-              ...this.registerUserInfo,
-              rememberMe: true,
-          }).then((res) => {
-            console.log(res);
-            let status = res.status;
-            console.log(status);
-            if(status != null && status === 200) {
-              console.log("come");
-              let token = res.headers.authorization;
-              console.log(token);
-              localStorage.setItem('token', token);
-              this.$router.push({ path: jumpUrl });
-            }
-          }).catch((error) => {
-            if(error.response.status === 401) {
-              alert("用户名或密码错误");
-            };
-          });
-    }
+      var jumpUrl = role == "1" ? "/index" : "/index"; //左边为教师端跳转网址，右边为学生端
+      axios
+        .post("http://localhost:8009/auth/login", {
+          //remember暂时为true
+          ...this.registerUserInfo,
+          rememberMe: true,
+        })
+        .then((res) => {
+          console.log(res);
+          let status = res.status;
+          console.log(status);
+          if (status != null && status === 200) {
+            console.log("come");
+            let token = res.headers.authorization;
+            console.log(token);
+            localStorage.setItem("token", token);
+            this.$router.push({ path: jumpUrl });
+          }
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            alert("用户名或密码错误");
+          }
+        });
+    },
   },
 
   mounted() {},
 };
-
 
 // 这里复制一个login()免得我写错了。。
 // login() {
@@ -352,5 +379,3 @@ export default {
   margin-top: 70px;
 }
 </style>
-
-

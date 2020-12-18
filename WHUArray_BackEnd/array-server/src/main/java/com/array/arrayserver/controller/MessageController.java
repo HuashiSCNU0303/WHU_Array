@@ -13,6 +13,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/message")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class MessageController {
     @Autowired
     MessageClientFeign messageClientFeign;

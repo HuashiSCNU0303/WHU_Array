@@ -1,6 +1,7 @@
 package com.array.coursedataservice.service;
 
 import com.array.commonmodule.bean.HomeWork;
+import com.array.commonmodule.bean.Question;
 import com.array.coursedataservice.mapper.HomeworkMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,9 @@ public class HomeworkService {
 
     public List<HomeWork> findAllHomeWork() {
         return homeworkMapper.findAllHomeWork();
+    }
+
+    public List<Question> findQuestionByHomeworkId(Long homeworkId) {
+        return homeworkMapper.findQuestionByHomeworkId(homeworkId);
     }
 }

@@ -135,6 +135,25 @@ export default {
         scopedSlots: { customRender: "score" },
       },
     ],
+    problemListBgCol: [
+      {
+        title: "题目号",
+        dataIndex: "questionId",
+        key: "questionId",
+      },
+      {
+        title: "题目名",
+        dataIndex: "questionName",
+        key: "questionName",
+        scopedSlots: { customRender: "questionName" },
+      },
+      {
+        title: "标签",
+        dataIndex: "tags",
+        key: "problemTags",
+        scopedSlots: { customRender: "problemTags" },
+      },
+    ],
     courseListCol: [
       {
         title: "课程号",

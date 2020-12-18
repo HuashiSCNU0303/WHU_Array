@@ -13,13 +13,20 @@
         update techer set teachername=#{name},teacherpassword=#{password}
         where teacherid=#{teacherId}
     </update>
-    <select id="findAll" resultType="com.array.commonmodule.bean.Teacher">
+    <select id="findAll" resultMap="teacherMap">
         select * from teacher
     </select>
-    <select id="findUserById" resultType="com.array.commonmodule.bean.Teacher">
-        select * from teacher where teacherid=#{id}
+    <select id="findUserById" resultMap="teacherMap">
+        select * from teacher where userId=#{id}
     </select>
-    <select id="findTeacherByName" resultType="com.array.commonmodule.bean.Student">
-        select * from teacher where teachername=#{name}
+    <select id="findTeacherByName" resultMap="teacherMap">
+        select * from teacher where name=#{name}
     </select>
+    <resultMap id="teacherMap" type="com.array.commonmodule.bean.Teacher">
+        <constructor>
+            <idArg column="userId" javaType="long"/>
+            <arg column="name" javaType="String"/>
+            <arg column="password" javaType="String"/>
+        </constructor>
+    </resultMap>
 </mapper>

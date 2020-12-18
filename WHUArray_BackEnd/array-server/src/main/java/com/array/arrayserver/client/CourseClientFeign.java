@@ -4,6 +4,7 @@ import com.array.commonmodule.bean.Course;
 import com.array.commonmodule.bean.HomeWork;
 import com.array.commonmodule.bean.Student;
 import com.array.commonmodule.bean.User;
+import com.array.commonmodule.bean.dto.CourseDTO;
 import com.array.commonmodule.bean.vo.CourseVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public interface CourseClientFeign {
     public List<Course> findCourseByName(@RequestParam String courseName);
 
     @GetMapping("/Course/all")
-    public List<Course> findAllCourse();
+    public List<CourseDTO> findAllCourse();
 
     @GetMapping("/Course/{courseId}/allStudent")
     public List<Student> findStudentByCourseId(@PathVariable("courseId") Long courseId);

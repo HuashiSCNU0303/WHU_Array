@@ -2,16 +2,16 @@ export default {
   state: {
     user: {
       username: "",
-      role: -1,
+      role: "",
     },
   },
   mutations: {
-    setCurrentUser(state, value) {
+    setCurrentUser (state, value) {
       state.user = value;
     },
   },
   actions: {
-    setCurrentUser(context, value) {
+    setCurrentUser (context, value) {
       context.commit("setCurrentUser", value);
     },
   },

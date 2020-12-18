@@ -47,7 +47,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             // 只不过由于这个方法源码的是把用户名和密码这些参数的名字是死的，所以我们重写了一下
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(
                     loginUser.getUsername(), loginUser.getPassword());
-            System.out.println("a:::" + authRequest);
+            System.out.println("a:::" + authRequest.getClass());
             return authenticationManager.authenticate(authRequest);
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,6 +67,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User jwtUser = (User) authentication.getPrincipal();
         System.out.println("uuu:::" + jwtUser);
         String role = jwtUser.getRole();
+        role = "ROLE_" + role;
         System.out.println(role);
         // 创建 Token
         String token = JwtUtils.generateToken(jwtUser.getUsername(), role, rememberMe.get());

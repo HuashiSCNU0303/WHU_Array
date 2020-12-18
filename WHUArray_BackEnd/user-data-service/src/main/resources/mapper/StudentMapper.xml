@@ -14,8 +14,8 @@
         <if test="studentId!=null and studentId!=''">
             ,studentId=#{studentId}
         </if>
-        <if test="nickName!=null and nickName!=''">
-            ,nickName=#{nickName}
+        <if test="nickname!=null and nickname!=''">
+            ,nickname=#{nickname}
         </if>
         <if test="mail!=null and mail!=''">
             ,mail=#{mail}
@@ -43,7 +43,7 @@
             <arg column="name" javaType="String"/>
             <arg column="password" javaType="String"/>
             <arg column="studentId" javaType="String" />
-            <arg column="nickName" javaType="String" />
+            <arg column="nickname" javaType="String" />
             <arg column="mail" javaType="String" />
             <arg column="telephone" javaType="String" />
             <arg column="userface" javaType="String" />

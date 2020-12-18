@@ -6,26 +6,17 @@
       mode="horizontal"
       ref="header"
       @click="handleTabSwitch"
-      :default-selected-keys="['todoList']"
+      :default-selected-keys="['course']"
       :selected-keys="[currentKey]"
       :style="{ lineHeight: '64px' }"
     >
       <a-menu-item id="unselectable-wrapper" key="logo">
-        <img id="logo" src="@/assets/logo.png" />
+        <img id="logo" src="@/assets/logo_teacher.png" />
       </a-menu-item>
-      <a-menu-item key="todoList"> <a-icon type="home" />&nbsp;待办列表 </a-menu-item>
       <a-menu-item key="course"> <a-icon type="home" />&nbsp;我的课程 </a-menu-item>
       <a-menu-item key="problemRepos"> <a-icon type="home" />&nbsp;真题仓库 </a-menu-item>
       <a-menu-item id="unselectable-wrapper" class="header-index-right" key="userMenu">
         <user-menu @clearSelection="handleClearSelection"></user-menu>
-      </a-menu-item>
-      <a-menu-item
-        v-if="showCountdown"
-        id="unselectable-wrapper"
-        class="header-index-right"
-        key="countdown"
-      >
-        <countdown-popover />
       </a-menu-item>
     </a-menu>
   </a-layout-header>
@@ -39,16 +30,10 @@ import { mapState } from "vuex";
 export default {
   components: {
     UserMenu,
-    CountdownPopover,
-  },
-  props: {
-    showCountdown: {
-      type: Boolean,
-    },
   },
   data() {
     return {
-      currentKey: "todoList",
+      currentKey: "course",
     };
   },
   methods: {
@@ -57,17 +42,17 @@ export default {
     },
     handleTabSwitch: function (obj) {
       const key = obj.key;
-      if (key == "logo" || key == "todoList") {
-        this.currentKey = "todoList";
+      if (key == "logo" || key == "course") {
+        this.currentKey = "course";
         this.$router.push({
-          path: "/index",
+          path: "/teacher",
         });
-      } else if (key == "userMenu" || key == "countdown") {
-      } else {
+      } else if (key == "problemRepos") {
         this.currentKey = key;
         this.$router.push({
-          name: key,
+          path: "/teacher/repos",
         });
+      } else {
       }
     },
   },
@@ -78,9 +63,7 @@ export default {
   },
   watch: {
     pageType: function (val) {
-      if (val == "TodoList") {
-        this.currentKey = "todoList";
-      } else if (val == "ProblemRepos") {
+      if (val == "ProblemRepos") {
         this.currentKey = "problemRepos";
       } else if (val == "MgmtCenter") {
         this.currentKey = "";

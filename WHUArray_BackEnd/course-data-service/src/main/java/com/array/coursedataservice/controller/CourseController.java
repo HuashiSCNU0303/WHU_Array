@@ -4,6 +4,7 @@ import com.array.commonmodule.bean.Course;
 import com.array.commonmodule.bean.HomeWork;
 import com.array.commonmodule.bean.Student;
 import com.array.commonmodule.bean.User;
+import com.array.commonmodule.bean.dto.CourseDTO;
 import com.array.commonmodule.bean.vo.CourseVO;
 import com.array.coursedataservice.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class CourseController {
     }
 
     @GetMapping("/all")
-    public List<Course> findAllCourse() {
+    public List<CourseDTO> findAllCourse() {
         return courseService.findAllCourse();
     }
 

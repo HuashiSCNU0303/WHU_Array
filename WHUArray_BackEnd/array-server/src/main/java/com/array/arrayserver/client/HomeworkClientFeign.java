@@ -1,6 +1,7 @@
 package com.array.arrayserver.client;
 
 import com.array.commonmodule.bean.HomeWork;
+import com.array.commonmodule.bean.Question;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -27,4 +28,7 @@ public interface HomeworkClientFeign {
 
     @GetMapping("/Homework/all")
     public List<HomeWork> findAllHomeWork();
+
+    @GetMapping("/Homework/{homeworkId}/allQuestion")
+    public List<Question> findQuestionByHomeWorkId(@PathVariable("homeworkId") Long homeworkId);
 }

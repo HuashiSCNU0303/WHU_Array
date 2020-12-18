@@ -6,6 +6,7 @@ import com.array.arrayserver.filter.JWTAuthenticationFilter;
 import com.array.arrayserver.filter.JWTAuthorizationFilter;
 import com.array.arrayserver.service.StudentService;
 import com.array.arrayserver.service.TeacherService;
+import com.array.arrayserver.service.UserService;
 import com.array.commonmodule.bean.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,39 +37,50 @@ import java.util.List;
 
 @Configuration
 public class WebScurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    StudentService studentService;
+//    @Autowired
+//    StudentService studentService;
+//
+//    @Autowired
+//    TeacherService teacherService;
 
     @Autowired
-    TeacherService teacherService;
+    UserService userService;
 
     @Override
-    @Bean
-    protected AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider studentDao = new DaoAuthenticationProvider();
-        studentDao.setUserDetailsService(studentService);
-        studentDao.setPasswordEncoder(new MyPasswordEncoder());
-
-        DaoAuthenticationProvider teacherDao = new DaoAuthenticationProvider();
-        teacherDao.setUserDetailsService(teacherService);
-        teacherDao.setPasswordEncoder(new MyPasswordEncoder());
-
-        List<AuthenticationProvider> daos = new LinkedList<>();
-        daos.add(studentDao);
-        daos.add(teacherDao);
-
-        ProviderManager manager = new ProviderManager(daos);
-        return manager;
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(new MyPasswordEncoder());
     }
+
+//    @Override
+//    @Bean
+//    protected AuthenticationManager authenticationManager() {
+//        MyProvider studentDao = new MyProvider();
+//        studentDao.setHideUserNotFoundExceptions(false);
+//        studentDao.setUserDetailsService(studentService);
+//        studentDao.setPasswordEncoder(new MyPasswordEncoder());
+//
+//        MyProvider teacherDao = new MyProvider();
+//        teacherDao.setHideUserNotFoundExceptions(false);
+//        teacherDao.setUserDetailsService(teacherService);
+//        teacherDao.setPasswordEncoder(new MyPasswordEncoder());
+//
+//        List<AuthenticationProvider> daos = new LinkedList<>();
+//        daos.add(studentDao);
+//        daos.add(teacherDao);
+//
+//        ProviderManager manager = new ProviderManager(daos);
+//        return manager;
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
             .and().authorizeRequests()
+                .antMatchers("/student/reg", "/teacher/reg").permitAll()
                 .antMatchers("/auth/login").permitAll()
-//                .antMatchers("/student/**").hasRole("STUDENT")
-//                .antMatchers("/teacher/**").hasRole("TEACHER")
-                .anyRequest().permitAll() //暂时测试用，正式使用要把上面的注释恢复，可能还要改一些其它页面权限什么的
+                .antMatchers("/student/**").hasRole("STUDENT")
+                .antMatchers("/teacher/**").hasRole("TEACHER")
+                .anyRequest().authenticated() //暂时测试用，正式使用要把上面的注释恢复，可能还要改一些其它页面权限什么的
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

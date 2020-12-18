@@ -1,12 +1,12 @@
 <template>
   <a-layout>
-    <nav-bar :showCountdown="showCountdown" />
+    <stu-nav-bar :showCountdown="showCountdown" />
     <router-view />
   </a-layout>
 </template>
 
 <script>
-import NavBar from "@/components/header/Header";
+import StuNavBar from "@/components/header/StudentHeader";
 import { mapState } from "vuex";
 
 export default {
@@ -20,7 +20,7 @@ export default {
     },
   },
   components: {
-    NavBar,
+    StuNavBar,
   },
 };
 </script>

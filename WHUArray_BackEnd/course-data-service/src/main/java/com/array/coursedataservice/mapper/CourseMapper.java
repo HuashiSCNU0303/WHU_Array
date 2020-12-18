@@ -4,6 +4,7 @@ import com.array.commonmodule.bean.Course;
 import com.array.commonmodule.bean.HomeWork;
 import com.array.commonmodule.bean.Student;
 import com.array.commonmodule.bean.User;
+import com.array.commonmodule.bean.dto.CourseDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface CourseMapper {
 
     List<Course> findCourseByName(String courseName);
 
-    List<Course> findAllCourse();
+    List<CourseDTO> findAllCourse();
 
     List<Student> findStudentByCourseId(Long courseId);
 

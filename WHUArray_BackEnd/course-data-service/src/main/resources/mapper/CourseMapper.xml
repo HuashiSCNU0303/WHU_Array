@@ -22,8 +22,8 @@
     <select id="findCourseByName" resultType="com.array.commonmodule.bean.Course">
         select * from course where courseName=#{courseName}
     </select>
-    <select id="findAllCourse" resultType="com.array.commonmodule.bean.Course">
-        select * from course
+    <select id="findAllCourse" resultMap="courseMap">
+        select c.*,t.name as tname from course c left join teacher t on c.teacherId=t.userId
     </select>
     <select id="findStudentByCourseId" resultType="com.array.commonmodule.bean.Student">
         SELECT s.* FROM course c LEFT JOIN user_course uc on c.courseId=uc.courseId LEFT JOIN student s ON uc.userId=s.userId WHERE c.courseId=#{courseId}
@@ -31,4 +31,11 @@
     <select id="findHomeWorkByCourseId" resultType="com.array.commonmodule.bean.HomeWork">
         select * from homework where courseId=#{courseId}
     </select>
+    <resultMap id="courseMap" type="com.array.commonmodule.bean.dto.CourseDTO">
+        <id property="id" column="courseId" />
+        <result property="name" column="courseName" />
+        <result property="time" column="courseTime" />
+        <result property="teacher" column="tname" />
+        <result property="description" column="" />
+    </resultMap>
 </mapper>

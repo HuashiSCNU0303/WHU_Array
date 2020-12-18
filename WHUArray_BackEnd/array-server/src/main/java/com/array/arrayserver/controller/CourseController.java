@@ -3,6 +3,7 @@ package com.array.arrayserver.controller;
 import com.array.arrayserver.client.CourseClientFeign;
 import com.array.arrayserver.client.MessageClientFeign;
 import com.array.commonmodule.bean.*;
+import com.array.commonmodule.bean.dto.CourseDTO;
 import com.array.commonmodule.bean.vo.CourseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/course")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class CourseController {
     @Autowired
     CourseClientFeign courseClientFeign;
@@ -45,7 +47,7 @@ public class CourseController {
     }
 
     @GetMapping("/all")
-    public List<Course> findAllCourse() {
+    public List<CourseDTO> findAllCourse() {
         return courseClientFeign.findAllCourse();
     }
 

@@ -3,9 +3,7 @@ package com.array.arrayserver.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.array.arrayserver.Utils.UserUtils;
 import com.array.arrayserver.client.RecordClientFeign;
-import com.array.commonmodule.bean.Record;
 import com.array.commonmodule.bean.dto.DebugDTO;
 import com.array.commonmodule.bean.dto.JudgeDTO;
 import com.array.commonmodule.bean.dto.TestCase;
@@ -30,6 +28,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/compiler")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class CompilerController {
 
     @Autowired
@@ -108,22 +107,9 @@ public class CompilerController {
         }
         return result;
     }
-//    private Long id;
-//    private Long userId;
-//    private Long questionId;
-//    private Long recordGrade;
-//    private String lang;
-//    private String recordContent;
 
     @PostMapping("/judge")
     public String judge(@RequestBody JudgeDTO judgeDTO) {
-        //set record
-        Record record = new Record();
-        record.setLang(judgeDTO.getLang());
-        record.setQuestionId(Long.parseLong(judgeDTO.getProblemID()));
-        record.setRecordContent(judgeDTO.getSrc());
-        record.setUserId(UserUtils.getCurrentUser().getId());
-
         String judgeString = JSON.toJSONString(judgeDTO);
         String result = "";
         String url = "http://192.168.193.154:8080/judge";

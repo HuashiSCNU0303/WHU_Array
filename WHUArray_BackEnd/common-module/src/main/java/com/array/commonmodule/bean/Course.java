@@ -10,17 +10,18 @@ public class Course {
     private Long examId;
     private Long teacherId;
     private String courseName;
+    private String courseTime;
 
     public Course() {
     }
 
-    public Course(Long courseId, Long examId, Long teacherId, String courseName) {
+    public Course(Long courseId, Long examId, Long teacherId, String courseName, String courseTime) {
         this.courseId = courseId;
         this.examId = examId;
         this.teacherId = teacherId;
         this.courseName = courseName;
+        this.courseTime = courseTime;
     }
-
 
     @Override
     public String toString() {
@@ -32,6 +33,13 @@ public class Course {
                 '}';
     }
 
+    public String getCourseTime() {
+        return courseTime;
+    }
+
+    public void setCourseTime(String courseTime) {
+        this.courseTime = courseTime;
+    }
 
     public Long getCourseId() {
         return courseId;

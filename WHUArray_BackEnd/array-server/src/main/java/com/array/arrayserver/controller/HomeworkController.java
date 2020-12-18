@@ -5,6 +5,7 @@ import com.array.arrayserver.client.HomeworkClientFeign;
 import com.array.arrayserver.client.MessageClientFeign;
 import com.array.commonmodule.bean.HomeWork;
 import com.array.commonmodule.bean.Message;
+import com.array.commonmodule.bean.Question;
 import com.array.commonmodule.bean.Student;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/homework")
+@CrossOrigin(allowCredentials = "true", allowedHeaders = "*")
 public class HomeworkController {
     @Autowired
     HomeworkClientFeign homeworkClientFeign;
@@ -65,5 +67,10 @@ public class HomeworkController {
     @GetMapping("/all")
     public List<HomeWork> findAllHomeWork() {
         return homeworkClientFeign.findAllHomeWork();
+    }
+
+    @GetMapping("/{homeworkId}/allQuestion")
+    public List<Question> findQuestionByHomeWorkId(@PathVariable("homeworkId") Long homeworkId) {
+        return homeworkClientFeign.findQuestionByHomeWorkId(homeworkId);
     }
 }

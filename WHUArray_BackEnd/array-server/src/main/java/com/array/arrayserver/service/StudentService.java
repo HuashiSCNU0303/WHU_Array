@@ -62,4 +62,8 @@ public class StudentService implements UserDetailsService {
     public Student findStudentById(Long id) {
         return studentClientFeign.findStudentById(id);
     }
+
+    public Student findStudentByName(String name) {
+        return studentClientFeign.findStudentByName(name);
+    }
 }
