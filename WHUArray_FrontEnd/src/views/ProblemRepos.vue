@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <center-loading v-if="isLoading == true" />
-    <problem-list v-else :data="problemList" :currentPage="currentPage"></problem-list>
+    <stu-problem-list v-else :data="problemList" :currentPage="currentPage" />
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
     getProblems() {
       // 获取题目列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.problemList = this.$store.state.problemList.problemList;
+        this.problemList = this.$store.state.tempData.problemList.problemList;
         this.isLoading = false;
       }, 1000);
     },

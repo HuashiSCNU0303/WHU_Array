@@ -62,7 +62,7 @@ export default {
       newMsgList: [], // 未读消息
       oldMsgList: [], // 已读消息
       isLoading: true,
-      selectedKey: "msgNotification",
+      selectedKey: "msg",
       customStyle:
         "background: #fff; padding-bottom: 18px; border-bottom: 1px solid #e8e8e8; overflow: hidden",
     };

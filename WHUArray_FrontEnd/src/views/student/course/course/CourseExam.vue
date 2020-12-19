@@ -7,7 +7,7 @@
         <div v-else><icon-hint :hint="emptyHints[0]" /></div>
       </div>
       <div slot="panel2_content">
-        <exam-list
+        <stu-exam-list
           v-if="examList.length > 0"
           :data="examList"
           :currentPage="currentPage"
@@ -44,7 +44,7 @@ export default {
           fullScore: "100",
           remainingTime: "30",
         };
-        this.examList = this.$store.state.examList.examList;
+        this.examList = this.$store.state.tempData.examList.examList;
         this.isLoading = false;
       }, 1000);
     },

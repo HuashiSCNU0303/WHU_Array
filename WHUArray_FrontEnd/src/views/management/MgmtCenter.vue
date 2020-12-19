@@ -7,7 +7,6 @@
             mode="inline"
             :default-selected-keys="['userSetting']"
             :selected-keys="[selectedKey]"
-            :default-open-keys="['bgManagement']"
             @click="handleMgmtSwitch"
             style="height: 100%"
           >
@@ -15,7 +14,7 @@
               <a-icon type="setting" />
               <span>账户设置</span>
             </a-menu-item>
-            <a-menu-item key="msgNotification">
+            <a-menu-item key="msg">
               <a-icon type="message" />
               <span>消息提醒</span>
             </a-menu-item>
@@ -61,7 +60,7 @@ export default {
     handleMgmtSwitch: function (obj) {
       const key = obj.key;
       this.$router.push({
-        name: key,
+        path: "./" + key.toLowerCase(),
       });
     },
   },

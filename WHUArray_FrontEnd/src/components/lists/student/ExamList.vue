@@ -1,14 +1,20 @@
 <template>
   <div>
-    <a-table :row-key="getRecordId" :columns="columns" :data-source="data">
+    <a-table :columns="columns" :data-source="data" :row-key="getRecordId">
       <span slot="courseName" slot-scope="text, record">
         <a @click="handleCourseSwitch(record)">{{ text }}</a>
       </span>
-      <span slot="homeworkName" slot-scope="text, record">
-        <a @click="handleHomeworkSwitch(record)">{{ text }}</a>
-      </span>
       <span slot="statusTags" slot-scope="statusTags">
-        <a-tag :key="statusTags" :color="statusTags === '进行中' ? 'volcano' : 'green'">
+        <a-tag
+          :key="statusTags"
+          :color="
+            statusTags === '准备开始'
+              ? 'volcano'
+              : statusTags === '已结束'
+              ? 'green'
+              : 'geekblue'
+          "
+        >
           {{ statusTags }}
         </a-tag>
       </span>
@@ -21,7 +27,6 @@
 
 <script>
 import { mapState } from "vuex";
-
 export default {
   data() {
     return {
@@ -29,31 +34,28 @@ export default {
     };
   },
   props: {
+    data: {
+      type: Array, //指定传入的类型
+    },
     currentPage: {
       type: String,
-    },
-    data: {
-      type: Array,
     },
   },
   computed: {
     ...mapState({
-      homeworkListCol: (state) => state.tableColProto.homeworkListCol,
+      examListCol: (state) => state.tableProto.student.examListCol,
     }),
   },
   mounted() {
-    this.columns = JSON.parse(JSON.stringify(this.homeworkListCol));
-    if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseHomework") {
+    // 深度复制，不能简单用赋值号，不然只复制引用过去
+    this.columns = JSON.parse(JSON.stringify(this.examListCol));
+    if (typeof this.currentPage !== "undefined" && this.currentPage == "CourseExam") {
       this.columns.splice(1, 2);
     }
   },
   methods: {
-    handleHomeworkSwitch(record) {
-      // 跳转到具体作业
-      this.utils.toggle.handleHomeworkSwitch(this, record);
-    },
     handleCourseSwitch(record) {
-      // 跳转到具体课程
+      // 跳转到id对应的课程
       var item = {
         id: record.courseId,
         name: record.courseName,
@@ -64,7 +66,7 @@ export default {
       this.utils.toggle.handleCourseSwitch(this, item);
     },
     getRecordId(record) {
-      return record.homeworkId;
+      return record.id;
     },
   },
 };

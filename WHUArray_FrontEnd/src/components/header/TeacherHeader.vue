@@ -24,7 +24,6 @@
 
 <script>
 import UserMenu from "@/components/header/UserMenu";
-import CountdownPopover from "@/components/header/CountdownPopover.vue";
 import { mapState } from "vuex";
 
 export default {
@@ -58,7 +57,7 @@ export default {
   },
   computed: {
     ...mapState({
-      pageType: (state) => state.currentPage.type,
+      pageType: (state) => state.curObj.page.type,
     }),
   },
   watch: {

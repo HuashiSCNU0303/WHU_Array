@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <center-loading v-if="isLoading == true" />
-    <problem-list v-else :data="problemList" :currentPage="pageType" />
+    <stu-problem-list v-else :data="problemList" :currentPage="pageType" />
   </div>
 </template>
 
@@ -24,9 +24,9 @@ export default {
   },
   computed: {
     ...mapState({
-      pageType: (state) => state.currentPage.type,
-      course: (state) => state.currentCourse.course,
-      homework: (state) => state.currentHomework.homework,
+      pageType: (state) => state.curObj.page.type,
+      course: (state) => state.curObj.course.course,
+      homework: (state) => state.curObj.homework.homework,
     }),
   },
   mounted() {

@@ -6,7 +6,7 @@
       v-else-if="homeworkList.length > 0"
       :currentPage="currentPage"
       :data="homeworkList"
-    ></homework-list>
+    />
     <div v-else><icon-hint :hint="emptyHint" /></div>
   </div>
 </template>
@@ -17,7 +17,7 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
-      course: (state) => state.currentCourse.course,
+      course: (state) => state.curObj.course.course,
     }),
   },
   data() {

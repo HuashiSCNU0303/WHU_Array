@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     ...mapState({
-      courseListCol: (state) => state.tableColProto.courseListCol,
+      courseListCol: (state) => state.tableProto.student.courseListCol,
     }),
   },
   props: {

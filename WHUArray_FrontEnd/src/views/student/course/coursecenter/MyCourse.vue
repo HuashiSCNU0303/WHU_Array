@@ -19,44 +19,6 @@
 </template>
 
 <script>
-
-const endCourseList_temp = [
-  {
-    id: "6",
-    name: "计算机组成与设计",
-    time: "2019-2020",
-    teacher: "赵小刚",
-    description: "计组",
-  },
-  {
-    id: "7",
-    name: "数据结构",
-    time: "2019-2020",
-    teacher: "喻丹丹",
-    description: "数据结构",
-  },
-  {
-    id: "8",
-    name: "面向对象程序设计",
-    time: "2019-2020",
-    teacher: "林馥",
-    description: "JAVA",
-  },
-  {
-    id: "9",
-    name: "概率论与数理统计",
-    time: "2019-2020",
-    teacher: "钟六一",
-    description: "概率论",
-  },
-  {
-    id: "10",
-    name: "大学英语3",
-    time: "2019-2020",
-    teacher: "喻士贵",
-    description: "大英",
-  },
-];
 import axios from 'axios';
 export default {
   data() {

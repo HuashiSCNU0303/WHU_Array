@@ -1,6 +1,6 @@
 export default {
   state: {
-    currentCourseList: [
+    curList: [
       {
         id: "1",
         name: "计算机组成与设计",
@@ -42,7 +42,7 @@ export default {
         description: "大英",
       },
     ],
-    endCourseList: [
+    endList: [
       {
         id: "11",
         name: "数字逻辑与数字电路",
@@ -84,7 +84,7 @@ export default {
         description: "JAVA",
       },
     ],
-    addCourseList: [
+    addList: [
       {
         id: "16",
         name: "数字逻辑与数字电路",

@@ -7,7 +7,7 @@
         <div v-else><icon-hint :hint="emptyHints[0]" /></div>
       </div>
       <div slot="panel2_content">
-        <exam-list v-if="examList.length > 0" :data="examList" />
+        <stu-exam-list v-if="examList.length > 0" :data="examList" />
         <div v-else><icon-hint :hint="emptyHints[1]" /></div>
       </div>
     </all-expand-col-panel>
@@ -32,7 +32,7 @@ export default {
     getExams() {
       // 获取考试列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.examList = this.$store.state.examList.examList;
+        this.examList = this.$store.state.tempData.examList.examList;
         this.currentExamData = {
           title: "系统级程序设计 期末考试",
           content: "韩波",

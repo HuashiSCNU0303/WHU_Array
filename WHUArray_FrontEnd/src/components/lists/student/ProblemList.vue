@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     ...mapState({
-      problemListCol: (state) => state.tableColProto.problemListCol,
+      problemListCol: (state) => state.tableProto.student.problemListCol,
     }),
   },
   methods: {

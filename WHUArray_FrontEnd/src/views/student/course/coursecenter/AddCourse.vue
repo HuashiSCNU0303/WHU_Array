@@ -26,7 +26,7 @@ export default {
     getHomeworks() {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
       setTimeout(() => {
-        this.courseList = this.$store.state.courseList.addCourseList;
+        this.courseList = this.$store.state.tempData.courseList.addList;
         this.isLoading = false;
       }, 1000);
     },

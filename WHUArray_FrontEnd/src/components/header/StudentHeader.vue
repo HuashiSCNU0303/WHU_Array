@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     ...mapState({
-      pageType: (state) => state.currentPage.type,
+      pageType: (state) => state.curObj.page.type,
     }),
   },
   watch: {

@@ -103,10 +103,10 @@ export default {
   },
   computed: {
     ...mapState({
-      problem: (state) => state.currentProblem.problem,
-      course: (state) => state.currentCourse.course,
-      homework: (state) => state.currentHomework.homework,
-      exam: (state) => state.currentExam.exam,
+      problem: (state) => state.curObj.problem.problem,
+      course: (state) => state.curObj.course.course,
+      homework: (state) => state.curObj.homework.homework,
+      exam: (state) => state.curObj.exam.exam,
     }),
   },
   mounted() {

@@ -12,8 +12,8 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
-      header: (state) => state.currentPage.header,
-      pageType: (state) => state.currentPage.type,
+      header: (state) => state.curObj.page.header,
+      pageType: (state) => state.curObj.page.type,
     }),
     showCountdown: function () {
       return this.pageType == "ProblemInHomework" || this.pageType == "ProblemInExam";

@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     ...mapState({
-      course: (state) => state.currentCourse.course,
+      course: (state) => state.curObj.course.course,
     }),
   },
   mounted() {

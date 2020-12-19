@@ -1,47 +1,18 @@
 import Vue from "vue";
 
-import ExamCard from "./cards/ExamCard"
+import Cards from "./cards/index";
+import Lists from "./lists/index";
+import Panels from "./panels/index";
+import Widgets from "./widgets/index";
 
-Vue.component("exam-card", ExamCard);
-
-import CourseCardList from "./lists/CourseCardList"
-import CourseList from "./lists/CourseList"
-import ExamList from "./lists/ExamList"
-import HomeworkList from "./lists/HomeworkList"
-import ProblemList from "./lists/ProblemList"
-
-Vue.component("course-card-list", CourseCardList);
-Vue.component("course-list", CourseList);
-Vue.component("exam-list", ExamList);
-Vue.component("homework-list", HomeworkList);
-Vue.component("problem-list", ProblemList);
-
-import AllExpandColPanel from "./panels/AllExpandColPanel"
-import SideMenuPanel from "./panels/SideMenuPanel"
-
-Vue.component("all-expand-col-panel", AllExpandColPanel);
-Vue.component("side-menu-panel", SideMenuPanel);
-
-import BigTitle from "./widgets/BigTitle"
-import CenterLoading from "./widgets/CenterLoading"
-import Countdown from "./widgets/Countdown"
-import IconHint from "./widgets/IconHint"
-import ScoreDisplay from "./widgets/ScoreDisplay"
-
-Vue.component("big-title", BigTitle);
-Vue.component("center-loading", CenterLoading);
-Vue.component("countdown", Countdown);
-Vue.component("icon-hint", IconHint);
-Vue.component("score-display", ScoreDisplay);
-
-import CourseInfoModal from "./modals/CourseInfoModal"
+import CourseInfoModal from "./modals/CourseInfoModal";
 
 Vue.component("course-info-modal", CourseInfoModal);
 
 export default {
-  ExamCard,
-  CourseCardList, CourseList, ExamList, HomeworkList, ProblemList,
-  AllExpandColPanel, SideMenuPanel,
-  BigTitle, CenterLoading, Countdown, IconHint, ScoreDisplay,
+  Cards,
+  Lists,
+  Panels,
+  Widgets,
   CourseInfoModal,
-}
+};

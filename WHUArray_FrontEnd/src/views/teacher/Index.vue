@@ -12,7 +12,7 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
-      header: (state) => state.currentPage.header,
+      header: (state) => state.curObj.page.header,
     }),
   },
   components: {

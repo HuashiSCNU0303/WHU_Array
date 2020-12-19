@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     ...mapState({
-      courseList: (state) => state.courseList.currentCourseList,
+      courseList: (state) => state.tempData.courseList.curList,
     }),
   },
   mounted() {

@@ -2,7 +2,7 @@
   <div>
     <big-title><p>作业列表</p></big-title>
     <center-loading v-if="isLoading == true" />
-    <homework-list v-else-if="homeworkList.length > 0" :data="homeworkList" />
+    <stu-homework-list v-else-if="homeworkList.length > 0" :data="homeworkList" />
     <div v-else><icon-hint :hint="emptyHint" /></div>
   </div>
 </template>

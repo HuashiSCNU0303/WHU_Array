@@ -37,10 +37,9 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "UserMenu",
   computed: {
     ...mapState({
-      user: (state) => state.currentUser.user,
+      user: (state) => state.curObj.user.user,
     }),
   },
   methods: {

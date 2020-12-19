@@ -75,12 +75,12 @@ export default {
   },
   computed: {
     ...mapState({
-      breadCrumb: (state) => state.currentPage.breadCrumb,
-      pageType: (state) => state.currentPage.type,
-      header: (state) => state.currentPage.header,
-      homework: (state) => state.currentHomework.homework,
-      exam: (state) => state.currentExam.exam,
-      problem: (state) => state.currentProblem.problem,
+      breadCrumb: (state) => state.curObj.page.breadCrumb,
+      pageType: (state) => state.curObj.page.type,
+      header: (state) => state.curObj.page.header,
+      homework: (state) => state.curObj.homework.homework,
+      exam: (state) => state.curObj.exam.exam,
+      problem: (state) => state.curObj.problem.problem,
     }),
     countdownTime: function () {
       if (this.header.extraType != "countdown") {
