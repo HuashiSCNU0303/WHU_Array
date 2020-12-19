@@ -8,6 +8,7 @@ export default {
         grade: "2018级",
         teacher: "赵小刚",
         description: "计组",
+        status: "on",
       },
       {
         id: "2",
@@ -16,6 +17,7 @@ export default {
         grade: "2018级",
         teacher: "喻丹丹",
         description: "数据结构",
+        status: "on",
       },
       {
         id: "3",
@@ -24,6 +26,7 @@ export default {
         grade: "2018级",
         teacher: "林馥",
         description: "JAVA",
+        status: "on",
       },
       {
         id: "4",
@@ -32,6 +35,7 @@ export default {
         grade: "2018级",
         teacher: "钟六一",
         description: "概率论",
+        status: "on",
       },
       {
         id: "5",
@@ -40,6 +44,7 @@ export default {
         grade: "2018级",
         teacher: "喻士贵",
         description: "大英",
+        status: "on",
       },
     ],
     endList: [
@@ -50,6 +55,7 @@ export default {
         grade: "2018级",
         time: "2019-2020",
         description: "数字电路",
+        status: "off",
       },
       {
         id: "12",
@@ -58,6 +64,7 @@ export default {
         grade: "2018级",
         time: "2019-2020",
         description: "离散数学",
+        status: "off",
       },
       {
         id: "13",
@@ -66,6 +73,7 @@ export default {
         grade: "2018级",
         time: "2019-2020",
         description: "高数",
+        status: "off",
       },
       {
         id: "14",
@@ -74,6 +82,7 @@ export default {
         grade: "2019级",
         time: "2019-2020",
         description: "线代",
+        status: "off",
       },
       {
         id: "15",
@@ -82,6 +91,7 @@ export default {
         grade: "2019级",
         time: "2019-2020",
         description: "JAVA",
+        status: "off",
       },
     ],
     addList: [

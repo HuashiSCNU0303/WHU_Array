@@ -14,26 +14,26 @@ export default {
       });
     });
   },
-  handleHomeworkSwitch (self, item) {
+  handleHomeworkSwitch (self, role, item) {
     const promise = new Promise(function (resolve, reject) {
       resolve("hello");
     });
     promise.then((res) => {
       self.$store.dispatch("setCurrentHomework", item);
       self.$router.push({
-        path: "/index/homework/" + item.homeworkId,
+        path: "/" + role + "/homework/" + item.id,
       });
     });
   },
   handleExamSwitch (self, examId) { },
-  handleProblemSwitch (self, item, prePage) {
+  handleProblemSwitch (self, role, item, prePage) {
     const promise = new Promise(function (resolve, reject) {
       resolve("hello");
     });
     promise.then((res) => {
       self.$store.dispatch("setCurrentProblem", item);
       self.$router.push({
-        path: "/problem/" + item.id,
+        path: "/" + role + "/problem/" + item.id,
         query: {
           source: prePage,
         },

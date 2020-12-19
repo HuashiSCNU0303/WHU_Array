@@ -1,5 +1,17 @@
 <template>
-  <side-menu-panel :items="items" />
+  <div>
+    <side-menu-panel :items="items" />
+    <course-info-modal
+      :visible="modalVisible"
+      :item="course"
+      :handleOk="editCourse"
+      :handleCancel="
+        () => {
+          this.modalVisible = false;
+        }
+      "
+    />
+  </div>
 </template>
 
 <script>
@@ -8,6 +20,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      modalVisible: false,
       items: [
         {
           key: "homework",
@@ -19,12 +32,18 @@ export default {
           iconType: "message",
           text: "所有考试",
         },
+        {
+          key: "studentList",
+          iconType: "user",
+          text: "学生列表",
+        },
       ],
       header: {
         pageTitle: "",
         description: "",
-        extraType: "image",
-        extraImage: "https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png",
+        extraType: "operation",
+        editInfo: this.editInfo,
+        endCourse: this.endCourse,
       },
       breadCrumb: [{}],
     };
@@ -61,6 +80,19 @@ export default {
           name: this.course.name,
         },
       ];
+    },
+    endCourse() {
+      var course_ = this.course;
+      course_["status"] = "off";
+      this.editCourse(course_);
+    },
+    editInfo() {
+      this.modalVisible = true;
+    },
+    editCourse(course) {
+      this.modalVisible = false;
+      console.log(course);
+      // 把编辑好的course发送到后台
     },
   },
 };

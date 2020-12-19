@@ -1,5 +1,5 @@
 import StudentTable from "./StuTableProto";
-import TeacherTable from "./StuTableProto";
+import TeacherTable from "./TeaTableProto";
 
 export default {
   modules: {

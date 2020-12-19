@@ -207,7 +207,17 @@ export default new Router({
           children: [
             {
               path: "",
-              component: () => import("@/views/teacher/Homework"),
+              component: () => import("@/views/teacher/work/Homework"),
+              children: [
+                {
+                  path: ":problemId",
+                  component: () => import("@/views/teacher/work/ProblemDetail"),
+                },
+                {
+                  path: "record",
+                  component: () => import("@/views/teacher/work/SubmitRecord"),
+                },
+              ]
             },
           ],
         },
@@ -218,7 +228,17 @@ export default new Router({
           children: [
             {
               path: "",
-              component: () => import("@/views/teacher/Exam"),
+              component: () => import("@/views/teacher/work/Exam"),
+              children: [
+                {
+                  path: ":problemId",
+                  component: () => import("@/views/teacher/work/ProblemDetail"),
+                },
+                {
+                  path: "record",
+                  component: () => import("@/views/teacher/work/SubmitRecord"),
+                },
+              ],
             },
           ],
         },

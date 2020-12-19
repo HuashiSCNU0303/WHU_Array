@@ -9,6 +9,9 @@ import VueBreadcrumbs from "vue-breadcrumbs";
 import store from "./store/index";
 import utils from "./utils/index";
 import CommonComs from "./components/index";
+import moment from 'moment'
+
+
 
 Vue.use(VueBreadcrumbs);
 Vue.use(Antd);
@@ -16,6 +19,7 @@ Vue.use(Antd);
 
 Vue.config.productionTip = false;
 Vue.prototype.utils = utils;
+Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */
 new Vue({

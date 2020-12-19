@@ -41,17 +41,6 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item
-          :label-col="formItemLayout.labelCol"
-          :wrapper-col="formItemLayout.wrapperCol"
-          label="课程描述"
-        >
-          <a-textarea
-            rows="4"
-            v-model="course.description"
-            :default-value="typeof item !== 'undefined' ? item.description : ''"
-          />
-        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -68,8 +57,7 @@ export default {
       },
       course: {
         name: "",
-        grade: "",
-        description: "",
+        
       },
       gradeOptions: [],
     };

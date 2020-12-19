@@ -43,6 +43,32 @@
               :type="pageType"
             />
           </div>
+          <div
+            v-else-if="header.extraType == 'operation'"
+            style="margin-right: 48px; margin-bottom: 48px"
+          >
+            <a-button type="primary" icon="edit" @click="header.editInfo"
+              >编辑信息</a-button
+            >
+            <a-button
+              v-if="typeof header.endCourse !== 'undefined'"
+              type="primary"
+              icon="carry-out"
+              @click="header.endCourse"
+              style="margin-left: 16px"
+              ghost
+              >结束课程</a-button
+            >
+            <a-button
+              v-if="typeof header.publishWork !== 'undefined'"
+              type="primary"
+              icon="carry-out"
+              @click="header.publishWork"
+              style="margin-left: 16px"
+              ghost
+              >发布</a-button
+            >
+          </div>
         </slot>
       </page-header>
       <a-layout-content style="padding: 24px">

@@ -1,5 +1,10 @@
 <template>
-  <a-table :columns="columns" :data-source="data" :custom-row="handleProblemSwitch" :row-key="getRecordId">
+  <a-table
+    :columns="columns"
+    :data-source="data"
+    :custom-row="handleProblemSwitch"
+    :row-key="getRecordId"
+  >
     <span slot="problemName" slot-scope="problemName">
       <a>{{ problemName }}</a>
     </span>
@@ -61,7 +66,7 @@ export default {
               score: record.score,
             };*/
             var source = this.getSource();
-            this.utils.toggle.handleProblemSwitch(this, record, source);
+            this.utils.toggle.handleProblemSwitch(this, "student", record, source);
           },
         },
       };

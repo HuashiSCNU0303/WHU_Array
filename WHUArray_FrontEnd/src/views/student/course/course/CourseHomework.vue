@@ -33,28 +33,28 @@ export default {
   },
   methods: {
     getHomeworks() {
-      let courseId = this.course.id;
-      let _this = this;
-      let getUrl = "http://localhost:8009/course/" + courseId + "/allHomework";
-      axios
-        .get(getUrl, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          this.homeworkList = res.data;
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // let courseId = this.course.id;
+      // let _this = this;
+      // let getUrl = "http://localhost:8009/course/" + courseId + "/allHomework";
+      // axios
+      //   .get(getUrl, {
+      //     headers: {
+      //       Authorization: localStorage.getItem("token"),
+      //     },
+      //   })
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     this.homeworkList = res.data;
+      //     this.isLoading = false;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
       // // 获取作业列表，下面只是模拟一下请求后端获得结果而已
-      // setTimeout(() => {
-      //   this.homeworkList = this.$store.state.homeworkList.homeworkList;
-      //   this.isLoading = false;
-      // }, 1000);
+      setTimeout(() => {
+        this.homeworkList = this.$store.state.tempData.homeworkList.homeworkList;
+        this.isLoading = false;
+      }, 1000);
     },
   },
 };
