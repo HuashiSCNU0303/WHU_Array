@@ -5,7 +5,7 @@
       :title="title"
       ok-text="提交"
       cancel-text="取消"
-      @ok="handleOk(course)"
+      @ok="handleOk(work)"
       @cancel="handleCancel"
     >
       <a-form>
@@ -13,33 +13,35 @@
           v-if="typeof item !== 'undefined'"
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="课程号"
+          :label="type + '号'"
         >
-          {{ item.id }}
+          {{ work.id }}
         </a-form-item>
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="课程名"
+          :label="type + '名'"
         >
           <a-input
-            v-model="course.name"
+            v-model="work.name"
             :default-value="typeof item !== 'undefined' ? item.name : ''"
           />
         </a-form-item>
         <a-form-item
           :label-col="formItemLayout.labelCol"
           :wrapper-col="formItemLayout.wrapperCol"
-          label="年级"
+          label="开始时间"
         >
-          <a-select
-            v-model="course.grade"
-            :default-value="typeof item !== 'undefined' ? item.grade : ''"
-          >
-            <a-select-option v-for="grade in gradeOptions" :key="grade" :value="grade">
-              {{ grade }}
-            </a-select-option>
-          </a-select>
+          <a-date-picker v-model="work.startTime.date" />
+          <a-time-picker v-model="work.startTime.time" style="margin-left: 16px" />
+        </a-form-item>
+        <a-form-item
+          :label-col="formItemLayout.labelCol"
+          :wrapper-col="formItemLayout.wrapperCol"
+          label="截止时间"
+        >
+          <a-date-picker v-model="work.endTime.date" />
+          <a-time-picker v-model="work.endTime.time" style="margin-left: 16px" />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -55,11 +57,17 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       },
-      course: {
+      work: {
         name: "",
-        
+        startTime: {
+          date: "",
+          time: this.$moment("00:00:00", "HH:mm:ss"),
+        },
+        endTime: {
+          date: "",
+          time: this.$moment("00:00:00", "HH:mm:ss"),
+        },
       },
-      gradeOptions: [],
     };
   },
   props: {
@@ -68,6 +76,9 @@ export default {
     },
     item: {
       type: Object,
+    },
+    type: {
+      type: String,
     },
     handleOk: {
       type: Function,
@@ -78,20 +89,21 @@ export default {
   },
   mounted() {
     this.setModal();
-    this.setGradeOptions();
   },
   methods: {
     setModal() {
-      this.title = typeof this.item === "undefined" ? "添加课程" : "修改课程信息";
+      this.title =
+        typeof this.item === "undefined"
+          ? "添加" + this.type
+          : "修改" + this.type + "信息";
       if (typeof this.item !== "undefined") {
-        this.course = this.item;
-      }
-    },
-    setGradeOptions() {
-      var date = new Date();
-      var latestGrade = date.getMonth() < 8 ? date.getFullYear() - 1 : date.getFullYear();
-      for (var i = 0; i < 8; i++) {
-        this.gradeOptions.push(latestGrade - i + "级");
+        var item = {
+          id: this.item.id,
+          name: this.item.name,
+          startTime: this.utils.countdown.transStringToPicker(this, this.item.startTime),
+          endTime: this.utils.countdown.transStringToPicker(this, this.item.endTime),
+        };
+        this.work = item;
       }
     },
   },

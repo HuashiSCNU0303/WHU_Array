@@ -12,13 +12,13 @@ import CommonComs from "./components/index";
 import moment from 'moment'
 
 
-
 Vue.use(VueBreadcrumbs);
 Vue.use(Antd);
 // Vue.use(CommonComs);
 
 Vue.config.productionTip = false;
 Vue.prototype.utils = utils;
+moment.locale('zh-cn');
 Vue.prototype.$moment = moment;
 
 /* eslint-disable no-new */

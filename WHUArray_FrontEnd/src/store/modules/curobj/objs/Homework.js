@@ -5,7 +5,7 @@ export default {
       homeworkName: "",
       // status: "",
       homeworkTime: "",
-      homrworlContent: "",
+      homeworkContent: "",
       score: -1,
     }
   },
@@ -13,7 +13,6 @@ export default {
     setCurrentHomework (state, value) {
       let newObj = Object.assign({}, state.homework, value);
       state.homework = newObj;
-      console.log(state.homework);
     },
     setHomeworkEndTime (state, value) {
       state.homeworkTime = value;

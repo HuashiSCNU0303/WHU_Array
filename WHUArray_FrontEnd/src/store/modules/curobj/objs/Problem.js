@@ -14,7 +14,6 @@ export default {
     setCurrentProblem (state, value) {
       let newObj = Object.assign({}, state.problem, value);
       state.problem = newObj;
-      // console.log(state.homework);
     },
   },
   actions: {

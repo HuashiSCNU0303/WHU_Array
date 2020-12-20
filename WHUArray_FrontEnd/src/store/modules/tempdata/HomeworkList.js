@@ -3,32 +3,30 @@ export default {
     homeworkList: [
       {
         id: 10001,
-        status: "进行中",
+        status: "unpublished",
         courseId: 17,
         courseName: "Linux原理与应用",
         teacher: "李文海",
         name: "期末大作业",
-        endTime: 1608021963000,
+        startTime: "2020-10-16 12:00:00",
+        endTime: "2020-12-26 18:00:00",
         remainingTime: "5天9小时",
         score: -1,
       },
       {
         id: 10002,
-        status: "已完成",
+        status: "published",
         courseId: 19,
         courseName: "数据结构",
         teacher: "文卫东",
         name: "第三次作业",
-        endTime: 1608036363000,
+        startTime: "2020-11-28 18:00:00",
+        endTime: "2020-12-24 12:00:00",
         remainingTime: "/",
         score: 99,
       },
     ],
   },
-  mutations: {
-
-  },
-  actions: {
-
-  }
-}
+  mutations: {},
+  actions: {},
+};

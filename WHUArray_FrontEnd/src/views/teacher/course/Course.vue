@@ -41,9 +41,11 @@ export default {
       header: {
         pageTitle: "",
         description: "",
-        extraType: "operation",
+        extraType: "courseOperation",
         editInfo: this.editInfo,
+        delCourse: this.delCourse,
         endCourse: this.endCourse,
+        editStatus: false,
       },
       breadCrumb: [{}],
     };
@@ -69,6 +71,7 @@ export default {
         this.course.id +
         "<br />课程简介：" +
         this.course.description;
+      this.header.editStatus = this.course.status == "on" ? true : false;
     },
     setBreadCrumb() {
       this.breadCrumb = [
@@ -85,6 +88,9 @@ export default {
       var course_ = this.course;
       course_["status"] = "off";
       this.editCourse(course_);
+    },
+    delCourse() {
+      // 删除课程
     },
     editInfo() {
       this.modalVisible = true;

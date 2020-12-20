@@ -1,9 +1,5 @@
 <template>
   <div>
-    <!--<center-loading
-      v-if="isLoading == 1"
-      :style="{ height: '100%', paddingTop: '64px' }"
-    />-->
     <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
         <slot v-if="breadCrumb != null" slot="breadcrumb" name="breadcrumb">
@@ -43,15 +39,26 @@
               :type="pageType"
             />
           </div>
-          <div
-            v-else-if="header.extraType == 'operation'"
-            style="margin-right: 48px; margin-bottom: 48px"
-          >
-            <a-button type="primary" icon="edit" @click="header.editInfo"
+          <div v-else-if="header.extraType == 'courseOperation'" class="op-buttons">
+            <a-button
+              v-if="header.editStatus == true"
+              type="primary"
+              icon="edit"
+              @click="header.editInfo"
               >编辑信息</a-button
             >
+            <a-button v-else type="primary" icon="edit" disabled>不可编辑</a-button>
+
             <a-button
-              v-if="typeof header.endCourse !== 'undefined'"
+              type="danger"
+              icon="delete"
+              @click="header.delCourse"
+              style="margin-left: 16px"
+              >删除课程</a-button
+            >
+
+            <a-button
+              v-if="header.editStatus == true"
               type="primary"
               icon="carry-out"
               @click="header.endCourse"
@@ -60,13 +67,48 @@
               >结束课程</a-button
             >
             <a-button
-              v-if="typeof header.publishWork !== 'undefined'"
+              v-else
+              type="primary"
+              icon="carry-out"
+              style="margin-left: 16px"
+              disabled
+              >已结束</a-button
+            >
+          </div>
+          <div v-else-if="header.extraType == 'workOperation'" class="op-buttons">
+            <a-button
+              v-if="header.editStatus == true"
+              type="primary"
+              icon="edit"
+              @click="header.editInfo"
+              >编辑信息</a-button
+            >
+            <a-button v-else type="primary" icon="edit" disabled>不可编辑</a-button>
+
+            <a-button
+              type="danger"
+              icon="delete"
+              @click="header.delWork"
+              style="margin-left: 16px"
+              >删除{{pageType == "Homework"? "作业": "考试"}}</a-button
+            >
+
+            <a-button
+              v-if="header.editStatus == true"
               type="primary"
               icon="carry-out"
               @click="header.publishWork"
               style="margin-left: 16px"
               ghost
-              >发布</a-button
+              >发布{{pageType == "Homework"? "作业": "考试"}}</a-button
+            >
+            <a-button
+              v-else
+              type="primary"
+              icon="carry-out"
+              style="margin-left: 16px"
+              disabled
+              >已发布</a-button
             >
           </div>
         </slot>
@@ -179,5 +221,10 @@ export default {
   padding-bottom: 48px;
   margin-left: -300px;
   text-align: center;
+}
+
+.op-buttons {
+  margin-right: 48px;
+  margin-bottom: 48px;
 }
 </style>

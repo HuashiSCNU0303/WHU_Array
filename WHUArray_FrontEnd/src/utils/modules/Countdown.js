@@ -40,6 +40,35 @@ export default {
       result = "<&nbsp;1分钟"
     }*/
     return result;
-  }
+  },
   // TODO: 时间戳与日期字符串的转化，用moment就可以了
+
+  // 将设置时间时的picker搞出来的时间转化为字符串
+  transPickerToString (dateTime) {
+    var result = dateTime.date;
+    result.startOf('date');
+    result.add({
+      hours: dateTime.time.hour(),
+      minutes: dateTime.time.minute(),
+      seconds: dateTime.time.second(),
+    });
+    return result.format("YYYY-MM-DD HH:mm:ss");
+  },
+
+  // 将字符串转化为设置时间时的picker搞出来的时间
+  transStringToPicker (self, dateTimeString) {
+    var momentTime = self.$moment(dateTimeString);
+    var hour = momentTime.hour();
+    var minute = momentTime.minute();
+    var second = momentTime.second();
+    var result = {
+      date: momentTime.startOf('date'),
+      time: self.$moment({
+        hour: hour,
+        minute: minute,
+        second: second,
+      })
+    };
+    return result;
+  },
 };

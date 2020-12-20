@@ -4,7 +4,15 @@
     <center-loading v-if="isLoading == true" />
     <div v-else>
       <a-row>
-        <a-button type="primary" icon="user" @click="addHomework" style="float: left"
+        <a-button
+          type="primary"
+          icon="user"
+          @click="
+            () => {
+              this.modalVisible = true;
+            }
+          "
+          style="float: left"
           >添加作业</a-button
         >
       </a-row>
@@ -19,6 +27,16 @@
       </tea-work-card-list>
       <icon-hint v-else :hint="emptyHint" />
     </div>
+    <work-info-modal
+      :visible="modalVisible"
+      :type="'作业'"
+      :handleOk="addHomework"
+      :handleCancel="
+        () => {
+          this.modalVisible = false;
+        }
+      "
+    />
   </div>
 </template>
 
@@ -33,6 +51,7 @@ export default {
   },
   data() {
     return {
+      modalVisible: false,
       homeworkList: [],
       isLoading: true, // 标识一下正在加载的状态
       emptyHint: "当前没有未完成的作业",
@@ -53,8 +72,16 @@ export default {
       // 跳转到作业
       this.utils.toggle.handleHomeworkSwitch(this, "teacher", item);
     },
-    addHomework() {
-      
+    addHomework(work) {
+      var work_ = {
+        name: work.name,
+        startTime: this.utils.countdown.transPickerToString(work.startTime),
+        endTime: this.utils.countdown.transPickerToString(work.endTime),
+        status: "unpublished",
+        type: "homework",
+      };
+      // 把组装好的work_发送给后台
+      this.modalVisible = false;
     },
   },
 };

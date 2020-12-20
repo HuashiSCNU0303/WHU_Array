@@ -22,6 +22,8 @@ export default {
   color: rgba(0, 0, 0, 0.65);
   font-size: 16px;
   text-align: center;
-  margin: 30px 0;
+  /*margin: 30px 0;*/
+  align-self: center;
+  margin: 0 auto;
 }
 </style>
