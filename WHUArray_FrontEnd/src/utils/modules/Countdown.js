@@ -71,4 +71,10 @@ export default {
     };
     return result;
   },
+
+  transStringToTimestamp (self, dateTimeString) {
+    var momentTime = self.$moment(dateTimeString);
+    var timestamp = momentTime.valueOf();
+    return timestamp;
+  }
 };

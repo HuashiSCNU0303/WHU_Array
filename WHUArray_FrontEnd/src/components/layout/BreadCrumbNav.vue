@@ -22,105 +22,16 @@ export default {
       type: Array,
     },
   },
-  computed: {
-    ...mapState({
-      course: (state) => state.currentCourse.course,
-      homework: (state) => state.currentHomework.homework,
-      exam: (state) => state.currentExam.exam,
-      problem: (state) => state.currentProblem.problem,
-    }),
-  },
   methods: {
     handleSwitch(item) {
       const type = item.type;
       if (type == "Course") {
         this.utils.toggle.handleCourseSwitch(this, item);
-      } else if (type == "Homework") {
-        this.utils.toggle.handleHomeworkSwitch(this, item);
-      } else if (type == "Exam") {
-        this.utils.toggle.handleExamSwitch(this, item);
+      } else {
+        this.utils.toggle.handleWorkSwitch(this, item);
       }
     },
-    /*createBreadCrumb() {
-      switch (this.currentLayer) {
-        case "Course": {
-          // 改成课程样式的面包屑
-          this.courseItemData.push({
-            name: this.course.name,
-          });
-          break;
-        }
-        case "Homework": {
-          this.courseItemData.push({
-            name: this.course.name,
-            type: "Course",
-            id: this.course.id,
-          });
-          this.courseItemData.push({
-            name: this.homework.name,
-          });
-          break;
-        }
-        case "Exam": {
-          this.courseItemData.push({
-            name: this.course.name,
-            type: "Course",
-            id: this.course.id,
-          });
-          this.courseItemData.push({
-            name: this.exam.name,
-          });
-          break;
-        }
-        case "ProblemInHomework": {
-          this.courseItemData.push({
-            name: this.course.name,
-            type: "Course",
-            id: this.course.id,
-          });
-          this.courseItemData.push({
-            name: this.homework.name,
-            type: "Homework",
-            id: this.homework.id,
-          });
-          this.courseItemData.push({
-            name: this.problem.id + "号题目",
-          });
-          break;
-        }
-        case "ProblemInExam": {
-          this.courseItemData.push({
-            name: this.course.name,
-            type: "Course",
-            id: this.course.id,
-          });
-          this.courseItemData.push({
-            name: this.exam.name,
-            type: "Exam",
-            id: this.exam.id,
-          });
-          this.courseItemData.push({
-            name: this.problem.id + "号题目",
-          });
-          break;
-        }
-        case "ProblemInRepos": {
-          this.problemReposItemData.push({
-            name: this.problem.id + "号题目",
-          });
-          break;
-        }
-      }
-      this.items =
-        this.currentLayer == "ProblemInRepos"
-          ? this.problemReposItemData
-          : this.courseItemData;
-    },*/
   },
-  mounted() {
-    // this.createBreadCrumb();
-  },
-  updated() {},
 };
 </script>
 

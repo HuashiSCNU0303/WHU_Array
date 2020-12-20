@@ -89,7 +89,8 @@ export default new Router({
           children: [
             {
               path: "",
-              component: () => import("@/views/student/course/Homework"),
+              component: () => import("@/views/student/course/Work"),
+              meta: { type: "Homework" },
             },
           ],
         },
@@ -100,7 +101,8 @@ export default new Router({
           children: [
             {
               path: "",
-              component: () => import("@/views/student/course/Exam"),
+              component: () => import("@/views/student/course/Work"),
+              meta: { type: "Exam" },
             },
           ],
         },
@@ -190,11 +192,13 @@ export default new Router({
               children: [
                 {
                   path: "homework",
-                  component: () => import("@/views/teacher/course/CourseHomework"),
+                  component: () => import("@/views/teacher/course/CourseWork"),
+                  meta: { type: "Homework" },
                 },
                 {
                   path: "exam",
-                  component: () => import("@/views/teacher/course/CourseExam"),
+                  component: () => import("@/views/teacher/course/CourseWork"),
+                  meta: { type: "Exam" },
                 },
               ],
             },
@@ -216,13 +220,15 @@ export default new Router({
                 },
                 {
                   path: ":problemId",
-                  component: () => import("@/views/teacher/work/ProblemDetail"),
+                  component: () => import("@/views/problem/ProblemDetail"),
+                  meta: { type: "Homework" },
                 },
                 {
                   path: "record",
                   component: () => import("@/views/teacher/work/SubmitRecord"),
+                  meta: { type: "Homework" },
                 },
-              ]
+              ],
             },
           ],
         },
@@ -242,11 +248,13 @@ export default new Router({
                 },
                 {
                   path: ":problemId",
-                  component: () => import("@/views/teacher/work/ProblemDetail"),
+                  component: () => import("@/views/problem/ProblemDetail"),
+                  meta: { type: "Exam" },
                 },
                 {
                   path: "record",
                   component: () => import("@/views/teacher/work/SubmitRecord"),
+                  meta: { type: "Exam" },
                 },
               ],
             },

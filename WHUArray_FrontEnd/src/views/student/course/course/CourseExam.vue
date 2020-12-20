@@ -22,8 +22,8 @@
 export default {
   data() {
     return {
-      emptyHints: ["当前没有进行中的考试", "当前没有准备开始的考试"],
-      headers: ["当前进行中的考试", "准备开始的考试"],
+      emptyHints: ["当前没有进行中的考试", "当前没有其他考试"],
+      headers: ["当前进行中的考试", "其他考试"],
       currentExamData: {},
       examList: [],
       isLoading: true,

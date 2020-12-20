@@ -10,8 +10,9 @@ export default {
         name: "期末大作业",
         startTime: "2020-10-16 12:00:00",
         endTime: "2020-12-26 18:00:00",
-        remainingTime: "5天9小时",
+        remainingTime: "/",
         score: -1,
+        type: "Homework",
       },
       {
         id: 10002,
@@ -24,6 +25,7 @@ export default {
         endTime: "2020-12-24 12:00:00",
         remainingTime: "/",
         score: 99,
+        type: "Homework",
       },
     ],
   },

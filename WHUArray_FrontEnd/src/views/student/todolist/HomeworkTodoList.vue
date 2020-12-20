@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
   data() {
     return {
@@ -22,22 +22,26 @@ export default {
   },
   methods: {
     getHomeworks() {
-      let _this = this;
-      axios.get("http://localhost:8009/homework/all", {
-        headers: {
-          'Authorization': localStorage.getItem("token")
-        }
-      }).then((res) => {
-        _this.homeworkList = res.data;
+      // let _this = this;
+      // axios.get("http://localhost:8009/homework/all", {
+      //   headers: {
+      //     'Authorization': localStorage.getItem("token")
+      //   }
+      // }).then((res) => {
+      //   _this.homeworkList = res.data;
+      //   _this.isLoading = false;
+      // }).catch((error) => {
+      //   console.log(error);
+      // })
+      // 获取这个学生的所有作业，给一个学生的id
+
+      var _this = this;
+      this.api.student.getStuHomeworkList().then((res) => {
+        // 从列表中取出未提交的作业
+        // 数据处理，计算每一个作业的剩余时间
+        _this.homeworkList = [];
         _this.isLoading = false;
-      }).catch((error) => {
-        console.log(error);
-      })
-      // 获取作业列表，下面只是模拟一下请求后端获得结果而已
-      // setTimeout(() => {
-      //   this.homeworkList = this.$store.state.homeworkList.homeworkList;
-      //   this.isLoading = false;
-      // }, 1000);
+      });
     },
   },
 };

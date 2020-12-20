@@ -105,8 +105,8 @@ export default {
     ...mapState({
       problem: (state) => state.curObj.problem.problem,
       course: (state) => state.curObj.course.course,
-      homework: (state) => state.curObj.homework.homework,
-      exam: (state) => state.curObj.exam.exam,
+      work: (state) => state.curObj.work.work,
+      user: (state) => state.curObj.user.user,
     }),
   },
   mounted() {
@@ -133,7 +133,7 @@ export default {
           this.breadCrumb = [
             {
               name: "题库",
-              href: "/index/problemrepos",
+              href: "/" + this.user.role + "/repos",
             },
             {
               name: this.problem.id + "号题目",
@@ -142,12 +142,12 @@ export default {
           sourceStr = this.problem.course + "\n" + this.problem.work;
           break;
         }
-        case "homework": {
-          this.pageType = "ProblemInHomework";
+        case "work": {
+          this.pageType = "ProblemInWork";
           this.breadCrumb = [
             {
               name: "我的课程",
-              href: "/index/course",
+              href: "/student/course",
             },
             {
               name: this.course.name,
@@ -155,39 +155,15 @@ export default {
               id: this.course.id,
             },
             {
-              name: this.homework.name,
-              type: "Homework",
-              id: this.homework.id,
+              name: this.work.name,
+              type: "Work",
+              id: this.work.id,
             },
             {
               name: this.problem.id + "号题目",
             },
           ];
-          sourceStr = this.course.name + "\n" + this.homework.name;
-          break;
-        }
-        case "exam": {
-          this.pageType = "ProblemInExam";
-          this.breadCrumb = [
-            {
-              name: "我的课程",
-              href: "/index/course",
-            },
-            {
-              name: this.course.name,
-              type: "Course",
-              id: this.course.id,
-            },
-            {
-              name: this.exam.name,
-              type: "Exam",
-              id: this.exam.id,
-            },
-            {
-              name: this.problem.id + "号题目",
-            },
-          ];
-          sourceStr = this.course.name + "\n" + this.exam.name;
+          sourceStr = this.course.name + "\n" + this.work.name;
           break;
         }
       }

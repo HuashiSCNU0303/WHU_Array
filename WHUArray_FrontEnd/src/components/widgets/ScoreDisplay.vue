@@ -7,7 +7,7 @@
     >
     <a-tag v-else><a-icon type="frown" />&nbsp;未提交</a-tag>
     <a-button
-      v-if="type == 'Homework' || type == 'Exam'"
+      v-if="type == 'Work'"
       type="primary"
       @click="handleClick"
       :disabled="btnDisabled"
@@ -32,11 +32,11 @@ export default {
       type: Number,
     },
     time: {
-      type: Number,
+      type: String,
     },
     type: {
       type: String,
-    }
+    },
   },
   mounted() {
     this.setBtnDisabled();
@@ -44,7 +44,8 @@ export default {
   methods: {
     setBtnDisabled() {
       var timeStamp = new Date().valueOf();
-      var remainingTime = this.time - timeStamp;
+      var anchorTimestamp = this.utils.countdown.transStringToTimestamp(this, this.time);
+      var remainingTime = anchorTimestamp - timeStamp;
       if (remainingTime <= 0) {
         this.btnDisabled = true;
       } else {
@@ -58,12 +59,7 @@ export default {
       }
     },
     handleClick() {
-      if (this.type == "Homework") {
-        // 提交作业
-        // this.$store.dispatch("set");
-      } else if (this.type == "Exam") {
-        // 交卷
-      }
+      // 交作业/交卷
     },
   },
 };

@@ -24,12 +24,13 @@ export default {
   },
   props: {
     time: {
-      type: Number,
+      type: String,
     },
   },
   mounted() {
     var timeStamp = new Date().valueOf();
-    this.remainingTime = this.time - timeStamp;
+    var anchorTimestamp = this.utils.countdown.transStringToTimestamp(this, this.time);
+    this.remainingTime = anchorTimestamp - timeStamp;
     if (this.remainingTime <= 0) {
       this.showTime = false;
     } else {

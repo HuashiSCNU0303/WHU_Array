@@ -73,14 +73,14 @@ export default {
       },
       {
         title: "作业名",
-        dataIndex: "homeworkName",
-        key: "homeworkName",
+        dataIndex: "name",
+        key: "name",
         scopedSlots: { customRender: "homeworkName" },
       },
       {
         title: "结束时间",
-        dataIndex: "homeworkTime",
-        key: "homeworkTime",
+        dataIndex: "endTime",
+        key: "endTime",
       },
       {
         title: "距离截止还有",
@@ -97,13 +97,13 @@ export default {
     problemListCol: [
       {
         title: "题目号",
-        dataIndex: "questionId",
-        key: "questionId",
+        dataIndex: "id",
+        key: "id",
       },
       {
         title: "题目名",
-        dataIndex: "questionName",
-        key: "questionName",
+        dataIndex: "name",
+        key: "name",
         scopedSlots: { customRender: "questionName" },
       },
       {
@@ -164,16 +164,32 @@ export default {
         title: "课程名",
         dataIndex: "name",
         key: "courseName",
+        scopedSlots: {
+          filterDropdown: 'filterDropdown',
+          filterIcon: 'filterIcon',
+          customRender: 'customRender',
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
       },
       {
         title: "教师",
         dataIndex: "teacher",
         key: "teacher",
+        scopedSlots: {
+          filterDropdown: 'filterDropdown',
+          filterIcon: 'filterIcon',
+          customRender: 'customRender',
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
       },
       {
         title: "年级",
         dataIndex: "grade",
         key: "grade",
+        filters: [],
+        onFilter: "",
       },
       {
         title: "课程描述",
@@ -183,8 +199,26 @@ export default {
       {
         title: "是否已选",
         dataIndex: "isSelected",
-        key: "isSelected",
+        key: "isSelect",
+        filters: [
+          {
+            text: "已选",
+            value: "true",
+          },
+          {
+            text: "未选",
+            value: "false",
+          },
+        ],
+        onFilter: "",
+        scopedSlots: { customRender: "isSelected" },
       },
+      {
+        title: "操作",
+        dataIndex: "operation",
+        key: "operation",
+        scopedSlots: { customRender: "operation" },
+      }
     ],
   },
   mutations: {},

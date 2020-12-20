@@ -8,18 +8,18 @@
     <div style="margin-bottom: 8px">
       <a-tag
         :color="
-          item.status === '未发布'
+          item.status === 'published'
             ? 'volcano'
-            : item.status === '已发布'
+            : item.status === 'unpublished'
             ? 'green'
             : 'geekblue'
         "
         style="font-size: 14px"
       >
-        {{ item.status }}
+        {{ item.status == "published" ? "已发布" : "未发布" }}
       </a-tag>
     </div>
-    <div>开始时间：{{ curTime }}</div>
+    <div>开始时间：{{ item.startTime }}</div>
     <div>截止时间：{{ item.endTime }}</div>
   </a-card>
 </template>
@@ -33,7 +33,6 @@ export default {
   },
   data() {
     return {
-      curTime: "2020-12-14 09:00",
     };
   },
 };

@@ -7,7 +7,7 @@
 
 <script>
 import { mapState } from "vuex";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
@@ -26,21 +26,27 @@ export default {
     ...mapState({
       pageType: (state) => state.curObj.page.type,
       course: (state) => state.curObj.course.course,
-      homework: (state) => state.curObj.homework.homework,
+      work: (state) => state.curObj.work.work,
     }),
+    type() {
+      return this.$route.meta.type;
+    },
+    typeName() {
+      return this.type == "Homework" ? "作业" : "考试";
+    },
   },
   mounted() {
     this.setHeader();
     this.setBreadCrumb();
     this.$store.dispatch("setCurrentPageHeader", this.header);
     this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
-    this.$store.dispatch("setCurrentPageType", "Homework");
+    this.$store.dispatch("setCurrentPageType", "Work");
     this.getProblems();
   },
   methods: {
     setHeader() {
-      this.header.pageTitle = this.course.name + "\n" + this.homework.name;
-      this.header.description = "截止时间：" + this.homework.endTime;
+      this.header.pageTitle = this.course.name + "\n" + this.work.name;
+      this.header.description = "截止时间：" + this.work.endTime;
     },
     setBreadCrumb() {
       this.breadCrumb = [
@@ -54,29 +60,30 @@ export default {
           id: this.course.id,
         },
         {
-          name: this.homework.homeworkName,
+          name: this.work.name,
         },
       ];
     },
     getProblems() {
       // 获取题目列表，下面只是模拟一下请求后端获得结果而已
-      let _this = this;
-      let homeworkId = this.homework.homeworkId;
-      let getUrl = "http://localhost:8009/homework/" + homeworkId + "/allQuestion";
-      axios.get(getUrl, {
-        headers: {
-          'Authorization': localStorage.getItem("token")
-        }
-      })
-      .then((res) => {
-        // console.log(res.data);
-        _this.problemList = res.data;
-        _this.isLoading = false;
-      })
-      // setTimeout(() => {
-      //   this.problemList = this.$store.state.problemList.problemList;
-      //   this.isLoading = false;
-      // }, 1000);
+      // let _this = this;
+      // let homeworkId = this.homework.homeworkId;
+      // let getUrl = "http://localhost:8009/homework/" + homeworkId + "/allQuestion";
+      // axios
+      //   .get(getUrl, {
+      //     headers: {
+      //       Authorization: localStorage.getItem("token"),
+      //     },
+      //   })
+      //   .then((res) => {
+      //     // console.log(res.data);
+      //     _this.problemList = res.data;
+      //     _this.isLoading = false;
+      //   });
+      setTimeout(() => {
+        this.problemList = this.$store.state.tempData.problemList.problemList;
+        this.isLoading = false;
+      }, 1000);
     },
   },
 };

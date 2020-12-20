@@ -62,7 +62,7 @@ export default {
   },
   watch: {
     pageType: function (val) {
-      if (val == "ProblemRepos") {
+      if (val == "ProblemRepos" || val == "ProblemInRepos") {
         this.currentKey = "problemRepos";
       } else if (val == "MgmtCenter") {
         this.currentKey = "";

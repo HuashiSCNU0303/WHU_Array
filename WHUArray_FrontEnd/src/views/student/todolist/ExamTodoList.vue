@@ -30,7 +30,14 @@ export default {
   },
   methods: {
     getExams() {
-      // 获取考试列表，下面只是模拟一下请求后端获得结果而已
+      var _this = this;
+      getStuExamList().then((res) => {
+        // 从列表中取出未发布的考试
+        // 数据处理，计算每一个考试的剩余时间
+        // 如果有已发布的考试，证明这个考试正在进行中，进行数据处理，计算这个考试的currentExamData
+        _this.examList = [];
+        _this.isLoading = false;
+      });
       setTimeout(() => {
         this.examList = this.$store.state.tempData.examList.examList;
         this.currentExamData = {

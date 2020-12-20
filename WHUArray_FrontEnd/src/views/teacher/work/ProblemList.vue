@@ -3,7 +3,7 @@
     <big-title><p>题目列表</p></big-title>
     <center-loading v-if="isLoading == true" />
     <div v-else>
-      <a-row style="margin-bottom: 16px">
+      <a-row v-if="editable == true" style="margin-bottom: 16px">
         <a-button type="primary" icon="user" @click="addProblem" style="float: left"
           >添加题目</a-button
         >
@@ -14,14 +14,21 @@
         :editable="editable"
         :switchToProblem="switchToProblem"
         :deleteProblem="deleteProblem"
+        :openEditModal="openEditModal"
       />
       <icon-hint v-else :hint="hints[0]" />
       <a-row v-if="editable == false" style="margin-top: 16px">
-        <a-button type="primary" icon="user" @click="addCourse" style="float: left"
+        <a-button type="primary" icon="user" @click="switchToRecord" style="float: left"
           >学生做题记录</a-button
         >
       </a-row>
     </div>
+    <problem-edit-modal
+      :visible="modalVisible"
+      :problemId="curEditProblemId"
+      :handleOk="editProblem"
+      :handleCancel="closeEditModal"
+    />
   </div>
 </template>
 
@@ -29,6 +36,9 @@
 export default {
   data() {
     return {
+      modalVisible: false,
+      curEditProblemId: -1,
+      curEditProblemIndex: -1,
       problemList: [],
       isLoading: true,
       emptyHint: "当前尚未添加题目",
@@ -38,29 +48,25 @@ export default {
     editable: {
       type: Boolean,
     },
-    workId: {
-      type: Number,
+    switchToProblem: {
+      type: Function,
     },
-    type: {
-      type: String,
-    }
+    switchToRecord: {
+      type: Function,
+    },
   },
   mounted() {
     this.getProblems();
   },
   methods: {
     getProblems() {
-      // 获取这个作业的题目列表，下面只是模拟一下请求后端获得结果而已
+      // 获取这个作业/考试的题目列表
       setTimeout(() => {
-        this.problemList = this.$store.state.tempData.problemList.problemList;
+        this.problemList = JSON.parse(
+          JSON.stringify(this.$store.state.tempData.problemList.problemList)
+        );
         this.isLoading = false;
       }, 1000);
-    },
-
-    switchToProblem(record) {
-      this.$router.push({
-        path: "/teacher/" + this.type.toLowerCase() + "/" + this.workId + "/" + record.id,
-      });
     },
 
     deleteProblem(record, index) {
@@ -85,7 +91,29 @@ export default {
         name: "设计树",
       });
     },
-    
+
+    openEditModal(record, index) {
+      this.curEditProblemId = record.id;
+      this.curEditProblemIndex = index;
+      this.modalVisible = true;
+    },
+
+    closeEditModal() {
+      this.modalVisible = false;
+    },
+
+    editProblem(problem) {
+      // 提交编辑好的题目（problem）到后台
+
+      var _this = this;
+      this.$success({
+        title: "编辑成功",
+        onOk() {
+          _this.problemList[_this.curEditProblemIndex].name = problem.name;
+          _this.closeEditModal();
+        },
+      });
+    },
   },
 };
 </script>

@@ -3,7 +3,7 @@
   <div>
     <a-table :columns="columns" :data-source="data" :row-key="getRecordId">
       <span slot="edit" slot-scope="text, record, index">
-        <span @click="editProblem(record)" style="color: #1890ff"
+        <span @click="openEditModal(record, index)" style="color: #1890ff"
           ><a-icon type="edit" />&nbsp;编辑</span
         >
         &nbsp; &nbsp;
@@ -17,7 +17,6 @@
         >
       </span>
     </a-table>
-    <problem-edit-modal ref="editModal" />
   </div>
 </template>
 
@@ -39,6 +38,9 @@ export default {
     deleteProblem: {
       type: Function,
     },
+    openEditModal: {
+      type: Function,
+    },
     editable: {
       type: Boolean,
     },
@@ -57,9 +59,6 @@ export default {
   methods: {
     getRecordId(record) {
       return record.id;
-    },
-    editProblem(record) {
-      this.$refs.editModal.setVisible(record.id);
     },
   },
 };

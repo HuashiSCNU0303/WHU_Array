@@ -5,11 +5,7 @@
       :visible="modalVisible"
       :item="course"
       :handleOk="editCourse"
-      :handleCancel="
-        () => {
-          this.modalVisible = false;
-        }
-      "
+      :handleCancel="closeEditModal"
     />
   </div>
 </template>
@@ -42,7 +38,7 @@ export default {
         pageTitle: "",
         description: "",
         extraType: "courseOperation",
-        editInfo: this.editInfo,
+        editInfo: this.openEditModal,
         delCourse: this.delCourse,
         endCourse: this.endCourse,
         editStatus: false,
@@ -54,17 +50,23 @@ export default {
     ...mapState({
       course: (state) => state.curObj.course.course,
     }),
+    courseName() {
+      return this.course.grade + " " + this.course.name;
+    },
   },
   mounted() {
-    this.setHeader();
-    this.setBreadCrumb();
-    this.$store.dispatch("setCurrentPageHeader", this.header);
-    this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
-    this.$store.dispatch("setCurrentPageType", "Course");
+    this.setPageHeader();
   },
   methods: {
+    setPageHeader() {
+      this.setHeader();
+      this.setBreadCrumb();
+      this.$store.dispatch("setCurrentPageHeader", this.header);
+      this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
+      this.$store.dispatch("setCurrentPageType", "Course");
+    },
     setHeader() {
-      this.header.pageTitle = this.course.name;
+      this.header.pageTitle = this.courseName;
       this.header.description =
         this.course.time +
         "学年<br />课程号：" +
@@ -80,25 +82,73 @@ export default {
           href: "/teacher/course",
         },
         {
-          name: this.course.name,
+          name: this.courseName,
         },
       ];
     },
+
+    // 结束课程
     endCourse() {
-      var course_ = this.course;
-      course_["status"] = "off";
-      this.editCourse(course_);
+      var _this = this;
+      this.$confirm({
+        title: "你确定要结束这个课程吗？",
+        content: "结束课程后，你将不能在这个课程中继续发布作业/考试",
+        onOk() {
+          var _course = this._course;
+          _course.status = "off";
+          _this.editCourse(_course);
+        },
+      });
     },
+
+    // 删除课程
     delCourse() {
-      // 删除课程
+      var _this = this;
+      this.$confirm({
+        title: "你确定要删除这个课程吗？",
+        content: "课程下的所有作业/考试将一并被删除",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          // 删除这个课程，调后端接口
+
+          // 跳转回课程中心
+          _this.$success({
+            title: "删除成功",
+            onOk() {
+              _this.$router.push({
+                path: "/teacher/course",
+              });
+            },
+          });
+        },
+        onCancel() {},
+      });
     },
-    editInfo() {
+
+    // 打开编辑课程信息对话框
+    openEditModal() {
       this.modalVisible = true;
     },
+
+    // 将编辑好的课程信息传回后台
     editCourse(course) {
-      this.modalVisible = false;
-      console.log(course);
       // 把编辑好的course发送到后台
+
+      var _this = this;
+      this.$success({
+        title: "操作成功",
+        onOk() {
+          // 后面再调整一下把Homework和Exam统一吧
+          _this.$store.dispatch("setCurrentCourse", course);
+          _this.setPageHeader();
+          _this.closeEditModal();
+        },
+      });
+    },
+    closeEditModal() {
+      this.modalVisible = false;
     },
   },
 };

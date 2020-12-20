@@ -19,7 +19,7 @@ export default {
     return {
       emptyHint: "当前没有已结束课程",
       endCourseList: [],
-      currentPage: "CourseMgmt",
+      currentPage: "TeaPreCourse",
       isLoading: true,
     };
   },

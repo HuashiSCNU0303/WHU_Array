@@ -16,7 +16,7 @@ export default {
       pageType: (state) => state.curObj.page.type,
     }),
     showCountdown: function () {
-      return this.pageType == "ProblemInHomework" || this.pageType == "ProblemInExam";
+      return this.pageType == "ProblemInWork";
     },
   },
   components: {

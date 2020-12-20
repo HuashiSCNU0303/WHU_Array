@@ -1,4 +1,5 @@
 export default {
+  // 这里全部都要改成用id查询！！！
   handleCourseSwitch (self, role, item) {
     const promise = new Promise(function (resolve, reject) {
       // 调接口，异步操作，下面类似
@@ -14,24 +15,27 @@ export default {
       });
     });
   },
-  handleHomeworkSwitch (self, role, item) {
+
+  handleWorkSwitch (self, role, item) {
     const promise = new Promise(function (resolve, reject) {
       resolve("hello");
     });
     promise.then((res) => {
-      self.$store.dispatch("setCurrentHomework", item);
+      console.log(item);
+      self.$store.dispatch("setCurrentWork", item);
       self.$router.push({
-        path: "/" + role + "/homework/" + item.id,
+        path: "/" + role + "/" + item.type.toLowerCase() + "/" + item.id,
       });
     });
   },
-  handleExamSwitch (self, examId) { },
-  handleProblemSwitch (self, role, item, prePage) {
+
+  handleProblemSwitch (self, item, prePage) {
     const promise = new Promise(function (resolve, reject) {
       resolve("hello");
     });
     promise.then((res) => {
       self.$store.dispatch("setCurrentProblem", item);
+      var role = self.$store.state.curObj.user.user.role; // 获取当前用户的身份（学生/老师）
       self.$router.push({
         path: "/" + role + "/problem/" + item.id,
         query: {

@@ -3,7 +3,7 @@
     <a-modal
       v-model="visible"
       :title="title"
-      @ok="handleOk"
+      @ok="handleOk(problem)"
       @cancel="handleCancel"
       ok-text="提交"
       cancel-text="取消"
@@ -21,10 +21,10 @@
           :wrapper-col="formItemLayout.wrapperCol"
           label="题目名"
         >
-          <a-input :default-value="problem.name" />
+          <a-input v-model="problem.name" />
         </a-form-item>
         <a-form-item label="题目内容">
-          <a-textarea :default-value="problem.description" rows="4" />
+          <a-textarea v-model="problem.description" rows="4" />
         </a-form-item>
         <a-form-item label="测试样例">
           <a-row>
@@ -38,11 +38,11 @@
             :row-key="getRecordId"
             size="small"
           >
-            <span slot="input" slot-scope="text">
-              <a-input :default-value="text" />
+            <span slot="input" slot-scope="text, record">
+              <a-input v-model="record.input" />
             </span>
-            <span slot="output" slot-scope="text">
-              <a-input :default-value="text" />
+            <span slot="output" slot-scope="text, record">
+              <a-input v-model="record.output" />
             </span>
             <span slot="delete" slot-scope="text, record, index">
               <a-icon
@@ -70,8 +70,6 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       },
-      visible: false,
-      problemId: -1,
       problem: {
         id: "",
         name: "",
@@ -99,12 +97,28 @@ export default {
     }),
   },
 
-  methods: {
-    setVisible(problemId) {
-      this.problemId = problemId;
-      this.getProblemInfo();
-      this.visible = true;
+  props: {
+    problemId: {
+      type: Number,
     },
+    visible: {
+      type: Boolean,
+    },
+    handleOk: {
+      type: Function,
+    },
+    handleCancel: {
+      type: Function,
+    },
+  },
+
+  watch: {
+    problemId: function (newVal) {
+      this.getProblemInfo();
+    },
+  },
+
+  methods: {
     getProblemInfo() {
       // 根据problemId获取题目信息
       this.problem = {
@@ -132,9 +146,7 @@ export default {
       };
     },
     deleteTestCase(index) {
-      console.log(index);
       this.problem.testCases.splice(index, 1);
-      console.log(this.problem.testCases);
     },
     addTestCase() {
       this.problem.testCases.push({
@@ -144,12 +156,6 @@ export default {
     },
     getRecordId(record) {
       return record.input;
-    },
-    handleOk() {
-      this.visible = false;
-    },
-    handleCancel() {
-      this.visible = false;
     },
   },
 };

@@ -4,24 +4,24 @@
       <a-col :span="10" style="padding: 0 16px">
         <problem-list
           :editable="work.status == 'published' ? false : true"
-          :workId="work.id"
-          :type="type"
+          :switchToProblem="switchToProblem"
+          :switchToRecord="switchToRecord"
         />
       </a-col>
       <a-col :span="14" class="problem-edit">
-        <router-view :hint="emptyHint" />
+        <router-view
+          :hint="emptyHint"
+          :showAllTestCase="showAllTestCase"
+          :key="routerKey"
+        />
       </a-col>
     </a-row>
     <work-info-modal
       :visible="modalVisible"
-      :item="homework"
-      :type="type == 'Homework' ? '作业' : '考试'"
+      :item="work"
+      :type="typeName"
       :handleOk="editWork"
-      :handleCancel="
-        () => {
-          this.modalVisible = false;
-        }
-      "
+      :handleCancel="closeEditModal"
     />
   </div>
 </template>
@@ -38,10 +38,9 @@ export default {
   data() {
     return {
       modalVisible: false,
-      editable: true, // 由作业状态控制
       header: {
         extraType: "workOperation",
-        editInfo: this.editInfo,
+        editInfo: this.openEditModal,
         delWork: this.delWork,
         publishWork: this.publishWork,
         editStatus: false,
@@ -49,31 +48,35 @@ export default {
         description: "",
       },
       emptyHint: "当前尚未选择题目",
+      showAllTestCase: true,
       breadCrumb: [{}],
+      routerKey: -1,
     };
   },
   computed: {
     ...mapState({
       pageType: (state) => state.curObj.page.type,
       course: (state) => state.curObj.course.course,
-      homework: (state) => state.curObj.homework.homework,
-      exam: (state) => state.curObj.exam.exam,
+      work: (state) => state.curObj.work.work,
     }),
     type() {
       return this.$route.meta.type;
     },
-    work() {
-      return this.type == "Homework" ? this.homework : this.exam;
+    typeName() {
+      return this.type == "Homework" ? "作业" : "考试";
     },
   },
   mounted() {
-    this.setHeader();
-    this.setBreadCrumb();
-    this.$store.dispatch("setCurrentPageHeader", this.header);
-    this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
-    this.$store.dispatch("setCurrentPageType", this.type);
+    this.setPageHeader();
   },
   methods: {
+    setPageHeader() {
+      this.setHeader();
+      this.setBreadCrumb();
+      this.$store.dispatch("setCurrentPageHeader", this.header);
+      this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
+      this.$store.dispatch("setCurrentPageType", "Work");
+    },
     setHeader() {
       this.header.pageTitle = this.course.name + "\n" + this.work.name;
       this.header.description = "截止时间：" + this.work.endTime;
@@ -83,7 +86,7 @@ export default {
       this.breadCrumb = [
         {
           name: "我的课程",
-          href: "/index/course",
+          href: "/teacher/course",
         },
         {
           name: this.course.name,
@@ -96,24 +99,80 @@ export default {
       ];
     },
 
-    editInfo() {
+    switchToProblem(record) {
+      this.routerKey = record.id;
+      this.$router.push({
+        path:
+          "/teacher/" + this.type.toLowerCase() + "/" + this.work.id + "/" + record.id,
+      });
+    },
+
+    switchToRecord() {},
+
+    openEditModal() {
       // 编辑作业信息，弹出作业信息框
       this.modalVisible = true;
     },
 
     delWork() {
-      // 删除作业
+      // 删除作业/考试
+      var _this = this;
+      this.$confirm({
+        title: "你确定要删除这个" + this.typeName + "吗？",
+        content: "所有同学的作答记录将一并被删除",
+        okText: "确定",
+        okType: "danger",
+        cancelText: "取消",
+        onOk() {
+          // 删除这个作业/考试，调后端接口
+
+          // 跳转回课程
+          _this.$success({
+            title: "删除成功",
+            onOk() {
+              _this.utils.toggle.handleCourseSwitch(_this, "teacher", _this.course);
+            },
+          });
+        },
+        onCancel() {},
+      });
     },
 
+    // 发布作业/考试
     publishWork() {
-      // 发布作业
-      var _homework = this.work;
-      _homework["status"] = "published";
-      this.editWork(_homework);
+      var _this = this;
+      this.$confirm({
+        title: "你确定要发布这个" + _this.typeName + "吗？",
+        content: "发布后，你不可以再修改作业，在课上的同学可以见到布置的这些题目",
+        onOk() {
+          var _work = _this.work;
+          _work.status = "published";
+          _this.editWork(_work, false);
+        },
+      });
     },
 
-    editWork(work) {
+    editWork(work, flag) {
       // 将编辑好的作业发送给后台
+
+      var _this = this;
+      // flag表示是否打开了编辑对话框
+      if (flag) {
+        work.startTime = this.utils.countdown.transPickerToString(work.startTime);
+        work.endTime = this.utils.countdown.transPickerToString(work.endTime);
+      }
+      this.$success({
+        title: "操作成功",
+        onOk() {
+          // 后面再调整一下把Homework和Exam统一吧
+          _this.$store.dispatch("setCurrentHomework", work);
+          _this.setPageHeader();
+          _this.closeEditModal();
+        },
+      });
+    },
+
+    closeEditModal() {
       this.modalVisible = false;
     },
   },

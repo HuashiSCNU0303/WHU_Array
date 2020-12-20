@@ -2,24 +2,24 @@
   <div>
     <a-layout-content :style="{ height: '100%', paddingTop: '64px' }">
       <page-header>
-        <slot v-if="breadCrumb != null" slot="breadcrumb" name="breadcrumb">
-          <bread-crumb-nav :items="breadCrumb" :key="refreshKey" />
+        <slot v-if="page.breadCrumb != null" slot="breadcrumb" name="breadcrumb">
+          <bread-crumb-nav :items="page.breadCrumb" :key="refreshKey" />
         </slot>
         <slot slot="title" name="title">
-          <h1>{{ header.pageTitle }}</h1>
+          <h1 v-html="page.header.pageTitle" />
         </slot>
         <slot slot="content" name="headerContent"></slot>
         <div
           slot="content"
-          v-if="!this.$slots.headerContent && header.description"
-          v-html="header.description"
+          v-if="!this.$slots.headerContent && page.header.description"
+          v-html="page.header.description"
         ></div>
         <slot slot="extra" name="extra">
-          <div v-if="header.extraType == 'image'" class="extra-img" :key="refreshKey">
-            <img :src="header.extraImage" />
+          <div v-if="page.header.extraType == 'image'" class="extra-img" :key="refreshKey">
+            <img :src="page.header.extraImage" />
           </div>
           <div
-            v-else-if="header.extraType == 'countdown'"
+            v-else-if="page.header.extraType == 'countdown'"
             class="countdown"
             :key="refreshKey"
           >
@@ -28,23 +28,23 @@
               class="score-display"
               :score="score"
               :time="countdownTime"
-              :type="pageType"
+              :type="page.type"
             />
           </div>
-          <div v-else-if="header.extraType == 'score'">
+          <div v-else-if="page.header.extraType == 'score'">
             <score-display
               class="score-display score"
               :score="score"
               :time="countdownTime"
-              :type="pageType"
+              :type="page.type"
             />
           </div>
-          <div v-else-if="header.extraType == 'courseOperation'" class="op-buttons">
+          <div v-else-if="page.header.extraType == 'courseOperation'" class="op-buttons">
             <a-button
-              v-if="header.editStatus == true"
+              v-if="page.header.editStatus == true"
               type="primary"
               icon="edit"
-              @click="header.editInfo"
+              @click="page.header.editInfo"
               >编辑信息</a-button
             >
             <a-button v-else type="primary" icon="edit" disabled>不可编辑</a-button>
@@ -52,16 +52,16 @@
             <a-button
               type="danger"
               icon="delete"
-              @click="header.delCourse"
+              @click="page.header.delCourse"
               style="margin-left: 16px"
               >删除课程</a-button
             >
 
             <a-button
-              v-if="header.editStatus == true"
+              v-if="page.header.editStatus == true"
               type="primary"
               icon="carry-out"
-              @click="header.endCourse"
+              @click="page.header.endCourse"
               style="margin-left: 16px"
               ghost
               >结束课程</a-button
@@ -75,12 +75,12 @@
               >已结束</a-button
             >
           </div>
-          <div v-else-if="header.extraType == 'workOperation'" class="op-buttons">
+          <div v-else-if="page.header.extraType == 'workOperation'" class="op-buttons">
             <a-button
-              v-if="header.editStatus == true"
+              v-if="page.header.editStatus == true"
               type="primary"
               icon="edit"
-              @click="header.editInfo"
+              @click="page.header.editInfo"
               >编辑信息</a-button
             >
             <a-button v-else type="primary" icon="edit" disabled>不可编辑</a-button>
@@ -88,19 +88,19 @@
             <a-button
               type="danger"
               icon="delete"
-              @click="header.delWork"
+              @click="page.header.delWork"
               style="margin-left: 16px"
-              >删除{{pageType == "Homework"? "作业": "考试"}}</a-button
+              >删除{{ page.type == "Homework" ? "作业" : "考试" }}</a-button
             >
 
             <a-button
-              v-if="header.editStatus == true"
+              v-if="page.header.editStatus == true"
               type="primary"
               icon="carry-out"
-              @click="header.publishWork"
+              @click="page.header.publishWork"
               style="margin-left: 16px"
               ghost
-              >发布{{pageType == "Homework"? "作业": "考试"}}</a-button
+              >发布{{ page.type == "Homework" ? "作业" : "考试" }}</a-button
             >
             <a-button
               v-else
@@ -143,41 +143,21 @@ export default {
   },
   computed: {
     ...mapState({
-      breadCrumb: (state) => state.curObj.page.breadCrumb,
-      pageType: (state) => state.curObj.page.type,
-      header: (state) => state.curObj.page.header,
-      homework: (state) => state.curObj.homework.homework,
-      exam: (state) => state.curObj.exam.exam,
+      page: (state) => state.curObj.page,
+      work: (state) => state.curObj.work.work,
       problem: (state) => state.curObj.problem.problem,
     }),
     countdownTime: function () {
-      if (this.header.extraType != "countdown") {
+      if (this.page.header.extraType != "countdown") {
         return null;
       }
-      switch (this.pageType) {
-        case "Homework": {
-          return this.homework.endTime;
-        }
-        case "Exam": {
-          return this.exam.endTime;
-        }
-      }
+      return this.work.endTime;
     },
     score: function () {
-      if (this.header.extraType == "image") {
+      if (this.page.header.extraType == "image") {
         return null;
       }
-      switch (this.pageType) {
-        case "Homework": {
-          return this.homework.score;
-        }
-        case "Exam": {
-          return this.exam.score;
-        }
-        default: {
-          return this.problem.score;
-        }
-      }
+      return this.page.type == "Work"? this.work.score: this.problem.score;
     },
   },
   methods: {
@@ -186,7 +166,7 @@ export default {
     },
   },
   watch: {
-    header: function () {
+    'page.header': function () {
       this.updateComponents();
     },
   },

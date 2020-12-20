@@ -148,7 +148,7 @@ export default {
         name: "",
         password: "",
       },
-      role: "",
+      role: "2",
     };
   },
   methods: {
@@ -248,7 +248,7 @@ export default {
       }
     },
     autoLogin(role) {
-      var jumpUrl = role == "1" ? "/index" : "/index"; //左边为教师端跳转网址，右边为学生端
+      var jumpUrl = role == "1" ? "/teacher" : "/student"; //左边为教师端跳转网址，右边为学生端
       axios
         .post("http://localhost:8009/auth/login", {
           //remember暂时为true

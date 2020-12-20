@@ -26,6 +26,7 @@ export default {
   methods: {
     handleSwitch() {
       // 跳转到id对应的那一场考试
+      this.utils.toggle.handleWorkSwitch(this, "student", this.currentExamData);
     }
   }
 };

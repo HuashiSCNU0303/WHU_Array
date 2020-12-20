@@ -2,7 +2,7 @@
   <a-card :hoverable="true">
     <a-card-meta>
       <div style="margin-bottom: 3px" slot="title">
-        {{ item.grade }}&nbsp;{{ item.name }}
+        {{ item.grade }} &nbsp; {{ item.name }}
       </div>
       <div class="meta-content" slot="description">
         {{ item.time }}学年<br />课程号：{{ item.id }}
@@ -21,6 +21,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

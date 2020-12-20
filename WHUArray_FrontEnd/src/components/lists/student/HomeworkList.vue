@@ -50,10 +50,11 @@ export default {
   methods: {
     handleHomeworkSwitch(record) {
       // 跳转到具体作业
-      this.utils.toggle.handleHomeworkSwitch(this, record);
+      // 还要设置当前课程，待后端接口完成后再做
+      this.utils.toggle.handleWorkSwitch(this, "student", record);
     },
     handleCourseSwitch(record) {
-      // 跳转到具体课程
+      // 跳转到具体课程，待后端接口完成后再做
       var item = {
         id: record.courseId,
         name: record.courseName,
@@ -64,7 +65,7 @@ export default {
       this.utils.toggle.handleCourseSwitch(this, item);
     },
     getRecordId(record) {
-      return record.homeworkId;
+      return record.id;
     },
   },
 };

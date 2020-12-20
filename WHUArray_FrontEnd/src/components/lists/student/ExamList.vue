@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     handleCourseSwitch(record) {
-      // 跳转到id对应的课程
+      // 跳转到id对应的课程，待后端接口完成以后再做
       var item = {
         id: record.courseId,
         name: record.courseName,

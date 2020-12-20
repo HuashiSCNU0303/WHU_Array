@@ -72,13 +72,22 @@ export default {
     },
     addCourse(course) {
       var date = new Date();
-
-      // 设置创建时间与初始状态（进行中
-      course["time"] = date.getMonth() < 8 ? date.getFullYear() - 1 : date.getFullYear();
+      // 设置创建时间与初始状态
+      var beginYear = date.getMonth() < 8 ? date.getFullYear() - 1 : date.getFullYear();
+      course["time"] = beginYear + "-" + (beginYear + 1);
       course["status"] = "on";
-      console.log(course);
-      // 老师添加课程，提交到后台
+      course["id"] = 4;
+      // 把要添加的课程（就是这个course），提交到后台，给我返回一个课程号！！
+
+      this.currentCourseList.push(course);
       this.modalVisible = false;
+      var _this = this;
+      this.$success({
+        title: "添加成功",
+        onOk() {
+          // 添加成功以后页面reload一下
+        },
+      });
     },
   },
 };

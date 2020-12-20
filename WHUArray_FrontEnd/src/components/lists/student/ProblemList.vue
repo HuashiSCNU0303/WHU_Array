@@ -44,6 +44,7 @@ export default {
     },
     currentPage: {
       type: String,
+      default: "Work",
     },
   },
   computed: {
@@ -56,38 +57,14 @@ export default {
       return {
         on: {
           click: () => {
-            /*var item = {
-              id: record.problemId,
-              name: record.problemName,
-              course: record.problemCourse,
-              work: record.problemWork,
-              tag: record.problemTags,
-              isDone: record.isDone,
-              score: record.score,
-            };*/
             var source = this.getSource();
-            this.utils.toggle.handleProblemSwitch(this, "student", record, source);
+            this.utils.toggle.handleProblemSwitch(this, record, source);
           },
         },
       };
     },
     getSource() {
-      var result = "";
-      switch (this.currentPage) {
-        case "ProblemRepos": {
-          result = "repos";
-          break;
-        }
-        case "Homework": {
-          result = "homework";
-          break;
-        }
-        case "Exam": {
-          result = "exam";
-          break;
-        }
-      }
-      return result;
+      return this.currentPage == "ProblemRepos" ? "repos" : "work";
     },
     getRecordId(record) {
       return record.id;
@@ -96,7 +73,7 @@ export default {
   mounted() {
     // 深度复制，不能简单用赋值号，不然只复制引用过去
     this.columns = JSON.parse(JSON.stringify(this.problemListCol));
-    if (typeof this.currentPage !== "undefined" && this.currentPage != "ProblemRepos") {
+    if (this.currentPage != "ProblemRepos") {
       this.columns.splice(2, 2);
     }
   },

@@ -20,11 +20,11 @@ export default {
     };
   },
   mounted() {
-    this.getHomeworks();
+    this.getAllCourses();
   },
   methods: {
-    getHomeworks() {
-      // 获取作业列表，下面只是模拟一下请求后端获得结果而已
+    getAllCourses() {
+      // 获取所有的课程列表
       setTimeout(() => {
         this.courseList = this.$store.state.tempData.courseList.addList;
         this.isLoading = false;

@@ -96,7 +96,7 @@ export default {
     ],
     addList: [
       {
-        id: "16",
+        id: 16,
         name: "数字逻辑与数字电路",
         teacher: "涂卫平",
         grade: "2018级",
@@ -105,7 +105,7 @@ export default {
         isSelected: false,
       },
       {
-        id: "17",
+        id: 17,
         name: "离散数学",
         teacher: "吴志健",
         grade: "2018级",
@@ -114,7 +114,7 @@ export default {
         isSelected: true,
       },
       {
-        id: "18",
+        id: 18,
         name: "高等数学B2",
         teacher: "刘伟安",
         grade: "2018级",
@@ -123,16 +123,16 @@ export default {
         isSelected: false,
       },
       {
-        id: "19",
+        id: 19,
         name: "线性代数B",
         teacher: "黄学英",
         grade: "2019级",
         time: "2019-2020",
         description: "线代",
-        isSelected: false,
+        isSelected: true,
       },
       {
-        id: "20",
+        id: 20,
         name: "面向对象程序设计",
         teacher: "桂浩",
         grade: "2019级",
@@ -142,10 +142,6 @@ export default {
       },
     ],
   },
-  mutations: {
-
-  },
-  actions: {
-
-  },
-}
+  mutations: {},
+  actions: {},
+};
