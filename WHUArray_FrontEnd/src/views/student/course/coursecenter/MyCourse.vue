@@ -1,7 +1,7 @@
 <template>
   <div>
     <big-title><p>我的课程</p></big-title>
-    <all-expand-col-panel :isLoading="isLoading" :headers="headers">
+    <all-expand-col-panel :isLoading="isLoading" :headers="headers" :keys="keys">
       <div slot="panel1_content">
         <course-card-list v-if="currentCourseList.length > 0" :data="currentCourseList">
           <div slot="content" slot-scope="props" @click="switchToCourse(props.item)">
@@ -28,6 +28,7 @@ export default {
       currentCourseList: [],
       endCourseList: [],
       isLoading: true,
+      keys: ["1", "2"],
     };
   },
   mounted() {
@@ -51,14 +52,27 @@ export default {
       //   .catch((error) => {
       //     console.log(error);
       //   });
-      // console.log(this.$route);
       // 获取课程列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        (this.currentCourseList = this.$store.state.tempData.courseList.curList),
-          (this.endCourseList = this.$store.state.tempData.courseList.endList),
-          (this.isLoading = false);
-      }, 1000);
+      var _this = this;
+      var data = {
+        id: -1,
+      };
+      this.api.student.getCourseList(data).then((res) => {
+        var response = res.data;
+        // 对response做处理，变成下面的courses;
+        var courses;
+        for (var i = 0; i < courses.length; i++) {
+          var course = courses[i];
+          if (course.status == "on") {
+            _this.currentCourseList.push(course);
+          } else {
+            _this.endCourseList.push(course);
+          }
+        }
+        _this.isLoading = false;
+      });
     },
+
     switchToCourse(item) {
       this.utils.toggle.handleCourseSwitch(this, "student", item);
     },

@@ -15,7 +15,11 @@
           v-html="page.header.description"
         ></div>
         <slot slot="extra" name="extra">
-          <div v-if="page.header.extraType == 'image'" class="extra-img" :key="refreshKey">
+          <div
+            v-if="page.header.extraType == 'image'"
+            class="extra-img"
+            :key="refreshKey"
+          >
             <img :src="page.header.extraImage" />
           </div>
           <div
@@ -157,7 +161,10 @@ export default {
       if (this.page.header.extraType == "image") {
         return null;
       }
-      return this.page.type == "Work"? this.work.score: this.problem.score;
+      return this.page.type.indexOf("Problem") == 0
+        ? this.problem.score
+        : this.work.score;
+      // 以后好像还有课程的分数？
     },
   },
   methods: {
@@ -166,7 +173,7 @@ export default {
     },
   },
   watch: {
-    'page.header': function () {
+    "page.header": function () {
       this.updateComponents();
     },
   },

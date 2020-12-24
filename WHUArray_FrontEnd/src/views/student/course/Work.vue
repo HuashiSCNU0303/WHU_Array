@@ -40,7 +40,7 @@ export default {
     this.setBreadCrumb();
     this.$store.dispatch("setCurrentPageHeader", this.header);
     this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
-    this.$store.dispatch("setCurrentPageType", "Work");
+    this.$store.dispatch("setCurrentPageType", this.type);
     this.getProblems();
   },
   methods: {
@@ -80,10 +80,18 @@ export default {
       //     _this.problemList = res.data;
       //     _this.isLoading = false;
       //   });
-      setTimeout(() => {
-        this.problemList = this.$store.state.tempData.problemList.problemList;
-        this.isLoading = false;
-      }, 1000);
+      var _this = this;
+      var data = {
+        studentId: "",
+        workId: "",
+      };
+      this.api.student.getWorkProblems(data).then((res) => {
+        var response = res.data;
+        // 对response进行处理，变成problemList_temp;
+        var problemList_temp = [];
+        _this.problemList = problemList_temp;
+        _this.isLoading = false;
+      });
     },
   },
 };

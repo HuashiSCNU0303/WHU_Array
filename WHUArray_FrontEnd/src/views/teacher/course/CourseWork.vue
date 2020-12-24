@@ -7,6 +7,7 @@
     <div v-else>
       <a-row>
         <a-button
+          v-if="course.status == 'on'"
           type="primary"
           icon="user"
           @click="
@@ -17,10 +18,34 @@
           style="float: left"
           >添加{{ typeName }}</a-button
         >
+        <div style="float: right">
+          <a-select style="width: 120px" v-model="curFilterStatus">
+            <a-select-option
+              v-for="option in statusOptions"
+              :value="option"
+              :key="option"
+            >
+              {{ option }}
+            </a-select-option>
+          </a-select>
+          <a-button
+            type="primary"
+            icon="user"
+            @click="
+              () => {
+                refreshKey = 1;
+                curFilterStatus = '';
+              }
+            "
+            ghost
+            >重置</a-button
+          >
+        </div>
       </a-row>
       <tea-work-card-list
         v-if="workList.length > 0"
         :data="workList"
+        :key="refreshKey"
         style="margin: 16px 0"
       >
         <div slot="content" slot-scope="props" @click="switchToWork(props.item)">
@@ -57,10 +82,32 @@ export default {
       return this.type == "Homework" ? "作业" : "考试";
     },
   },
+  watch: {
+    type: function () {
+      this.isLoading = true;
+      this.getWorks();
+    },
+    curFilterStatus: function () {
+      if (this.curFilterStatus == "") {
+        for (var i = 0; i < this.workList.length; i++) {
+          this.workList[i].visible = true;
+        }
+      } else {
+        for (var i = 0; i < this.workList.length; i++) {
+          this.workList[i].visible =
+            this.workList[i].status == this.curFilterStatus ? true : false;
+        }
+      }
+      this.refreshKey++;
+    },
+  },
   data() {
     return {
       modalVisible: false,
       workList: [],
+      statusOptions: ["未发布", "已发布", "已结束"],
+      curFilterStatus: "",
+      refreshKey: 1,
       isLoading: true, // 标识一下正在加载的状态
       emptyHint: "当前没有未完成的作业",
     };
@@ -71,19 +118,27 @@ export default {
   methods: {
     getWorks() {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        // 根据type判断一下，获取作业列表还是考试列表
-        this.workList = this.$store.state.tempData.homeworkList.homeworkList;
-        this.isLoading = false;
-      }, 1000);
+      var _this = this;
+      var data = {
+        courseId: -1,
+        type: this.type, // 根据type判断一下，获取作业列表还是考试列表
+      };
+      this.api.teacher.getCourseWork(data).then((res) => {
+        var response = res.data;
+        // 对response进行处理，变成下面的works
+        var works;
+        for (var i = 0; i < works.length; i++) {
+          var work = works[i];
+          _this.utils.statusHandler.handleTeacherWork(_this, work);
+          work["visible"] = true;
+        }
+        _this.workList = works;
+        _this.isLoading = false;
+      });
     },
     switchToWork(item) {
       // 跳转到作业
-      if (this.type == "Homework") {
-        this.utils.toggle.handleHomeworkSwitch(this, "teacher", item);
-      } else {
-        this.utils.toggle.handleExamSwitch(this, "teacher", item);
-      }
+      this.utils.toggle.handleWorkSwitch(this, "teacher", item);
     },
     addWork(work) {
       var work_ = {
@@ -93,16 +148,17 @@ export default {
         status: "unpublished",
         type: this.type,
       };
-      // 把组装好的work_发送给后台，添加作业/考试，给我返回一个课程号！！
-
-      work_["id"] = 10005;
-      this.workList.push(work_);
-      this.modalVisible = false;
-      this.$success({
-        title: "添加成功",
-        onOk() {
-          // 添加成功以后页面reload一下
-        },
+      // 把组装好的work_发送给后台，添加作业/考试，给我返回一个作业/考试号！！
+      var _this = this;
+      this.api.teacher.addWork(work_).then((res) => {
+        var response = res.data;
+        // 对response进行处理，取得作业/考试号
+        work_["id"] = 10005;
+        _this.workList.push(work_);
+        _this.modalVisible = false;
+        _this.$success({
+          title: "添加成功",
+        });
       });
     },
   },

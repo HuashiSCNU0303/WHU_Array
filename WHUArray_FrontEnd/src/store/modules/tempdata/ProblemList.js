@@ -6,7 +6,7 @@ export default {
         name: "两数之和",
         courseName: "算法设计与分析",
         workName: "第一次作业",
-        tags: ["算法"],
+        tags: ["算法", "数据结构", "链表", "位表示"],
         isDone: true,
         score: 90,
       },
@@ -21,10 +21,6 @@ export default {
       },
     ],
   },
-  mutations: {
-
-  },
-  actions: {
-
-  }
-}
+  mutations: {},
+  actions: {},
+};

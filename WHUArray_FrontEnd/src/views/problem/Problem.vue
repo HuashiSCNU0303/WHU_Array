@@ -35,14 +35,17 @@
               <a-tabs>
                 <a-tab-pane key="input" tab="测试输入">
                   <a-textarea
+                    v-model="input"
                     placeholder="可以在此输入测试样例"
                     :rows="8"
                     style="max-height: 200px"
                   />
                 </a-tab-pane>
                 <a-tab-pane key="output" tab="输出结果">
+                  <center-loading v-if="isLoading" />
                   <a-textarea
-                    placeholder="测试结果示例……………………"
+                    v-else
+                    v-model="output"
                     :rows="8"
                     style="max-height: 200px"
                     read-only
@@ -51,10 +54,19 @@
               </a-tabs>
             </a-row>
             <a-row style="margin: 16px 0">
-              <a-button type="primary" class="buttons" style="margin-left: 16px"
+              <a-button
+                type="primary"
+                class="buttons"
+                style="margin-left: 16px"
+                @click="handleSubmit"
                 >提交</a-button
               >
-              <a-button type="primary" icon="caret-right" class="buttons" ghost
+              <a-button
+                type="primary"
+                icon="caret-right"
+                class="buttons"
+                ghost
+                @click="handleDebug"
                 >运行结果</a-button
               >
             </a-row>
@@ -72,7 +84,7 @@ import MonacoEditor from "vue-monaco";
 export default {
   data() {
     return {
-      isLoading: true,
+      isLoading: false,
       showCountdown: true,
       code: "",
       editor: null,
@@ -96,6 +108,8 @@ export default {
       },
       pageType: "",
       breadCrumb: [{}],
+      output: "",
+      input: "",
     };
   },
   components: {
@@ -110,6 +124,8 @@ export default {
     }),
   },
   mounted() {
+    // 是不是需要把提交记录（主要是提交的代码）拿下来？
+
     const source = this.$route.query.source;
     const sourceStr = this.handleSource(source);
     this.setHeader(sourceStr);
@@ -176,6 +192,43 @@ export default {
       // 跳转到不同的路由页面
       this.$router.push({
         path: "./" + value,
+      });
+    },
+    handleSubmit() {
+      // 提交代码
+      this.isLoading = true;
+      // 需要提交的数据
+      var data = {
+        userId: this.user.id,
+        questionId: this.problem.id,
+        lang: this.selectedLang,
+        recordContent: this.code,
+      };
+      var _this = this;
+      this.api.problem.submitProblem(data).then((res) => {
+        var response = res.data;
+        // 对response做处理
+        // 显示运行结果
+        _this.isLoading = false;
+      });
+    },
+    handleDebug() {
+      // 运行结果
+      this.isLoading = true;
+      // 需要提交的数据
+      var data = {
+        userId: this.user.id,
+        questionId: this.problem.id,
+        lang: this.selectedLang,
+        recordContent: this.code,
+        input: this.input,
+      };
+      var _this = this;
+      this.api.problem.debugProblem(data).then((res) => {
+        var response = res.data;
+        // 对response做处理
+        // 显示运行结果
+        _this.isLoading = false;
       });
     },
   },

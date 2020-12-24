@@ -29,10 +29,16 @@ export default {
   methods: {
     getProblems() {
       // 获取题目列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        this.problemList = this.$store.state.tempData.problemList.problemList;
-        this.isLoading = false;
-      }, 1000);
+      var _this = this;
+      var data = {
+        role: "",
+        id: -1
+      };
+      this.api.problem.getProblems(data, ).then((res) => {
+        var response = res.data;
+        // 对response做处理
+        _this.isLoading = false;
+      });
     },
   },
 };

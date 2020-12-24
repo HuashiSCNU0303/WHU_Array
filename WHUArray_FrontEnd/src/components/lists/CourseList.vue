@@ -8,7 +8,6 @@
       >
         <a-input
           v-ant-ref="(c) => (searchInput = c)"
-          :placeholder="`Search ${column.dataIndex}`"
           :value="selectedKeys[0]"
           style="width: 188px; margin-bottom: 8px; display: block"
           @change="(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])"
@@ -121,6 +120,11 @@ export default {
     },
 
     setFilters() {
+      this.columns[0].onFilter = (text, record) => {
+        return record.id.toString().includes(text);
+      };
+      this.columns[0].onFilterDropdownVisibleChange = this.onFilterDropdownVisibleChange();
+
       this.columns[1].onFilter = (text, record) => {
         return record.name.includes(text);
       };
@@ -181,11 +185,17 @@ export default {
         cancelText: "取消",
         onOk() {
           // 发撤课请求
-          _this.$success({
-            title: "操作成功",
-            onOk() {
-              record.isSelected = false;
-            },
+          var data = {
+            studentId: -1,
+            courseId: -1,
+          };
+          _this.api.student.dropCourse(data).then((res) => {
+            _this.$success({
+              title: "操作成功",
+              onOk() {
+                record.isSelected = false;
+              },
+            });
           });
         },
         onCancel() {},
@@ -194,11 +204,18 @@ export default {
 
     addCourse(record) {
       // 发选课请求
-      this.$success({
-        title: "操作成功",
-        onOk() {
-          record.isSelected = true;
-        },
+      var _this = this;
+      var data = {
+        studentId: -1,
+        courseId: -1,
+      };
+      this.api.student.dropCourse(data).then((res) => {
+        _this.$success({
+          title: "操作成功",
+          onOk() {
+            record.isSelected = true;
+          },
+        });
       });
     },
   },

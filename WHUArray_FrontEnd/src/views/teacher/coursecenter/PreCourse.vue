@@ -33,11 +33,20 @@ export default {
   },
   methods: {
     getCourses() {
-      setTimeout(() => {
-        this.endCourseList = this.courseList;
-        this.isLoading = false;
-        clearInterval();
-      }, 1000);
+      var _this = this;
+      var data = {
+        id: -1,
+      };
+      this.api.teacher.getPreCourseList(data).then((res) => {
+        var response = res.data;
+        // 对response做处理，变成下面的courses;
+        var courses;
+        for (var i = 0; i < courses.length; i++) {
+          var course = courses[i];
+          _this.endCourseList.push(course);
+        }
+        _this.isLoading = false;
+      });
     },
   },
 };

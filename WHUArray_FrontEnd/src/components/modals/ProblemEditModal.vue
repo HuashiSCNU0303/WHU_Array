@@ -121,7 +121,7 @@ export default {
   methods: {
     getProblemInfo() {
       // 根据problemId获取题目信息
-      this.problem = {
+      /*this.problem = {
         id: this.problemId,
         name: "",
         description: "",
@@ -143,7 +143,41 @@ export default {
             output: "6",
           },
         ],
+      };*/
+      var _this = this;
+      // 只传id的时候不需要提交记录了，是老师要编辑题目
+      var data = {
+        problemId: this.problemId,
       };
+      this.api.problem.getProblemDetail(data, ).then((res) => {
+        var response = res.data;
+        // 对response做处理
+
+        // problem_temp是获取到的problem对象
+        var problem_temp = {
+          name: "两数之和",
+          // 需要注意把\n变成<br />
+          description:
+            "给定一个整数数组 nums 和一个目标值target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标。<br />你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。",
+          // 空格转&nbsp; \n转<br />
+          testCases: [
+            {
+              input: "1&nbsp;2",
+              output: "3",
+            },
+            {
+              input: "4&nbsp;5",
+              output: "6",
+            },
+            {
+              input: "7&nbsp;8",
+              output: "9",
+            },
+          ],
+          tags: ["算法", "数据结构"],
+        };
+        _this.problem = problem_temp;
+      });
     },
     deleteTestCase(index) {
       this.problem.testCases.splice(index, 1);

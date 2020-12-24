@@ -10,7 +10,7 @@
           >已完成：{{ currentExamData.currentScore }} /
           {{ currentExamData.fullScore }}分</a
         >
-        <a>剩余：{{ currentExamData.remainingTime }}分钟</a>
+        <a>剩余：<span v-html="currentExamData.remainingTime" /></a>
       </template>
     </a-card>
   </div>
@@ -27,8 +27,8 @@ export default {
     handleSwitch() {
       // 跳转到id对应的那一场考试
       this.utils.toggle.handleWorkSwitch(this, "student", this.currentExamData);
-    }
-  }
+    },
+  },
 };
 </script>
 

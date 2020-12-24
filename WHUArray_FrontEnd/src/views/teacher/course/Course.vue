@@ -29,7 +29,7 @@ export default {
           text: "所有考试",
         },
         {
-          key: "studentList",
+          key: "students",
           iconType: "user",
           text: "学生列表",
         },
@@ -94,7 +94,7 @@ export default {
         title: "你确定要结束这个课程吗？",
         content: "结束课程后，你将不能在这个课程中继续发布作业/考试",
         onOk() {
-          var _course = this._course;
+          var _course = _this.course;
           _course.status = "off";
           _this.editCourse(_course);
         },
@@ -112,15 +112,19 @@ export default {
         cancelText: "取消",
         onOk() {
           // 删除这个课程，调后端接口
-
-          // 跳转回课程中心
-          _this.$success({
-            title: "删除成功",
-            onOk() {
-              _this.$router.push({
-                path: "/teacher/course",
-              });
-            },
+          var data = {
+            id: -1,
+          };
+          _this.api.teacher.delCourse(data).then((res) => {
+            // 跳转回课程中心
+            _this.$success({
+              title: "删除成功",
+              onOk() {
+                _this.$router.push({
+                  path: "/teacher/course",
+                });
+              },
+            });
           });
         },
         onCancel() {},
@@ -135,16 +139,17 @@ export default {
     // 将编辑好的课程信息传回后台
     editCourse(course) {
       // 把编辑好的course发送到后台
-
       var _this = this;
-      this.$success({
-        title: "操作成功",
-        onOk() {
-          // 后面再调整一下把Homework和Exam统一吧
-          _this.$store.dispatch("setCurrentCourse", course);
-          _this.setPageHeader();
-          _this.closeEditModal();
-        },
+      var data = course; // 数据可能还需要处理，先留着
+      this.api.teacher.editCourse(data).then((res) => {
+        _this.$success({
+          title: "操作成功",
+          onOk() {
+            _this.$store.dispatch("setCurrentCourse", course);
+            _this.setPageHeader();
+            _this.closeEditModal();
+          },
+        });
       });
     },
     closeEditModal() {

@@ -18,12 +18,14 @@ Vue.component("stu-problem-list", StuProblemList);
 
 import TeaProblemList from "./teacher/ProblemList"
 import TeaWorkCardList from "./teacher/WorkCardList"
+import TeaStudentList from "./teacher/StudentList"
 
 Vue.component("tea-problem-list", TeaProblemList);
 Vue.component("tea-work-card-list", TeaWorkCardList);
+Vue.component("tea-student-list", TeaStudentList);
 
 export default {
   CourseCardList, CourseList,
   StuExamList, StuHomeworkList, StuProblemList,
-  TeaProblemList, TeaWorkCardList,
+  TeaProblemList, TeaWorkCardList, TeaStudentList,
 }

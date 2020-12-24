@@ -15,12 +15,11 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
-      pageType: (state) => state.curObj.page.type,
       work: (state) => state.curObj.work.work,
     }),
     parent: function () {
       return {
-        type: "Work",
+        type: this.work.type,
         time: this.work.endTime,
         score: this.work.score,
       };

@@ -3,7 +3,7 @@
     <a-row>
       <a-col :span="10" style="padding: 0 16px">
         <problem-list
-          :editable="work.status == 'published' ? false : true"
+          :editable="work.status == '未发布' ? true : false"
           :switchToProblem="switchToProblem"
           :switchToRecord="switchToRecord"
         />
@@ -75,12 +75,12 @@ export default {
       this.setBreadCrumb();
       this.$store.dispatch("setCurrentPageHeader", this.header);
       this.$store.dispatch("setCurrentBreadCrumb", this.breadCrumb);
-      this.$store.dispatch("setCurrentPageType", "Work");
+      this.$store.dispatch("setCurrentPageType", this.type);
     },
     setHeader() {
       this.header.pageTitle = this.course.name + "\n" + this.work.name;
       this.header.description = "截止时间：" + this.work.endTime;
-      this.header.editStatus = this.work.status == "unpublished" ? true : false;
+      this.header.editStatus = this.work.status == "未发布" ? true : false;
     },
     setBreadCrumb() {
       this.breadCrumb = [
@@ -107,7 +107,11 @@ export default {
       });
     },
 
-    switchToRecord() {},
+    switchToRecord() {
+      this.$router.push({
+        name: this.type + "SubmitRecord",
+      });
+    },
 
     openEditModal() {
       // 编辑作业信息，弹出作业信息框
@@ -125,13 +129,17 @@ export default {
         cancelText: "取消",
         onOk() {
           // 删除这个作业/考试，调后端接口
-
-          // 跳转回课程
-          _this.$success({
-            title: "删除成功",
-            onOk() {
-              _this.utils.toggle.handleCourseSwitch(_this, "teacher", _this.course);
-            },
+          var data = {
+            id: this.work.id,
+          };
+          _this.api.teacher.delWork(data).then((res) => {
+            // 跳转回课程
+            _this.$success({
+              title: "删除成功",
+              onOk() {
+                _this.utils.toggle.handleCourseSwitch(_this, "teacher", _this.course);
+              },
+            });
           });
         },
         onCancel() {},
@@ -154,21 +162,22 @@ export default {
 
     editWork(work, flag) {
       // 将编辑好的作业发送给后台
-
       var _this = this;
       // flag表示是否打开了编辑对话框
       if (flag) {
         work.startTime = this.utils.countdown.transPickerToString(work.startTime);
         work.endTime = this.utils.countdown.transPickerToString(work.endTime);
       }
-      this.$success({
-        title: "操作成功",
-        onOk() {
-          // 后面再调整一下把Homework和Exam统一吧
-          _this.$store.dispatch("setCurrentHomework", work);
-          _this.setPageHeader();
-          _this.closeEditModal();
-        },
+      var data = work; // data可能还要再处理
+      this.api.teacher.editWork(data).then((res) => {
+        _this.$success({
+          title: "操作成功",
+          onOk() {
+            _this.$store.dispatch("setCurrentWork", work);
+            _this.setPageHeader();
+            _this.closeEditModal();
+          },
+        });
       });
     },
 

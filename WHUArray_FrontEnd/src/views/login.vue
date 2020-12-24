@@ -153,74 +153,35 @@ export default {
   },
   methods: {
     login() {
-      console.log(this.role);
-      switch (this.role) {
-        case "1": //教师
-          var user = {
-            username: this.loginUserInfo.username,
-            role: "teacher",
-          };
-          this.$store.dispatch("setCurrentUser", user);
-          this.$router.push({
-            path: "/teacher",
+      var user = {
+        username: this.loginUserInfo.username,
+        role: this.role == "1" ? "teacher" : "student",
+      };
+      var data = {
+        ...this.loginUserInfo,
+        rememberMe: true,
+      };
+      var _this = this;
+      this.api.user
+        .login(data)
+        .then((res) => {
+          let token = res.headers.authorization;
+          localStorage.setItem("token", token);
+          _this.$store.dispatch("setCurrentUser", user);
+          _this.$router.push({
+            path: "/" + (_this.role == "1" ? "teacher" : "student"),
           });
-          /*axios
-            .post("http://localhost:8009/auth/login", {
-              // remember暂时为true
-              ...this.loginUserInfo,
-              rememberMe: true,
-            })
-            .then((res) => {
-              console.log(res);
-              let token = res.headers.authorization;
-              localStorage.setItem("token", token);
-              this.$router.push({ path: "/index" }); //教师端的主页地址
-            });*/
-          break;
-        case "2": //学生
-          var user = {
-            username: this.loginUserInfo.username,
-            role: "student",
-          };
-          this.$store.dispatch("setCurrentUser", user);
-          this.$router.push({ path: "/student" });
-          /*axios
-            .post("http://localhost:8009/auth/login", {
-              //remember暂时为true
-              ...this.loginUserInfo,
-              rememberMe: true,
-            })
-            .then((res) => {
-              console.log(res);
-              let status = res.status;
-              console.log(status);
-              if (status != null && status === 200) {
-                // 登录成功
-                console.log("come");
-                let token = res.headers["authorization"];
-                console.log(token);
-                localStorage.setItem("token", token);
-                // 设置当前user
-                var user = {
-                  username: this.loginUserInfo.username,
-                  role: 1,
-                };
-                this.$store.dispatch("setCurrentUser", user);
-                // 跳转
-                this.$router.push({ path: "/index" });
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-              if (error.response.status === 401) {
-                alert("用户名或密码错误");
-              }
-            });*/
-          break;
-      }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            alert("用户名或密码错误");
+          }
+        });
     },
+
     register() {
-      // 请求后台注册接口
+      // 请求后台注册接口，暂时没接入后端
       console.log(this.registerUserInfo.name);
       switch (this.role) {
         case "1":
@@ -247,24 +208,20 @@ export default {
           break;
       }
     },
+
     autoLogin(role) {
-      var jumpUrl = role == "1" ? "/teacher" : "/student"; //左边为教师端跳转网址，右边为学生端
-      axios
-        .post("http://localhost:8009/auth/login", {
-          //remember暂时为true
-          ...this.registerUserInfo,
-          rememberMe: true,
-        })
+      var data = {
+        ...this.registerUserInfo,
+        rememberMe: true,
+      };
+      this.api.user
+        .autoLogin(data)
         .then((res) => {
-          console.log(res);
           let status = res.status;
-          console.log(status);
           if (status != null && status === 200) {
-            console.log("come");
             let token = res.headers.authorization;
-            console.log(token);
             localStorage.setItem("token", token);
-            this.$router.push({ path: jumpUrl });
+            this.$router.push({ path: _this.role == "1" ? "/teacher" : "/student" });
           }
         })
         .catch((error) => {

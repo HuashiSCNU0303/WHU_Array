@@ -7,7 +7,7 @@
     >
     <a-tag v-else><a-icon type="frown" />&nbsp;未提交</a-tag>
     <a-button
-      v-if="type == 'Work'"
+      v-if="type == 'Homework' || type == 'Exam'"
       type="primary"
       @click="handleClick"
       :disabled="btnDisabled"
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -41,6 +42,12 @@ export default {
   mounted() {
     this.setBtnDisabled();
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+      work: (state) => state.curObj.work.work,
+    }),
+  },
   methods: {
     setBtnDisabled() {
       var timeStamp = new Date().valueOf();
@@ -59,7 +66,19 @@ export default {
       }
     },
     handleClick() {
-      // 交作业/交卷
+      // 做题记录已经保存，应该只需要传一个作业和学生id表示交卷就可以了
+      var _this = this;
+      var data = {
+        studentId: this.user.id,
+        workId: this.work.id,
+      };
+      this.api.work.submitWork(data).then((res) => {
+        var response = res.data;
+        // 对response进行处理
+        // 返回一个提交记录的score给我，然后更新上面的状态（更新全局的那个Work，dispatch一下）
+        var newScore = -1;
+        this.$store.dispatch("setCurrentWorkScore", newScore);
+      });
     },
   },
 };

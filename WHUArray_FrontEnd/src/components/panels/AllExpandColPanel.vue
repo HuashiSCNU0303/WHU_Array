@@ -1,10 +1,23 @@
 <template>
   <div>
-    <a-collapse :default-active-key="['1', '2']" :bordered="false">
+    <a-collapse :default-active-key="keys" :bordered="false">
       <template #expandIcon="props">
         <a-icon type="caret-right" :rotate="props.isActive ? 90 : 0" />
       </template>
-      <a-collapse-panel key="1" :header="headers[0]" :style="customStyle">
+      <a-collapse-panel
+        v-for="key in keys"
+        :key="key"
+        :header="headers[parseInt(key) - 1]"
+        :style="customStyle"
+      >
+        <div class="content">
+          <center-loading v-if="isLoading == true" />
+          <div v-else>
+            <slot :name="'panel' + key + '_content'" />
+          </div>
+        </div>
+      </a-collapse-panel>
+      <!--<a-collapse-panel key="1" :header="headers[0]" :style="customStyle">
         <div class="content">
           <center-loading v-if="isLoading == true" />
           <div v-else>
@@ -19,7 +32,7 @@
             <slot name="panel2_content" />
           </div>
         </div>
-      </a-collapse-panel>
+      </a-collapse-panel>-->
     </a-collapse>
   </div>
 </template>
@@ -39,6 +52,9 @@ export default {
     isLoading: {
       type: Boolean,
     },
+    keys: {
+      type: Array,
+    },
   },
   methods: {},
 };
@@ -53,4 +69,5 @@ export default {
 .ant-collapse > .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow {
   left: 0px !important;
 }
+
 </style>

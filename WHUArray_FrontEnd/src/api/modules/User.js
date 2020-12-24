@@ -1,32 +1,31 @@
-// 与用户操作相关的所有接口
+// 与用户操作相关的所有接口，都在/views/Login内使用
 import axios from 'axios';
 
 export default {
   // 登录
-  login (parameter) {
+  login (data) {
     return axios({
-      url: api.ExamQuestionList,
-      method: 'get',
-      params: parameter
+      url: "",
+      method: 'post',
+      data: data,
     });
   },
 
   // 注册
-  register (parameter) {
-
+  register (data) {
     return axios({
-      url: api.ExamQuestionList,
-      method: 'get',
-      params: parameter
+      url: "",
+      method: 'post',
+      data: data,
     });
   },
 
   // 自动登录
-  autoLogin (parameter) {
+  autoLogin (data) {
     return axios({
-      url: api.ExamQuestionList,
-      method: 'get',
-      params: parameter
+      url: "",
+      method: 'post',
+      data: data,
     });
   },
 }

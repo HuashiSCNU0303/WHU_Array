@@ -20,7 +20,24 @@ export default {
         title: "",
         dataIndex: "see",
         scopedSlots: { customRender: "see" },
-      }
+      },
+    ],
+    submitRecordCol: [
+      {
+        title: "题目号",
+        dataIndex: "id",
+        key: "questionId",
+      },
+      {
+        title: "题目名",
+        dataIndex: "name",
+        key: "questionName",
+      },
+      {
+        title: "分数",
+        dataIndex: "score",
+        scopedSlots: { customRender: "score" },
+      },
     ],
     testCaseListCol: [
       {
@@ -41,7 +58,7 @@ export default {
         key: "delete",
         scopedSlots: { customRender: "delete" },
       },
-    ]
+    ],
   },
   mutations: {},
   actions: {},

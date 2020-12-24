@@ -3,7 +3,7 @@
     <big-title><p>账户设置</p></big-title>
     <div>
       <a-row :gutter="16">
-        <a-col :md="24" :lg="16">
+        <a-col :span="16">
           <a-form layout="vertical" :model="updateStudent">
             <a-form-item label="昵称">
               <a-input
@@ -24,6 +24,30 @@
               <!-- <a-button style="margin-left: 8px">保存</a-button> -->
             </a-form-item>
           </a-form>
+        </a-col>
+        <a-col :span="6" justify="center" align="middle">
+          <a-row>
+            <a-avatar
+              :size="128"
+              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            />
+          </a-row>
+          <a-row>
+            <a-upload
+              :name="genFileName()"
+              :multiple="false"
+              :action="url"
+              :data="data"
+              :headers="headers"
+              :showUploadList="false"
+              :before-upload="beforeUpload"
+              @change="handleAvatarChange"
+            >
+              <a-button type="primary" icon="upload" ghost style="margin-top: 16px"
+                >更改头像</a-button
+              >
+            </a-upload>
+          </a-row>
         </a-col>
       </a-row>
     </div>
@@ -53,6 +77,11 @@ export default {
         telephone: "",
         userFace: "",
       },
+
+      // 上传头像需要的参数，组件要求只能在这里写，就不搞到api里面去了
+      url: "",
+      data: {},
+      headers: {},
     };
   },
   mounted() {
@@ -86,6 +115,31 @@ export default {
             });
       }
     },
+
+    beforeUpload(file) {
+      const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+      if (!isJpgOrPng) {
+        this.$message.error("只能上传.jpg或.png文件！");
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error("上传文件过大，只能上传小于2MB的文件！");
+      }
+      return isJpgOrPng && isLt2M;
+    },
+
+    handleAvatarChange(info) {
+      // 上传成功，更改用户头像url，这里逻辑还没写
+      if (info.file.status === "done") {
+        var response = info.file.response; // 服务器端响应内容
+        // ...TODO
+      }
+    },
+
+    genFileName() {
+      return new Date().valueOf() + "_" + this.user.id;
+    },
+
     submit() {
       this.updateStudent.role = "ROLE_" + this.updateStudent.role;
       console.log(this.updateStudent.role);

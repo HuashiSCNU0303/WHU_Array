@@ -1,14 +1,6 @@
 export default {
   state: {
     examListCol: [
-      /*{
-          dataIndex: "name",
-          key: "name",
-          // title是属性，将column里的title这个属性配置为name="customTitle"的具名槽
-          slots: { title: "customTitle" },
-          // customRender是属性，将column里的customRender这个属性配置为name="name"的具名作用域槽
-          scopedSlots: { customRender: "name" },
-        },*/
       {
         title: "状态",
         dataIndex: "status",
@@ -16,9 +8,17 @@ export default {
         scopedSlots: { customRender: "statusTags" },
       },
       {
+        // 搜索
         title: "课程名",
         dataIndex: "courseName",
         key: "courseName",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
         scopedSlots: { customRender: "courseName" },
       },
       {
@@ -42,14 +42,18 @@ export default {
         key: "endTime",
       },
       {
+        // 排序
         title: "距离开始还有",
         dataIndex: "remainingTime",
         key: "remainingTime",
+        sorter: "",
+        scopedSlots: { customRender: "remainingTime" },
       },
       {
         title: "分数",
         dataIndex: "score",
         key: "score",
+        sorter: "",
         scopedSlots: { customRender: "score" },
       },
     ],
@@ -61,9 +65,17 @@ export default {
         scopedSlots: { customRender: "statusTags" },
       },
       {
+        // 搜索
         title: "课程名",
         dataIndex: "courseName",
         key: "courseName",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
         scopedSlots: { customRender: "courseName" },
       },
       {
@@ -83,49 +95,99 @@ export default {
         key: "endTime",
       },
       {
+        // 排序
         title: "距离截止还有",
         dataIndex: "remainingTime",
         key: "remainingTime",
+        sorter: "",
+        scopedSlots: { customRender: "remainingTime" },
       },
       {
         title: "分数",
         dataIndex: "score",
         key: "score",
+        sorter: "",
         scopedSlots: { customRender: "score" },
       },
     ],
     problemListCol: [
       {
+        // 搜索
         title: "题目号",
         dataIndex: "id",
         key: "id",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
       },
       {
+        // 搜索
         title: "题目名",
         dataIndex: "name",
         key: "name",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
         scopedSlots: { customRender: "questionName" },
       },
       {
+        // 搜索
         title: "来源课程",
         dataIndex: "courseName",
         key: "problemCourse",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
       },
       {
         title: "来源作业/考试名",
         dataIndex: "workName",
         key: "problemWork",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
       },
       {
+        // 筛选
         title: "标签",
         dataIndex: "tags",
         key: "problemTags",
+        filters: [],
+        onFilter: "",
         scopedSlots: { customRender: "problemTags" },
       },
       {
+        // 筛选
         title: "是否已做",
         dataIndex: "isDone",
         key: "isDone",
+        filters: [
+          {
+            text: "已做",
+            value: "true",
+          },
+          {
+            text: "未做",
+            value: "false",
+          },
+        ],
+        onFilter: "",
         scopedSlots: { customRender: "isDone" },
       },
       {
@@ -135,39 +197,27 @@ export default {
         scopedSlots: { customRender: "score" },
       },
     ],
-    problemListBgCol: [
-      {
-        title: "题目号",
-        dataIndex: "questionId",
-        key: "questionId",
-      },
-      {
-        title: "题目名",
-        dataIndex: "questionName",
-        key: "questionName",
-        scopedSlots: { customRender: "questionName" },
-      },
-      {
-        title: "标签",
-        dataIndex: "tags",
-        key: "problemTags",
-        scopedSlots: { customRender: "problemTags" },
-      },
-    ],
     courseListCol: [
       {
         title: "课程号",
         dataIndex: "id",
         key: "courseId",
+        scopedSlots: {
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
+        },
+        onFilter: "",
+        onFilterDropdownVisibleChange: "",
       },
       {
         title: "课程名",
         dataIndex: "name",
         key: "courseName",
         scopedSlots: {
-          filterDropdown: 'filterDropdown',
-          filterIcon: 'filterIcon',
-          customRender: 'customRender',
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
         },
         onFilter: "",
         onFilterDropdownVisibleChange: "",
@@ -177,9 +227,9 @@ export default {
         dataIndex: "teacher",
         key: "teacher",
         scopedSlots: {
-          filterDropdown: 'filterDropdown',
-          filterIcon: 'filterIcon',
-          customRender: 'customRender',
+          filterDropdown: "filterDropdown",
+          filterIcon: "filterIcon",
+          customRender: "customRender",
         },
         onFilter: "",
         onFilterDropdownVisibleChange: "",
@@ -218,7 +268,7 @@ export default {
         dataIndex: "operation",
         key: "operation",
         scopedSlots: { customRender: "operation" },
-      }
+      },
     ],
   },
   mutations: {},

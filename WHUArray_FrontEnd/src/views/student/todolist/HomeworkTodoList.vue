@@ -36,10 +36,20 @@ export default {
       // 获取这个学生的所有作业，给一个学生的id
 
       var _this = this;
-      this.api.student.getStuHomeworkList().then((res) => {
-        // 从列表中取出未提交的作业
-        // 数据处理，计算每一个作业的剩余时间
-        _this.homeworkList = [];
+      var data = {
+        id: -1,
+      };
+      this.api.student.getHomeworkList(data).then((res) => {
+        var response = res.data;
+        // 对response做处理，变成下面的homeworks
+        var homeworks;
+        for (var i = 0; i < homeworks.length; i++) {
+          var homework = homeworks[i];
+          _this.utils.statusHandler.handleStudentHomework(_this, homework);
+          if (homework.status == "未提交") {
+            _this.homeworkList.push(homework);
+          }
+        }
         _this.isLoading = false;
       });
     },

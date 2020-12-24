@@ -1,47 +1,35 @@
 export default {
-  // 这里全部都要改成用id查询！！！
-  handleCourseSwitch (self, role, item) {
-    const promise = new Promise(function (resolve, reject) {
-      // 调接口，异步操作，下面类似
-      resolve("hello");
-    });
-    promise.then((res) => {
-      if (item.description == "") {
-        item.description = item.name;
-      }
+  handleCourseSwitch (self, role, id) {
+    self.api.course.getCourseDetail().then((res) => {
+      var response = res.data;
+      // 处理response，不知道长啥样，先不管
       self.$store.dispatch("setCurrentCourse", item);
       self.$router.push({
-        path: "/" + role + "/course/" + item.id,
+        path: "/" + role + "/course/" + id,
       });
     });
   },
 
-  handleWorkSwitch (self, role, item) {
-    const promise = new Promise(function (resolve, reject) {
-      resolve("hello");
-    });
-    promise.then((res) => {
-      console.log(item);
+  handleWorkSwitch (self, role, id) {
+    self.api.work.getWorkDetail().then((res) => {
+      var response = res.data;
+      // 处理response，不知道长啥样，先不管
       self.$store.dispatch("setCurrentWork", item);
       self.$router.push({
-        path: "/" + role + "/" + item.type.toLowerCase() + "/" + item.id,
+        path: "/" + role + "/" + item.type.toLowerCase() + "/" + id,
       });
     });
   },
 
+  // 这个用item就可以了，不需要每一次都查
   handleProblemSwitch (self, item, prePage) {
-    const promise = new Promise(function (resolve, reject) {
-      resolve("hello");
-    });
-    promise.then((res) => {
-      self.$store.dispatch("setCurrentProblem", item);
-      var role = self.$store.state.curObj.user.user.role; // 获取当前用户的身份（学生/老师）
-      self.$router.push({
-        path: "/" + role + "/problem/" + item.id,
-        query: {
-          source: prePage,
-        },
-      });
+    self.$store.dispatch("setCurrentProblem", item);
+    var role = self.$store.state.curObj.user.user.role; // 获取当前用户的身份（学生/老师）
+    self.$router.push({
+      path: "/" + role + "/problem/" + item.id,
+      query: {
+        source: prePage,
+      },
     });
   },
 };

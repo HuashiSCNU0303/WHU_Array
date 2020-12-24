@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow: auto">
+  <div>
     <big-title><p>学生列表</p></big-title>
     <center-loading v-if="isLoading" />
     <tea-student-list
@@ -8,18 +8,21 @@
       :data="studentList"
       :pagination="pagination"
     >
-      <div slot="content" slot-scope="props">
-        <a-card :hoverable="true" :bordered="false" @click="openModal(props.item)">
+      <a-popover slot="content" slot-scope="props">
+        <template slot="title">
+          <span style="font-size: 16px">学生信息</span>
+        </template>
+        <template slot="content">
+          <div>
+            <p>学号：{{ props.item.studentId }}</p>
+          </div>
+        </template>
+        <a-card :hoverable="true" :bordered="false">
           <a-avatar :src="props.item.avatar" /> &nbsp;{{ props.item.name }}
         </a-card>
-      </div>
+      </a-popover>
     </tea-student-list>
     <div v-else><icon-hint :hint="emptyHint" /></div>
-    <user-info-modal
-      :visible="modalVisible"
-      :studentInfo="curItem"
-      :closeModal="closeModal"
-    />
   </div>
 </template>
 
@@ -28,15 +31,13 @@ export default {
   data() {
     return {
       studentList: [],
-      grid: { gutter: 8, lg: 3, md: 2, sm: 1, xs: 1 },
+      grid: { gutter: 24, lg: 4, md: 2, sm: 1, xs: 1 },
       pagination: {
         onChange: (page) => {
           // 切换页面的处理函数
         },
-        pageSize: 24,
+        pageSize: 32,
       },
-      modalVisible: false,
-      curItem: {},
       isLoading: true,
       emptyHint: "该课程尚未有学生加入",
     };
@@ -61,15 +62,6 @@ export default {
         }
         _this.isLoading = false;
       });
-    },
-
-    openModal(item) {
-      this.modalVisible = true;
-      this.curItem = item;
-    },
-
-    closeModal() {
-      this.modalVisible = false;
     },
   },
 };

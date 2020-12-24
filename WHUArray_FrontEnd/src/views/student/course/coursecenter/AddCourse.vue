@@ -24,11 +24,21 @@ export default {
   },
   methods: {
     getAllCourses() {
-      // 获取所有的课程列表
-      setTimeout(() => {
-        this.courseList = this.$store.state.tempData.courseList.addList;
-        this.isLoading = false;
-      }, 1000);
+      var _this = this;
+      var data = {
+        id: -1,
+      };
+      this.api.student.getAllCourseList(data).then((res) => {
+        var response = res.data;
+        // 对response做处理，变成下面的courses;
+        var courses;
+        for (var i = 0; i < courses.length; i++) {
+          var course = courses[i];
+          // 相关处理（是否已选）
+          _this.courseList.push(course);
+        }
+        _this.isLoading = false;
+      });
     },
   },
 };

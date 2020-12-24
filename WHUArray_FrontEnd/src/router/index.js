@@ -200,6 +200,10 @@ export default new Router({
                   component: () => import("@/views/teacher/course/CourseWork"),
                   meta: { type: "Exam" },
                 },
+                {
+                  path: "students",
+                  component: () => import("@/views/teacher/course/StudentList"),
+                }
               ],
             },
           ],
@@ -225,6 +229,7 @@ export default new Router({
                 },
                 {
                   path: "record",
+                  name: "HomeworkSubmitRecord",
                   component: () => import("@/views/teacher/work/SubmitRecord"),
                   meta: { type: "Homework" },
                 },
@@ -253,6 +258,7 @@ export default new Router({
                 },
                 {
                   path: "record",
+                  name: "ExamSubmitRecord",
                   component: () => import("@/views/teacher/work/SubmitRecord"),
                   meta: { type: "Exam" },
                 },

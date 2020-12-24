@@ -61,12 +61,16 @@ export default {
   methods: {
     getProblems() {
       // 获取这个作业/考试的题目列表
-      setTimeout(() => {
-        this.problemList = JSON.parse(
-          JSON.stringify(this.$store.state.tempData.problemList.problemList)
-        );
-        this.isLoading = false;
-      }, 1000);
+      var _this = this;
+      var data = {
+        id: workId,
+      };
+      this.api.teacher.getWorkProblems(data).then((res) => {
+        var response = res.data;
+        // 对response做处理，搞出problemList
+        _this.problemList = [];
+        _this.isLoading = false;
+      });
     },
 
     deleteProblem(record, index) {
@@ -78,7 +82,12 @@ export default {
         cancelText: "取消",
         onOk() {
           // 删除这道题，调后端接口
-          _this.problemList.splice(index, 1);
+          var data = {
+            id: record.id,
+          };
+          _this.api.teacher.delProblem(data).then((res) => {
+            _this.problemList.splice(index, 1);
+          });
         },
         onCancel() {},
       });
@@ -86,9 +95,15 @@ export default {
 
     addProblem() {
       // 先传上服务器，得到一个新的ID以后再回来
-      this.problemList.push({
-        id: 3,
-        name: "设计树",
+      var _this = this;
+      this.api.teacher.addProblem().then((res) => {
+        var response = res.data;
+        // 对response进行处理，得到题号
+        var newId = 3;
+        this.problemList.push({
+          id: newId,
+          name: "",
+        });
       });
     },
 
@@ -104,14 +119,16 @@ export default {
 
     editProblem(problem) {
       // 提交编辑好的题目（problem）到后台
-
       var _this = this;
-      this.$success({
-        title: "编辑成功",
-        onOk() {
-          _this.problemList[_this.curEditProblemIndex].name = problem.name;
-          _this.closeEditModal();
-        },
+      var data = problem; // data可能还要再处理
+      this.api.teacher.editProblem(problem).then((res) => {
+        _this.$success({
+          title: "编辑成功",
+          onOk() {
+            _this.problemList[_this.curEditProblemIndex].name = problem.name;
+            _this.closeEditModal();
+          },
+        });
       });
     },
   },

@@ -64,7 +64,16 @@ export default {
   methods: {
     getProblemDetail() {
       // 获取题目的所有信息
-      setTimeout(() => {
+      var _this = this;
+      var data = {
+        problemId: -1,
+        role: "",
+        id: -1
+      };
+      this.api.problem.getProblemDetail(data, ).then((res) => {
+        var response = res.data;
+        // 对response做处理
+        // problem_temp是获取到的problem对象
         var problem_temp = {
           name: "两数之和",
           // 需要注意把\n变成<br />
@@ -87,13 +96,12 @@ export default {
           ],
           tags: ["算法", "数据结构"],
         };
-        if (!this.showAllTestCase) {
+        if (!_this.showAllTestCase) {
           problem_temp.testCases = problem_temp.testCases.splice(0, 2);
         }
-        this.problem = problem_temp;
-        this.isLoading = false;
-        clearInterval();
-      }, 1000);
+        _this.problem = problem_temp;
+        _this.isLoading = false;
+      });
     },
   },
 };
