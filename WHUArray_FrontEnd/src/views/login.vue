@@ -167,10 +167,7 @@ export default {
         .then((res) => {
           let token = res.headers.authorization;
           localStorage.setItem("token", token);
-          _this.$store.dispatch("setCurrentUser", user);
-          _this.$router.push({
-            path: "/" + (_this.role == "1" ? "teacher" : "student"),
-          });
+          _this.getCurrentUser();
         })
         .catch((error) => {
           console.log(error);
@@ -233,7 +230,7 @@ export default {
           if (status != null && status === 200) {
             let token = res.headers.authorization;
             localStorage.setItem("token", token);
-            this.$router.push({ path: _this.role == "1" ? "/teacher" : "/student" });
+            _this.getCurrentUser();
           }
         })
         .catch((error) => {
@@ -241,6 +238,23 @@ export default {
             alert("用户名或密码错误");
           }
         });
+    },
+
+    getCurrentUser(role) {
+      var _this = this;
+      var axios = _this.role == "2"? this.api.student.getCurrentStudent(): this.api.teacher.getCurrentTeacher();
+      axios.then((res) => {
+        var response = res.data;
+        var user = {
+          username: response.username,
+          id: response.id,
+          role: this.role == "1" ? "teacher" : "student",
+        };
+        _this.$store.dispatch("setCurrentUser", user);
+        _this.$router.push({
+          path: "/" + (_this.role == "1" ? "teacher" : "student"),
+        });
+      });
     },
   },
 

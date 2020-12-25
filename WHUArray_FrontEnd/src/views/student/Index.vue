@@ -22,7 +22,7 @@ export default {
   components: {
     StuNavBar,
   },
-  created() {
+  /*created() {
     this.initWebSocket();
   },
   destroyed() {
@@ -59,7 +59,7 @@ export default {
       //关闭
       console.log("断开连接", e);
     },
-  },
+  },*/
 };
 </script>
 

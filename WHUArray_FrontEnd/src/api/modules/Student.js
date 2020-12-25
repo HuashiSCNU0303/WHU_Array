@@ -127,6 +127,14 @@ export default {
     });
   },
 
+
+  getCurrentStudent () {
+    return axios({
+      url: "http://localhost:8009/student/currentUser",
+      method: "get",
+    });
+  },
+
   // 获取数据库旧信息
   getOldMessage (data, headers) {
     return axios({

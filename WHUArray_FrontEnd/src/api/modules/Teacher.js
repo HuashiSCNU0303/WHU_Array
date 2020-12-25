@@ -5,12 +5,11 @@
 import axios from "axios";
 
 export default {
-
   // 获取老师现在在教的课程，参数为教师id
   // 使用的地方：/views/teacher/coursecenter/CurCourse
   // √ CourseController "/findCurCourse"
   // 对接完成
-  getCurCourseList (data, headers) {
+  getCurCourseList(data, headers) {
     return axios({
       url: "http://localhost:8009/course/findCurCourse",
       // method: "post",
@@ -23,7 +22,7 @@ export default {
   // 使用的地方：/views/teacher/coursecenter/PreCourse
   // √ CourseController "/findPreCourse"
   // 对接完成
-  getPreCourseList (data, headers) {
+  getPreCourseList(data, headers) {
     return axios({
       url: "http://localhost:8009/course/findPreCourse",
       // method: "post",
@@ -36,7 +35,7 @@ export default {
   // 使用的地方：/views/teacher/coursecenter/CurCourse
   // √ CourseController "/addCourse"
   // 对接完成
-  addCourse (data, headers) {
+  addCourse(data, headers) {
     return axios({
       url: "http://localhost:8009/course/addCourse",
       method: "post",
@@ -49,7 +48,7 @@ export default {
   // 使用的地方：/views/teacher/course/Course
   // √ CourseController "/{courseId}"
   // 对接完成
-  delCourse (data, headers) {
+  delCourse(data, headers) {
     return axios({
       url: "http://localhost:8009/course/" + data.courseId,
       method: "delete",
@@ -61,7 +60,7 @@ export default {
   // 使用的地方：/views/teacher/course/Course
   // √ CourseController "/updateCourse"
   // 对接完成
-  editCourse (data, headers) {
+  editCourse(data, headers) {
     return axios({
       url: "http://localhost:8009/course/updateCourse",
       method: "put",
@@ -70,12 +69,11 @@ export default {
     });
   },
 
-
   // 获取某门课的所有作业/考试（都能获取），参数为课程id，以及考试/作业的标识
   // 使用的地方：/views/teacher/course/CourseWork
   // √ CourseController "/{courseId}/allHomework"
   // 对接完成
-  getCourseWork (data, headers) {
+  getCourseWork(data, headers) {
     return axios({
       url: "http://localhost:8009/course/" + data.courseId + "/allHomework",
       method: "get",
@@ -87,7 +85,7 @@ export default {
   // 使用的地方：/views/teacher/course/CourseWork
   // √ HomeworkController "/addHomework"
   // 对接完成
-  addWork (data, headers) {
+  addWork(data, headers) {
     return axios({
       url: "http://localhost:8009/homework/addHomework",
       method: "post",
@@ -100,7 +98,7 @@ export default {
   // 使用的地方：/views/teacher/work/SubmitRecord，/views/teacher/course/StudentList，
   // √ "/{courseId}/allStudent"
   // 尚未完成
-  getCourseStudentList (data, headers) {
+  getCourseStudentList(data, headers) {
     return axios({
       url: "http://localhost:8009/course/" + data.courseId + "/allStudent",
       method: "get",
@@ -112,7 +110,7 @@ export default {
   // 使用的地方：/views/teacher/work/ProblemList
   // √ HomeworkController "/{homeworkId}/allQuestion"
   // 对接完成
-  getWorkProblems (data, headers) {
+  getWorkProblems(data, headers) {
     return axios({
       url: "http://localhost:8009/homework/" + data.workId + "/allQuestion",
       method: "get",
@@ -124,7 +122,7 @@ export default {
   // 使用的地方：/views/teacher/work/Work
   // √ HomeworkController "/{homeworkId}"
   // 对接完成
-  delWork (data, headers) {
+  delWork(data, headers) {
     return axios({
       url: "http://localhost:8009/homework/" + data.workId,
       method: "delete",
@@ -136,7 +134,7 @@ export default {
   // 使用的地方：/views/teacher/work/Work
   // √ HomeworkController "/updateHomework"
   // 对接完成
-  editWork (data, headers) {
+  editWork(data, headers) {
     return axios({
       url: "http://localhost:8009/homework/updateHomework",
       method: "put",
@@ -149,7 +147,7 @@ export default {
   // 使用的地方：/views/teacher/work/ProblemList
   // √ QuestionController "/addQuestion"
   // 对接完成
-  addProblem (data, headers) {
+  addProblem(data, headers) {
     return axios({
       url: "http://localhost:8009/question/addQuestion",
       method: "post",
@@ -162,7 +160,7 @@ export default {
   // 使用的地方：/views/teacher/work/ProblemList
   // √ QuestionController "/{questionId}"
   // 对接完成
-  delProblem (data, headers) {
+  delProblem(data, headers) {
     return axios({
       url: "http://localhost:8009/question/" + data.id,
       method: "delete",
@@ -174,7 +172,7 @@ export default {
   // 使用的地方：/views/teacher/work/ProblemList
   // √ QuestionController "/updateQuestion"
   // 对接完成
-  editProblem (data, headers) {
+  editProblem(data, headers) {
     return axios({
       url: "http://localhost:8009/question/updateQuestion",
       method: "put",
@@ -183,4 +181,10 @@ export default {
     });
   },
 
-}
+  getCurrentStudent() {
+    return axios({
+      url: "http://localhost:8009/teacher/currentUser",
+      method: "get",
+    });
+  },
+};
