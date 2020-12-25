@@ -9,6 +9,7 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -17,34 +18,44 @@ export default {
       emptyHint: "当前没有未完成的作业",
     };
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+    }),
+  },
   mounted() {
     this.getHomeworks();
   },
   methods: {
     getHomeworks() {
-      // let _this = this;
-      // axios.get("http://localhost:8009/homework/all", {
-      //   headers: {
-      //     'Authorization': localStorage.getItem("token")
-      //   }
-      // }).then((res) => {
-      //   _this.homeworkList = res.data;
-      //   _this.isLoading = false;
-      // }).catch((error) => {
-      //   console.log(error);
-      // })
-      // 获取这个学生的所有作业，给一个学生的id
-
       var _this = this;
       var data = {
-        id: -1,
+        userId: this.user.id,
+      };
+      var headers = {
+        Authorization: localStorage.getItem("token"),
       };
       this.api.student.getHomeworkList(data).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的homeworks
-        var homeworks;
+        var homeworks = response;
         for (var i = 0; i < homeworks.length; i++) {
-          var homework = homeworks[i];
+          var homework_ = homeworks[i];
+          if (homework_.isExam != 0) {
+            continue;
+          }
+          var homework = {
+            id: homework_.homeworkId,
+            status: homework_.status,
+            courseId: homework_.course.courseId,
+            courseName: homework_.course.courseName,
+            name: homework_.homeworkName,
+            startTime: homework_.startTime,
+            endTime: homework_.endTime,
+            remainingTime: "/",
+            score: homework_.grade,
+            type: "Homework",
+          };
           _this.utils.statusHandler.handleStudentHomework(_this, homework);
           if (homework.status == "未提交") {
             _this.homeworkList.push(homework);

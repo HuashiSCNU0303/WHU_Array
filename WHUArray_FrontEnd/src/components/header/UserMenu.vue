@@ -3,24 +3,30 @@
     <div class="content-box">
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">
-          <a-avatar class="avatar" size="small" />
-          <span>&nbsp;西门吹雪</span>
+          <a-avatar
+            class="avatar"
+            size="small"
+            :src="user.role == 'teacher' ? '' : user.userFace"
+          />
+          <span>&nbsp;{{ user.role == "teacher" ? user.name : user.nickname }}</span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-          <a-menu-item key="userSetting">
-            <a href="javascript:;" @click="handleMgmtSwitch('userSetting')">
-              <a-icon type="setting" />
-              <span>账户设置</span>
-            </a>
-          </a-menu-item>
-          <a-menu-divider />
-          <a-menu-item key="msg">
-            <a href="javascript:;" @click="handleMgmtSwitch('msg')">
-              <a-icon type="message" />
-              <span>消息提醒</span>
-            </a>
-          </a-menu-item>
-          <a-menu-divider />
+          <div v-if="user.role == 'student'">
+            <a-menu-item key="userSetting">
+              <a href="javascript:;" @click="handleMgmtSwitch('userSetting')">
+                <a-icon type="setting" />
+                <span>账户设置</span>
+              </a>
+            </a-menu-item>
+            <a-menu-divider />
+            <a-menu-item key="msg">
+              <a href="javascript:;" @click="handleMgmtSwitch('msg')">
+                <a-icon type="message" />
+                <span>消息提醒</span>
+              </a>
+            </a-menu-item>
+            <a-menu-divider />
+          </div>
           <a-menu-item key="logOut">
             <a href="javascript:;" @click="handleLogout">
               <a-icon type="logout" />

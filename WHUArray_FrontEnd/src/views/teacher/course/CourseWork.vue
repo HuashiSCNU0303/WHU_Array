@@ -120,15 +120,31 @@ export default {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
       var _this = this;
       var data = {
-        courseId: -1,
-        type: this.type, // 根据type判断一下，获取作业列表还是考试列表
+        courseId: this.course.id,
       };
       this.api.teacher.getCourseWork(data).then((res) => {
         var response = res.data;
         // 对response进行处理，变成下面的works
-        var works;
+        var works = response;
         for (var i = 0; i < works.length; i++) {
-          var work = works[i];
+          var work_ = works[i];
+
+          if (
+            (this.type == "Homework" && work_.isExam == 1) ||
+            (this.type == "Exam" && work_.isExam == 0)
+          ) {
+            continue;
+          }
+
+          var work = {
+            id: work_.homeworkId,
+            status: work_.status,
+            name: work_.homeworkName,
+            startTime: work_.startTime,
+            endTime: work_.endTime,
+            type: work_.isExam == 0 ? "Homework" : "Exam",
+          };
+
           _this.utils.statusHandler.handleTeacherWork(_this, work);
           work["visible"] = true;
         }
@@ -142,12 +158,13 @@ export default {
     },
     addWork(work) {
       var work_ = {
-        name: work.name,
+        homeworkName: work.name,
         startTime: this.utils.countdown.transPickerToString(work.startTime),
         endTime: this.utils.countdown.transPickerToString(work.endTime),
         status: "unpublished",
-        type: this.type,
+        isExam: this.type == "Homework" ? 0 : 1,
       };
+
       // 把组装好的work_发送给后台，添加作业/考试，给我返回一个作业/考试号！！
       var _this = this;
       this.api.teacher.addWork(work_).then((res) => {

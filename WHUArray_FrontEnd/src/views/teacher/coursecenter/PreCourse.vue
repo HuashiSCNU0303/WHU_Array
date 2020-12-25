@@ -40,9 +40,18 @@ export default {
       this.api.teacher.getPreCourseList(data).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的courses;
-        var courses;
+        var courses = response;
         for (var i = 0; i < courses.length; i++) {
-          var course = courses[i];
+          var course_ = courses[i];
+          var course = {
+            id: course_.courseId,
+            name: course_.courseName,
+            teacher: course_.teacher.name, // ?
+            grade: course_.grade,
+            time: course_.courseTime,
+            description: course_.description,
+            status: course_.status,
+          };
           _this.endCourseList.push(course);
         }
         _this.isLoading = false;

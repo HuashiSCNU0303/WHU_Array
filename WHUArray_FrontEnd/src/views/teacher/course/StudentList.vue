@@ -18,7 +18,7 @@
           </div>
         </template>
         <a-card :hoverable="true" :bordered="false">
-          <a-avatar :src="props.item.avatar" /> &nbsp;{{ props.item.name }}
+          <a-avatar :src="props.item.userFace" /> &nbsp;{{ props.item.nickname }}
         </a-card>
       </a-popover>
     </tea-student-list>

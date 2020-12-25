@@ -125,12 +125,15 @@ export default {
   },
   methods: {
     setFilters() {
+      this.columns[1].onFilter = (text, record) => {
+        return record.courseName.includes(text);
+      };
       this.columns[1].onFilterDropdownVisibleChange = this.onFilterDropdownVisibleChange();
 
-      this.columns[5].sorter = (a, b) => {
+      this.columns[4].sorter = (a, b) => {
         return a.remainingTime - b.remainingTime;
       };
-      this.columns[6].sorter = (a, b) => {
+      this.columns[5].sorter = (a, b) => {
         return a.score - b.score;
       };
     },
@@ -138,8 +141,8 @@ export default {
     setColumns() {
       switch (this.currentPage) {
         case "CourseHomework": {
-          this.columns.splice(1, 2);
-          this.columns.splice(3, 1);
+          this.columns.splice(1, 1);
+          this.columns.splice(2, 1);
           this.columns[0]["filters"] = [
             {
               text: "已提交",
@@ -156,12 +159,12 @@ export default {
           break;
         }
         case "CourseTodoHomework": {
-          this.columns.splice(1, 2);
-          this.columns.splice(4, 1);
+          this.columns.splice(1, 1);
+          this.columns.splice(3, 1);
           break;
         }
         case "TodoList": {
-          this.columns.splice(6, 1);
+          this.columns.splice(5, 1);
           break;
         }
       }

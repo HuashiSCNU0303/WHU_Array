@@ -11,8 +11,19 @@
                 v-model="updateStudent.nickname"
               />
             </a-form-item>
-            <a-form-item label="Bio">
-              <a-textarea rows="4" placeholder="You are not alone." />
+
+            <a-form-item label="学号">
+              <a-input
+                :placeholder="updateStudent.studentId"
+                v-model="updateStudent.studentId"
+              />
+            </a-form-item>
+
+            <a-form-item label="联系电话">
+              <a-input
+                :placeholder="updateStudent.telephone"
+                v-model="updateStudent.telephone"
+              />
             </a-form-item>
 
             <a-form-item label="电子邮件" :required="false">
@@ -21,7 +32,6 @@
 
             <a-form-item>
               <a-button type="primary" @click="submit">提交</a-button>
-              <!-- <a-button style="margin-left: 8px">保存</a-button> -->
             </a-form-item>
           </a-form>
         </a-col>
@@ -132,7 +142,11 @@ export default {
       // 上传成功，更改用户头像url，这里逻辑还没写
       if (info.file.status === "done") {
         var response = info.file.response; // 服务器端响应内容
-        // ...TODO
+        // ...TODO，获取url
+        this.$info({
+          title: "注意",
+          content: "上传头像后需要提交更改了才能记住哦",
+        });
       }
     },
 
@@ -142,21 +156,20 @@ export default {
 
     submit() {
       this.updateStudent.role = "ROLE_" + this.updateStudent.role;
-      console.log(this.updateStudent.role);
-      axios
-        .put(
-          "http://localhost:8009/student/updateStudent",
-          {
-            ...this.updateStudent,
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        )
+      // console.log(this.updateStudent.role);
+      var _this = this;
+      var headers = {
+        Authorization: localStorage.getItem("token"),
+      };
+      this.api.student
+        .updateStudent(this.updateStudent, headers)
         .then((res) => {
           console.log(res);
+          // 更新当前用户
+          _this.dispatch("setCurrentUser", _this.updateStudent);
+          _this.$success({
+            title: "修改成功",
+          });
         })
         .catch((error) => {
           console.log(error);

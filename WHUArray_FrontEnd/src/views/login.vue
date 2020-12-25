@@ -181,9 +181,21 @@ export default {
     },
 
     register() {
-      // 请求后台注册接口，暂时没接入后端
-      console.log(this.registerUserInfo.name);
-      switch (this.role) {
+      // 请求后台注册接口
+      var _this = this;
+      var data = {
+        ...this.loginUserInfo,
+      };
+      this.api.user
+        .register(registerUserInfo, this.role == "1" ? "teacher" : "student")
+        .then((res) => {
+          console.log(res);
+          _this.autoLogin(_this.role);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      /*switch (this.role) {
         case "1":
           axios
             .post("http://localhost:8009/teacher/reg", this.registerUserInfo)
@@ -206,7 +218,7 @@ export default {
             });
           this.autoLogin("2");
           break;
-      }
+      }*/
     },
 
     autoLogin(role) {

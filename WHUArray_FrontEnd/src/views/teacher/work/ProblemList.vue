@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -55,6 +56,11 @@ export default {
       type: Function,
     },
   },
+  computed: {
+    ...mapState({
+      work: (state) => state.curObj.work.work,
+    }),
+  },
   mounted() {
     this.getProblems();
   },
@@ -63,12 +69,21 @@ export default {
       // 获取这个作业/考试的题目列表
       var _this = this;
       var data = {
-        id: workId,
+        workId: this.work.id,
       };
       this.api.teacher.getWorkProblems(data).then((res) => {
         var response = res.data;
         // 对response做处理，搞出problemList
-        _this.problemList = [];
+        var problems = response;
+        for (var i = 0; i < problems.length; i++) {
+          var problem_ = problems[i];
+          var problem = {
+            id: problem_.questionId,
+            name: problem_.questionName,
+            tags: ["算法", "数据结构", "链表", "位表示"],
+          };
+          _this.problemList.push(problem);
+        }
         _this.isLoading = false;
       });
     },
@@ -96,7 +111,13 @@ export default {
     addProblem() {
       // 先传上服务器，得到一个新的ID以后再回来
       var _this = this;
-      this.api.teacher.addProblem().then((res) => {
+      var data = {
+        homeworkId: this.work.id,
+        questionName: "",
+        questionContent: "",
+        questionTags: "",
+      };
+      this.api.teacher.addProblem(data).then((res) => {
         var response = res.data;
         // 对response进行处理，得到题号
         var newId = 3;
@@ -120,8 +141,14 @@ export default {
     editProblem(problem) {
       // 提交编辑好的题目（problem）到后台
       var _this = this;
-      var data = problem; // data可能还要再处理
-      this.api.teacher.editProblem(problem).then((res) => {
+
+      var data = {
+        homeworkId: problem.id,
+        questionName: problem.name,
+        questionContent: problem.description,
+        questionTags: problem.tags,
+      };
+      this.api.teacher.editProblem(data).then((res) => {
         _this.$success({
           title: "编辑成功",
           onOk() {

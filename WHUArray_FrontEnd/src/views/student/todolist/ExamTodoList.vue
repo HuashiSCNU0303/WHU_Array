@@ -38,9 +38,24 @@ export default {
       this.api.student.getExamList(data).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的exams;
-        var exams;
+        var exams = response;
         for (var i = 0; i < exams.length; i++) {
-          var exam = exams[i];
+          var exam_ = exams[i];
+          if (exam_.isExam != 1) {
+            continue;
+          }
+          var exam = {
+            id: exam_.homeworkId,
+            status: exam_.status,
+            courseId: exam_.course.courseId,
+            courseName: exam_.course.courseName,
+            name: exam_.homeworkName,
+            startTime: exam_.startTime,
+            endTime: exam_.endTime,
+            remainingTime: "/",
+            score: exam_.grade,
+            type: "Exam",
+          };
           _this.utils.statusHandler.handleStudentExam(_this, exam);
           if (exam.status == "进行中") {
             exam.name = exam.courseName + " " + exam.name;

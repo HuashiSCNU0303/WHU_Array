@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
@@ -47,18 +49,38 @@ export default {
   mounted() {
     this.getExams();
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+      course: (state) => state.curObj.course.course,
+    }),
+  },
   methods: {
     getExams() {
       var _this = this;
       var data = {
-        id: -1,
+        userId: this.user.id,
+        courseId: this.course.id,
       };
-      this.api.student.getExamList(data).then((res) => {
+      this.api.student.getCourseExam(data).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的exams;
-        var exams;
+        var exams = response;
         for (var i = 0; i < exams.length; i++) {
-          var exam = exams[i];
+          var exam_ = exams[i];
+          if (exam_.isExam != 1) {
+            continue;
+          }
+          var exam = {
+            id: exam_.homeworkId,
+            status: exam_.status,
+            name: exam_.homeworkName,
+            startTime: exam_.startTime,
+            endTime: exam_.endTime,
+            remainingTime: "/",
+            score: exam_.grade,
+            type: "Exam",
+          };
           _this.utils.statusHandler.handleStudentExam(_this, exam);
           if (exam.status == "进行中") {
             exam.name = exam.courseName + " " + exam.name;

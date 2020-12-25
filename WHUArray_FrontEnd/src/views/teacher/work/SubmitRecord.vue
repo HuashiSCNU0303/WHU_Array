@@ -10,7 +10,7 @@
     >
       <div slot="content" slot-scope="props">
         <a-card :hoverable="true" :bordered="false" @click="openModal(props.item)">
-          <a-avatar :src="props.item.avatar" /> &nbsp;{{ props.item.name }}
+          <a-avatar :src="props.item.userFace" /> &nbsp;{{ props.item.nickname }}
         </a-card>
       </div>
     </tea-student-list>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -41,6 +42,11 @@ export default {
       emptyHint: "该课程尚未有学生加入",
     };
   },
+  computed: {
+    ...mapState({
+      course: (state) => state.curObj.course.course,
+    }),
+  },
   mounted() {
     this.getStudents();
   },
@@ -48,15 +54,15 @@ export default {
     getStudents() {
       var _this = this;
       var data = {
-        id: -1,
+        courseId: this.course.id,
       };
       this.api.teacher.getCourseStudentList(data).then((res) => {
         var response = res.data;
         // 对response进行处理，变成students
-        var students;
+        var students = response;
         for (var i = 0; i < students.length; i++) {
-          var student = students[i];
-          // 数据处理
+          var student_ = students[i];
+          // ？怎么处理，待定
           _this.studentList.push(student);
         }
         _this.isLoading = false;

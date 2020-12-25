@@ -130,7 +130,7 @@ export default {
         onOk() {
           // 删除这个作业/考试，调后端接口
           var data = {
-            id: this.work.id,
+            workId: this.work.id,
           };
           _this.api.teacher.delWork(data).then((res) => {
             // 跳转回课程
@@ -168,7 +168,14 @@ export default {
         work.startTime = this.utils.countdown.transPickerToString(work.startTime);
         work.endTime = this.utils.countdown.transPickerToString(work.endTime);
       }
-      var data = work; // data可能还要再处理
+      var data = {
+        homeworkName: work.name,
+        startTime: work.startTime,
+        endTime: work.endTime,
+        status: work.status,
+        isExam: work.type == "Homework" ? 0 : 1,
+      };
+
       this.api.teacher.editWork(data).then((res) => {
         _this.$success({
           title: "操作成功",

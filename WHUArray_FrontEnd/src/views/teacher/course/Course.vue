@@ -113,7 +113,7 @@ export default {
         onOk() {
           // 删除这个课程，调后端接口
           var data = {
-            id: -1,
+            courseId: this.course.id,
           };
           _this.api.teacher.delCourse(data).then((res) => {
             // 跳转回课程中心
@@ -140,7 +140,17 @@ export default {
     editCourse(course) {
       // 把编辑好的course发送到后台
       var _this = this;
-      var data = course; // 数据可能还需要处理，先留着
+
+      var data = {
+        courseId: course.id,
+        courseName: course.name,
+        teacherId: this.user.id,
+        grade: course.grade,
+        courseTime: course.time,
+        description: course.description,
+        status: course.status,
+      };
+
       this.api.teacher.editCourse(data).then((res) => {
         _this.$success({
           title: "操作成功",

@@ -28,6 +28,7 @@ import axios from "axios";
 export default {
   computed: {
     ...mapState({
+      user: (state) => state.curObj.user.user,
       course: (state) => state.curObj.course.course,
     }),
   },
@@ -69,14 +70,28 @@ export default {
 
       var _this = this;
       var data = {
-        id: -1,
+        userId: this.user.id,
+        courseId: this.course.id,
       };
-      this.api.student.getHomeworkList(data).then((res) => {
+      this.api.student.getCourseHomework(data).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的homeworks
-        var homeworks;
+        var homeworks = resource;
         for (var i = 0; i < homeworks.length; i++) {
-          var homework = homeworks[i];
+          var homework_ = homeworks[i];
+          if (homework_.isExam != 0) {
+            continue;
+          }
+          var homework = {
+            id: homework_.homeworkId,
+            status: homework_.status,
+            name: homework_.homeworkName,
+            startTime: homework_.startTime,
+            endTime: homework_.endTime,
+            remainingTime: "/",
+            score: homework_.grade,
+            type: "Homework",
+          };
           _this.utils.statusHandler.handleStudentHomework(_this, homework);
           if (homework.status == "未提交") {
             _this.todoHomeworkList.push(homework);

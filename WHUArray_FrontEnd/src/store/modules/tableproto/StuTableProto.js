@@ -22,11 +22,6 @@ export default {
         scopedSlots: { customRender: "courseName" },
       },
       {
-        title: "教师",
-        dataIndex: "teacher",
-        key: "teacher",
-      },
-      {
         title: "考试名",
         dataIndex: "name",
         key: "examName",
@@ -77,11 +72,6 @@ export default {
         onFilter: "",
         onFilterDropdownVisibleChange: "",
         scopedSlots: { customRender: "courseName" },
-      },
-      {
-        title: "教师",
-        dataIndex: "teacher",
-        key: "teacher",
       },
       {
         title: "作业名",

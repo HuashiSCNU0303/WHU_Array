@@ -121,10 +121,15 @@ export default {
   },
   methods: {
     setFilters() {
-      this.columns[6].sorter = (a, b) => {
+      this.columns[1].onFilter = (text, record) => {
+        return record.courseName.includes(text);
+      };
+      this.columns[1].onFilterDropdownVisibleChange = this.onFilterDropdownVisibleChange();
+      
+      this.columns[5].sorter = (a, b) => {
         return a.remainingTime - b.remainingTime;
       };
-      this.columns[7].sorter = (a, b) => {
+      this.columns[6].sorter = (a, b) => {
         return a.score - b.score;
       };
     },
@@ -132,17 +137,17 @@ export default {
     setColumns() {
       switch (this.currentPage) {
         case "CourseExam": {
-          this.columns.splice(1, 2);
+          this.columns.splice(1, 1);
           this.columns.splice(4, 1);
           break;
         }
         case "CourseTodoExam": {
-          this.columns.splice(1, 2);
+          this.columns.splice(1, 1);
           this.columns.splice(5, 1);
           break;
         }
         case "TodoList": {
-          this.columns.splice(7, 1);
+          this.columns.splice(6, 1);
           break;
         }
       }
@@ -169,13 +174,6 @@ export default {
 
     handleCourseSwitch(record) {
       // 跳转到id对应的课程，待后端接口完成以后再做
-      var item = {
-        id: record.courseId,
-        name: record.courseName,
-        teacher: record.teacher,
-        time: "2019-2020",
-        description: "",
-      };
       this.utils.toggle.handleCourseSwitch(this, item);
     },
     getRecordId(record) {

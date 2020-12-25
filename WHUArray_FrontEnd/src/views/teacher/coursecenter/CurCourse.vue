@@ -76,6 +76,7 @@ export default {
   },
   computed: {
     ...mapState({
+      user: (state) => state.curObj.user.user,
       courseList: (state) => state.tempData.courseList.curList,
     }),
   },
@@ -106,10 +107,18 @@ export default {
       };
       this.api.teacher.getCurCourseList(data).then((res) => {
         var response = res.data;
-        // 对response做处理，变成下面的courses;
-        var courses;
+        var courses = response;
         for (var i = 0; i < courses.length; i++) {
-          var course = courses[i];
+          var course_ = courses[i];
+          var course = {
+            id: course_.courseId,
+            name: course_.courseName,
+            teacher: course_.teacher.name, // ?
+            grade: course_.grade,
+            time: course_.courseTime,
+            description: course_.description,
+            status: course_.status,
+          };
           course["visible"] = true;
           _this.currentCourseList.push(course);
         }
@@ -135,8 +144,17 @@ export default {
       course["time"] = beginYear + "-" + (beginYear + 1);
       course["status"] = "on";
 
+      var newCourse = {
+        courseName: course.name,
+        teacherId: this.user.id,
+        grade: course.grade,
+        courseTime: course.time,
+        description: course.description,
+        status: course.status,
+      };
+
       var _this = this;
-      this.api.teacher.addCourse(course).then((res) => {
+      this.api.teacher.addCourse(newCourse).then((res) => {
         var response = res.data;
         // 对response进行处理，获得课程号
         course["id"] = 4;
