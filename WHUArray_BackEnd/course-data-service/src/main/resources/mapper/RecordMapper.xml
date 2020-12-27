@@ -7,7 +7,16 @@
         insert into record set id=#{id},userId=#{userId},questionId=#{questionId},recordGrade=#{recordGrade},lang=#{lang},recordContent=#{recordContent}
     </insert>
     <select id="findRecordByQuestionIdAndUserId" resultType="com.array.commonmodule.bean.Record">
-        select from record where questionId=#{questionId} and userId=#{userId}
+        select * from record where questionId=#{questionId} and userId=#{userId}
+    </select>
+    <select id="findRecordByUserId" resultType="com.array.commonmodule.bean.Record">
+        select from record where userId=#{userId}
+    </select>
+    <select id="findStudentHomeworkAssociationByCourseIdAndUserId" resultType="com.array.commonmodule.bean.Record">
+        select * from record where userId=userId and questionId in
+        <foreach collection="ids" item="qid" open="(" separator="," close=")">
+            #{qid}
+        </foreach>
     </select>
 </mapper>
 

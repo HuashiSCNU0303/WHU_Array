@@ -1,6 +1,5 @@
 server:
   port: 8009
-
 eureka:
   client:
     serviceUrl:
@@ -8,6 +7,10 @@ eureka:
 spring:
   application:
     name: array-service
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 hystrix:
   command:
     default:
@@ -22,3 +25,6 @@ ribbon:
   ReadTimeout:  120000
   ConnectTimeout: 120000
 
+constant:
+  base-url: "http://39.106.97.180:8180"
+  pic-file-resource-path: "/usr/proj/file"

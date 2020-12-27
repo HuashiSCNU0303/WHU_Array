@@ -25,30 +25,29 @@ import java.util.Map;
 @Controller
 public class TestCaseController {
 
-    @PostMapping("/add")
+    // 只用这个，下面的delete不用了
+    @PostMapping("/set")
     @ResponseBody
-    public Map<String, String> addTestCases(@RequestBody String jsonString) {
+    public Map<String, String> setTestCases(@RequestBody String jsonString) {
         JSONObject jsonObject = JSON.parseObject(jsonString);
+        int problemID = jsonObject.getInteger("problemId");
         JSONArray jsonArray = jsonObject.getJSONArray("testCaseList");
         List<TestCaseRequest> testCaseList = jsonArray.toJavaList(TestCaseRequest.class);
         Map<String, String> results = new HashMap<>();
         try {
-            for (TestCaseRequest testCase : testCaseList) {
-                int problemID = testCase.getProblemID();
-                String problemPath_str = Constant.BASE_PATH + problemID + File.separator;
-                String testCaseDirPath_str = Constant.BASE_PATH + problemID + File.separator + "TestCase" + File.separator;
-                Path problemPath = Paths.get(problemPath_str), testCaseDirPath = Paths.get(testCaseDirPath_str);
-                if (Files.notExists(problemPath)) {
-                    Files.createDirectory(problemPath);
-                    Files.createDirectory(Paths.get(problemPath_str + "debug/"));
-                    Files.createDirectory(testCaseDirPath);
-                }
-                Path testCasePath = Paths.get(testCaseDirPath_str + testCase.getTestCaseID());
-                // 不存在就创建，存在了就覆盖
-                if (!Files.notExists(testCasePath)) {
-                    testCasePath.toFile().delete();
+            String problemPath_str = Constant.BASE_PATH + problemID + File.separator;
+            String testCaseDirPath_str = Constant.BASE_PATH + problemID + File.separator + "TestCase" + File.separator;
+            Path problemPath = Paths.get(problemPath_str), testCaseDirPath = Paths.get(testCaseDirPath_str);
+            if (Files.notExists(problemPath)) {
+                Files.createDirectory(problemPath);
+                Files.createDirectory(Paths.get(problemPath_str + "debug/"));
+            }
+            // 删掉当前所有的测试用例
+            CommonUtils.deleteDir(testCaseDirPath.toFile());
+            Files.createDirectory(testCaseDirPath);
 
-                }
+            for (TestCaseRequest testCase : testCaseList) {
+                Path testCasePath = Paths.get(testCaseDirPath_str + testCase.getTestCaseID());
                 CommonUtils.createFile(testCasePath, testCase.getInput());
             }
             results.put("status", String.valueOf(Constant.TESTCASE_OP_SU));

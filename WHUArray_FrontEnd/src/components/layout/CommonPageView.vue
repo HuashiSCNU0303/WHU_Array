@@ -164,7 +164,6 @@ export default {
       return this.page.type.indexOf("Problem") == 0
         ? this.problem.score
         : this.work.score;
-      // 以后好像还有课程的分数？
     },
   },
   methods: {

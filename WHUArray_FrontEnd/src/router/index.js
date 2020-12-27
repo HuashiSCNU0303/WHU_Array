@@ -10,6 +10,9 @@ export default new Router({
     {
       path: "/",
       component: () => import("@/views/Login"),
+      meta: {
+        title: "Array",
+      },
     },
     {
       // 学生端功能

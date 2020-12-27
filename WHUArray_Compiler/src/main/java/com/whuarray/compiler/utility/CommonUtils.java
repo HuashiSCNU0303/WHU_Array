@@ -47,12 +47,9 @@ public class CommonUtils {
     public static boolean compileJavaProgram(Path srcPath, Map<String, String> results) throws IOException {
         StandardJavaFileManager fileManager = Constant.compiler.getStandardFileManager(null, null, null);
         Iterable<? extends JavaFileObject> iter = fileManager.getJavaFileObjects(srcPath.toFile());
-        JavaCompiler.CompilationTask compilationTask = Constant.compiler.getTask(null, fileManager, new DiagnosticListener<JavaFileObject>() {
-            @Override
-            public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
-                String compileErrorInfo = diagnostic.getMessage(null);
-                StatusHandler.compileErrorHandler(compileErrorInfo, results);
-            }
+        JavaCompiler.CompilationTask compilationTask = Constant.compiler.getTask(null, fileManager, diagnostic -> {
+            String compileErrorInfo = diagnostic.getMessage(null);
+            StatusHandler.compileErrorHandler(compileErrorInfo, results);
         }, null, null, iter);
         boolean compileResult = compilationTask.call();
         fileManager.close();

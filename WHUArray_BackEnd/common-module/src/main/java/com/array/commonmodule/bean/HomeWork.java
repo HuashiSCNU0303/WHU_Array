@@ -11,18 +11,24 @@ public class HomeWork {
     private Long courseId;
     private String homeworkContent;
     private String homeworkName;
-    private Timestamp homeworkTime;
+    private String startTime;
+    private String endTime;
+    private String status;
+    private int isExam;
 
     public HomeWork() {
     }
 
-    public HomeWork(Long homeworkId, Long courseId, String homeworkContent, Timestamp homeworkTime) {
+    public HomeWork(Long homeworkId, Long courseId, String homeworkContent, String homeworkName, String startTime, String endTime, String status, int isExam) {
         this.homeworkId = homeworkId;
         this.courseId = courseId;
         this.homeworkContent = homeworkContent;
-        this.homeworkTime = homeworkTime;
+        this.homeworkName = homeworkName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.isExam = isExam;
     }
-
 
     @Override
     public String toString() {
@@ -30,7 +36,11 @@ public class HomeWork {
                 "homeworkId=" + homeworkId +
                 ", courseId=" + courseId +
                 ", homeworkContent='" + homeworkContent + '\'' +
-                ", homeworkTime=" + homeworkTime +
+                ", homeworkName='" + homeworkName + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", status='" + status + '\'' +
+                ", isExam=" + isExam +
                 '}';
     }
 
@@ -66,11 +76,35 @@ public class HomeWork {
         this.homeworkContent = homeworkContent;
     }
 
-    public Timestamp getHomeworkTime() {
-        return homeworkTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setHomeworkTime(Timestamp homeworkTime) {
-        this.homeworkTime = homeworkTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getIsExam() {
+        return isExam;
+    }
+
+    public void setIsExam(int isExam) {
+        this.isExam = isExam;
     }
 }

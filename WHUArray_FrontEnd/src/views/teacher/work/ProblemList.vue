@@ -4,7 +4,7 @@
     <center-loading v-if="isLoading == true" />
     <div v-else>
       <a-row v-if="editable == true" style="margin-bottom: 16px">
-        <a-button type="primary" icon="user" @click="addProblem" style="float: left"
+        <a-button type="primary" icon="plus" @click="addProblem" style="float: left"
           >添加题目</a-button
         >
       </a-row>
@@ -16,7 +16,7 @@
         :deleteProblem="deleteProblem"
         :openEditModal="openEditModal"
       />
-      <icon-hint v-else :hint="hints[0]" />
+      <icon-hint v-else :hint="emptyHint" />
       <a-row v-if="editable == false" style="margin-top: 16px">
         <a-button type="primary" icon="user" @click="switchToRecord" style="float: left"
           >学生做题记录</a-button
@@ -26,6 +26,7 @@
     <problem-edit-modal
       :visible="modalVisible"
       :problemId="curEditProblemId"
+      :workId="work.id"
       :handleOk="editProblem"
       :handleCancel="closeEditModal"
     />
@@ -59,6 +60,11 @@ export default {
   computed: {
     ...mapState({
       work: (state) => state.curObj.work.work,
+      headers() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   mounted() {
@@ -71,16 +77,20 @@ export default {
       var data = {
         workId: this.work.id,
       };
-      this.api.teacher.getWorkProblems(data).then((res) => {
+      this.api.teacher.getWorkProblems(data, this.headers).then((res) => {
         var response = res.data;
         // 对response做处理，搞出problemList
+        console.log(response);
         var problems = response;
         for (var i = 0; i < problems.length; i++) {
-          var problem_ = problems[i];
+          var problem_ = problems[i].question;
+          var problemTags = problem_.tag.split(";");
+          problemTags.splice(problemTags.length - 1, 1);
           var problem = {
             id: problem_.questionId,
             name: problem_.questionName,
-            tags: ["算法", "数据结构", "链表", "位表示"],
+            // tags: ["算法", "数据结构", "链表", "位表示"],
+            tags: problemTags,
           };
           _this.problemList.push(problem);
         }
@@ -100,7 +110,7 @@ export default {
           var data = {
             id: record.id,
           };
-          _this.api.teacher.delProblem(data).then((res) => {
+          _this.api.teacher.delProblem(data, _this.headers).then((res) => {
             _this.problemList.splice(index, 1);
           });
         },
@@ -115,12 +125,14 @@ export default {
         homeworkId: this.work.id,
         questionName: "",
         questionContent: "",
-        questionTags: "",
+        tag: "",
+        status: "unpublished",
       };
-      this.api.teacher.addProblem(data).then((res) => {
+      console.log(data);
+      this.api.teacher.addProblem(data, this.headers).then((res) => {
         var response = res.data;
         // 对response进行处理，得到题号
-        var newId = 3;
+        var newId = response;
         this.problemList.push({
           id: newId,
           name: "",
@@ -138,17 +150,23 @@ export default {
       this.modalVisible = false;
     },
 
-    editProblem(problem) {
+    editProblem(problem, testCaseList) {
       // 提交编辑好的题目（problem）到后台
       var _this = this;
-
+      var tagStr = "";
+      problem.tags.forEach((tag) => {
+        tagStr += tag + ";";
+      });
       var data = {
-        homeworkId: problem.id,
+        questionId: problem.id,
+        homeworkId: this.work.id,
         questionName: problem.name,
         questionContent: problem.description,
-        questionTags: problem.tags,
+        tag: tagStr,
+        useCases: testCaseList,
       };
-      this.api.teacher.editProblem(data).then((res) => {
+      console.log(data);
+      this.api.teacher.editProblem(data, this.headers).then((res) => {
         _this.$success({
           title: "编辑成功",
           onOk() {

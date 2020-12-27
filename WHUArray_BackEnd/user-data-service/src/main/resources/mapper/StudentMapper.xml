@@ -26,7 +26,7 @@
         <if test="userFace!=null and userFace!=''">
             ,userFace=#{userFace}
         </if>
-        where userid=#{id}
+        where userid=#{userId}
     </update>
     <select id="findAll" resultType="com.array.commonmodule.bean.Student">
         select * from student

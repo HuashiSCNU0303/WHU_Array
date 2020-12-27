@@ -34,7 +34,7 @@ public class MessageController {
 
     @GetMapping("/getMessageByUserId")
     public List<Message> getMessageByUserId() {
-        Long userId = UserUtils.getCurrentUser().getId();
+        Long userId = UserUtils.getCurrentUser().getUserId();
         return messageClientFeign.getMessageByUserId(userId);
     }
 

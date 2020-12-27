@@ -16,6 +16,12 @@
           <div>
             <p>学号：{{ props.item.studentId }}</p>
           </div>
+          <div>
+            <p>邮箱：{{ props.item.mail }}</p>
+          </div>
+          <div>
+            <p>电话：{{ props.item.telephone }}</p>
+          </div>
         </template>
         <a-card :hoverable="true" :bordered="false">
           <a-avatar :src="props.item.userFace" /> &nbsp;{{ props.item.nickname }}
@@ -27,6 +33,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -45,16 +52,26 @@ export default {
   mounted() {
     this.getStudents();
   },
+  computed: {
+    ...mapState({
+      course: (state) => state.curObj.course.course,
+    }),
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
+  },
   methods: {
     getStudents() {
       var _this = this;
       var data = {
-        id: -1,
+        courseId: this.course.id,
       };
-      this.api.teacher.getCourseStudentList(data).then((res) => {
+      this.api.teacher.getCourseStudentList(data, this.headers).then((res) => {
         var response = res.data;
         // 对response进行处理，变成students
-        var students;
+        var students = response;
         for (var i = 0; i < students.length; i++) {
           var student = students[i];
           // 数据处理

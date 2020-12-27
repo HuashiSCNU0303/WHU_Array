@@ -1,17 +1,18 @@
 // 与学生有关的所有接口，更新个人信息后面再补
 
+const URL = "http://39.106.97.180:8009";
+
 import axios from "axios";
 
 export default {
-
   // 获取学生的所有作业，参数为学生id
   // 使用GET/POST未确定，下同
   // 使用的地方：/views/student/todolist/HomeworkTodoList
   // √ HomeworkController "/homeworkTodoList/{userId}"
-  // 对接完成
+  // 1对接完成
   getHomeworkList (data, headers) {
     return axios({
-      url: "http://localhost:8009/homeworkTodoList/" + data.userId,
+      url: URL + "/homework/homeworkTodoList/" + data.userId,
       method: "get",
       headers: headers,
     });
@@ -20,10 +21,10 @@ export default {
   // 获取学生的所有考试，参数为学生id
   // 使用的地方：/views/student/todolist/ExamTodoList
   // √ HomeworkController "/homeworkTodoList/{userId}" 筛选一下，要考试的
-  // 对接完成
+  // 1对接完成
   getExamList (data, headers) {
     return axios({
-      url: "http://localhost:8009/homeworkTodoList/" + data.userId,
+      url: URL + "/homework/homeworkTodoList/" + data.userId,
       method: "get",
       headers: headers,
     });
@@ -32,9 +33,10 @@ export default {
   // 获取学生的所有课程，参数为学生id
   // 使用的地方：/views/student/coursecenter/MyCourse
   // √ CourseController /findCourseByStudentId/{studentId}
+  // 1对接完成
   getCourseList (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
+      url: URL + "/course/findCourseByStudentId/" + data.userId,
       // method: "post",
       // data: data,
       headers: headers,
@@ -43,10 +45,10 @@ export default {
 
   // 获取全部课程（进行中的课程），参数为学生id（连带着要获取学生的选课记录）
   // 使用的地方：/views/student/coursecenter/AddCourse
-  // √ CourseController "/all"
+  //  √ CourseController "/all"
   getAllCourseList (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
+      url: URL + "/course/all",
       // method: "post",
       // data: data,
       headers: headers,
@@ -55,12 +57,12 @@ export default {
 
   // 学生选课，参数为学生id、课程id
   // 使用的地方：/components/lists/CourseList
-  // √ CourseController "/chooseCourse"
+  //  √ CourseController "/chooseCourse"
   addCourse (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
-      // method: "post",
-      // data: data,
+      url: URL + "/course/chooseCourse/" + data.courseId,
+      method: "post",
+      data: data,
       headers: headers,
     });
   },
@@ -70,9 +72,8 @@ export default {
   // ？
   dropCourse (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
-      // method: "post",
-      // data: data,
+      url: URL + "/course/withdrawCourse/" + data.courseId,
+      method: "delete",
       headers: headers,
     });
   },
@@ -83,9 +84,8 @@ export default {
   // 改完，但是还没有学生id与提交记录
   getCourseHomework (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
-      // method: "post",
-      // data: data,
+      url: URL + "/course/" + data.courseId + "/allHomework",
+      method: "get",
       headers: headers,
     });
   },
@@ -96,9 +96,8 @@ export default {
   // 改完，但是还没有学生id与提交记录
   getCourseExam (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
-      // method: "post",
-      // data: data,
+      url: URL + "/course/" + data.courseId + "/allHomework",
+      method: "get",
       headers: headers,
     });
   },
@@ -108,9 +107,8 @@ export default {
   // √ /{homeworkId}/allQuestion 学生id和提交记录有吗？
   getWorkProblems (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
-      // method: "post",
-      // data: data,
+      url: URL + "/homework/" + data.workId + "/allQuestion",
+      method: "get",
       headers: headers,
     });
   },
@@ -120,31 +118,44 @@ export default {
   // 对接完成
   updateStudent (data, headers) {
     return axios({
-      url: "http://localhost:8009/student/updateStudent",
+      url: URL + "/student/updateStudent",
       method: "put",
       data: data,
       headers: headers,
     });
   },
 
-
-  getCurrentStudent () {
+  uploadImage (data, headers) {
     return axios({
-      url: "http://localhost:8009/student/currentUser",
+      url: URL + "/file/api",
+      method: "post",
+      data: data,
+      headers: headers,
+    });
+  },
+
+  getCurrentStudent (headers) {
+    return axios({
+      url: URL + "/student/currentUser",
       method: "get",
+      headers: headers,
     });
   },
 
-  // 获取数据库旧信息
-  getOldMessage (data, headers) {
+  // 获取数据库中的消息
+  getMessage (headers) {
     return axios({
-      url: "http://localhost:8009/student/updateStudent",
-      method: "put",
-      data: data,
+      url: URL + "/message/getMessageByUserId",
+      method: "get",
       headers: headers,
     });
-  }
+  },
 
+  getCurrentStudentInfo (data, headers) {
+    return axios({
+      url: URL + "/student/" + data.studentId,
+      method: "get",
+      headers: headers,
+    });
+  },
 };
-
-

@@ -2,30 +2,102 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.array.coursedataservice.mapper.CourseMapper">
-    <insert id="addQuestion" parameterType="com.array.commonmodule.bean.Question">
-        insert into question set questionId=#{questionId},homeworkId=#{homeworkId},examId=#{examId},questionName=#{questionName},questionContent=#{questionContent}
+<mapper namespace="com.array.coursedataservice.mapper.QuestionMapper">
+    <insert id="addQuestion" parameterType="com.array.commonmodule.bean.Question" useGeneratedKeys="true" keyProperty="questionId">
+        insert into question set questionId=#{questionId},homeworkId=#{homeworkId},questionName=#{questionName},questionContent=#{questionContent},status=#{status},tag=#{tag}
     </insert>
     <delete id="deleteQuestion">
         delete from question where questionId=#{questionId}
     </delete>
     <update id="updateQuestion" parameterType="com.array.commonmodule.bean.Question">
-        update question set questionId=#{questionId},homeworkId=#{homeworkId},examId=#{examId},questionName=#{questionName},questionContent=#{questionContent}
+        update question set questionId=#{questionId},questionName=#{questionName},questionContent=#{questionContent},tag=#{tag}
         where questionId=#{questionId}
     </update>
-    <select id="findQuestionById" resultType="com.array.commonmodule.bean.Question">
-        select * from question where questionId=#{questionId}
+    <update id="updateQuestionStatus">
+        update question set status='published' where homeworkId=#{homeworkId}
+    </update>
+    <select id="findQuestionById" resultMap="questionMap">
+        select q.*,
+        u.useCaseId as uuseCaseId,
+        u.questionId as uquestionId,
+        u.input as uinput,
+        u.output as uoutput
+        from question q left join useCase u on q.questionId=u.questionId where q.questionId=#{questionId}
     </select>
-    <select id="findQuestionByName" resultType="com.array.commonmodule.bean.Question">
-        select * from question where questionName=#{questionName}
+    <select id="findQuestionByName" resultMap="questionMap">
+        select q.*,
+        u.useCaseId as uuseCaseId,
+        u.questionId as uquestionId,
+        u.input as uinput,
+        u.output as uoutput
+        from question q left join useCase u on q.questionId=u.questionId where questionName=#{questionName}
     </select>
-    <select id="findAllQuestion" resultType="com.array.commonmodule.bean.Question">
-        select * from question
+    <select id="findAllQuestion" resultMap="qu">
+        select q.*,
+        h.homeworkName as homeworkName,
+        c.courseName as courseName,
+        r.id as rid,
+        r.userId as ruserId,
+        r.questionId as rquestionId,
+        r.recordGrade as rrecordGrade,
+        r.lang as rlang,
+        r.recordContent as rrecordContent
+        from question q left join record r on q.questionId=r.questionId left join homework h on q.homeworkId=h.homeworkId left join course c on h.courseId=c.courseId
     </select>
+    <select id="findQuestionByHomeworkId" resultType="com.array.commonmodule.bean.Question">
+        select * from question where homeworkId=#{homeworkId}
+    </select>
+    <resultMap id="questionMap" type="com.array.commonmodule.bean.Question">
+        <id property="questionId" column="questionId" />
+        <result property="homeworkId" column="homeworkId" />
+        <result property="examId" column="examId" />
+        <result property="questionName" column="questionName" />
+        <result property="questionContent" column="questionContent" />
+        <result property="status" column="status" />
+        <result property="tag" column="tag" />
+        <collection property="useCases" ofType="com.array.commonmodule.bean.UseCase">
+            <id property="useCaseId" column="uuseCaseId" />
+            <result property="questionId" column="uquestionId" />
+            <result property="input" column="uinput" />
+            <result property="output" column="uoutput" />
+        </collection>
+    </resultMap>
+    <resultMap id="qu" type="com.array.commonmodule.bean.dto.QuestionDTO">
+        <id property="id" column="questionId" />
+        <result property="courseName" column="courseName" />
+        <result property="homeworkName" column="homeworkName" />
+        <association property="question" javaType="com.array.commonmodule.bean.Question">
+            <id property="questionId" column="questionId" />
+            <result property="homeworkId" column="homeworkId" />
+            <result property="examId" column="examId" />
+            <result property="questionName" column="questionName" />
+            <result property="questionContent" column="questionContent" />
+            <result property="status" column="status" />
+            <result property="tag" column="tag" />
+        </association>
+        <collection property="records" ofType="com.array.commonmodule.bean.Record">
+            <id property="id" column="rid" />
+            <result property="userId" column="ruserId" />
+            <result property="questionId" column="rquestionId" />
+            <result property="recordGrade" column="rrecordGrade" />
+            <result property="lang" column="rlang" />
+            <result property="recordContent" column="rrecordContent" />
+        </collection>
+    </resultMap>
 </mapper>
 
+<!--question-->
 <!--        private Long questionId;-->
 <!--        private Long homeworkId;-->
 <!--        private Long examId;-->
 <!--        private String questionName;-->
 <!--        private String questionContent;-->
+<!--        private String status;-->
+<!--        private String tag;-->
+<!--        private List<UseCase> useCases;-->
+
+<!--useCase-->
+<!--        private Long useCaseId;-->
+<!--        private Long questionId;-->
+<!--        private String input;-->
+<!--        private String output;-->

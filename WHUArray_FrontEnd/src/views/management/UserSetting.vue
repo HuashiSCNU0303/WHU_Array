@@ -37,21 +37,25 @@
         </a-col>
         <a-col :span="6" justify="center" align="middle">
           <a-row>
-            <a-avatar
-              :size="128"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            />
+            <a-avatar :size="128" :src="updateStudent.userFace" />
           </a-row>
           <a-row>
-            <a-upload
+            <!-- <a-upload
               :name="genFileName()"
               :multiple="false"
               :action="url"
-              :data="data"
-              :headers="headers"
+              :headers="headers_"
               :showUploadList="false"
               :before-upload="beforeUpload"
+              :customRequest="uploadImage"
               @change="handleAvatarChange"
+            > -->
+            <a-upload
+              :name="genFileName()"
+              :multiple="false"
+              :showUploadList="false"
+              :before-upload="beforeUpload"
+              :customRequest="uploadImage"
             >
               <a-button type="primary" icon="upload" ghost style="margin-top: 16px"
                 >更改头像</a-button
@@ -65,19 +69,26 @@
 </template>
 
 <script>
+const URL = "http://39.106.97.180:8009";
+
 import { mapState } from "vuex";
 import axios from "axios";
 export default {
   computed: {
     ...mapState({
       user: (state) => state.curObj.user.user,
+      headers_() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   data() {
     return {
       selectedKey: "userSetting",
       updateStudent: {
-        id: "",
+        userId: "",
         name: "",
         password: "",
         role: "",
@@ -87,11 +98,8 @@ export default {
         telephone: "",
         userFace: "",
       },
-
       // 上传头像需要的参数，组件要求只能在这里写，就不搞到api里面去了
-      url: "",
-      data: {},
-      headers: {},
+      url: URL + "/file/api",
     };
   },
   mounted() {
@@ -99,31 +107,23 @@ export default {
   },
   methods: {
     getStudent() {
-      console.log(this.user.role);
-      let _this = this;
-      switch (this.user.role) {
-        case 1: //老师，不知道是不是在这写
-          break;
-        case 2:
-          // 有一说一，这里界面刷新的时候会把前端的currentUser刷掉，建议老师和学生各做一个界面，用前端存的数据只有在界面没刷新之前有用，或者在mounted设置用户的角色
-          // 感觉最好把两个角色分开
-          axios
-            .get("http://localhost:8009/student/findStudentByName", {
-              params: {
-                name: this.user.username,
-              },
-              headers: {
-                Authorization: localStorage.getItem("token"),
-              },
-            })
-            .then((res) => {
-              console.log(res.data);
-              _this.updateStudent = res.data;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-      }
+      var _this = this;
+      axios
+        .get(URL + "/student/findStudentByName", {
+          params: {
+            name: this.user.username,
+          },
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          // console.log(res.data);
+          _this.updateStudent = res.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     beforeUpload(file) {
@@ -138,7 +138,19 @@ export default {
       return isJpgOrPng && isLt2M;
     },
 
-    handleAvatarChange(info) {
+    uploadImage(file) {
+      const formData = new FormData();
+      formData.append("file", file.file);
+      var _this = this;
+      this.api.student.uploadImage(formData, this.headers_).then((res) => {
+        var response = res.data;
+        console.log(response);
+        _this.updateStudent.userFace = response;
+        _this.submit();
+      });
+    },
+
+    /*handleAvatarChange(info) {
       // 上传成功，更改用户头像url，这里逻辑还没写
       if (info.file.status === "done") {
         var response = info.file.response; // 服务器端响应内容
@@ -148,7 +160,7 @@ export default {
           content: "上传头像后需要提交更改了才能记住哦",
         });
       }
-    },
+    },*/
 
     genFileName() {
       return new Date().valueOf() + "_" + this.user.id;
@@ -157,6 +169,7 @@ export default {
     submit() {
       this.updateStudent.role = "ROLE_" + this.updateStudent.role;
       // console.log(this.updateStudent.role);
+      console.log(this.updateStudent);
       var _this = this;
       var headers = {
         Authorization: localStorage.getItem("token"),
@@ -166,7 +179,14 @@ export default {
         .then((res) => {
           console.log(res);
           // 更新当前用户
-          _this.dispatch("setCurrentUser", _this.updateStudent);
+          var item = {
+            username: _this.user.username,
+            id: _this.updateStudent.userId,
+            role: "student",
+            nickname: _this.updateStudent.nickname,
+            userFace: _this.updateStudent.userFace, // 更新URL
+          };
+          _this.$store.dispatch("setCurrentUser", item);
           _this.$success({
             title: "修改成功",
           });

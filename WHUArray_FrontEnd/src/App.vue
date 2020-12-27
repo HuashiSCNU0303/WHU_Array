@@ -6,26 +6,26 @@
 
 <script>
 export default {
-  name: 'App',
+  name: "App",
   provide() {
     return {
       reload: this.reload,
-    }
+    };
   },
   data() {
     return {
       isRouterAlive: true,
-    }
+    };
   },
   methods: {
     reload() {
       this.isRouterAlive = false;
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.isRouterAlive = true;
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style>
@@ -33,7 +33,12 @@ export default {
   height: 100%;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: inherit !important;
   font-size: initial !important;
   font-weight: initial !important;

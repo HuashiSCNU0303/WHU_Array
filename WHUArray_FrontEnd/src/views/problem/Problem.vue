@@ -21,6 +21,17 @@
               <a-select-option value="java"> Java </a-select-option>
               <a-select-option value="python"> Python </a-select-option>
             </a-select>
+
+            <a-popover title="在线编译系统使用帮助" trigger="click">
+              <p slot="content">
+                你可以到<a>https://oj.bnuz.edu.cn/helper/faq</a>了解编译系统的详情，<br />本系统的实现与使用方法与该系统非常类似。
+              </p>
+              <a-icon
+                type="question-circle"
+                style="float: right; font-size: 30px"
+                theme="twoTone"
+              />
+            </a-popover>
           </a-row>
           <MonacoEditor
             :language="selectedLang"
@@ -32,7 +43,7 @@
           </MonacoEditor>
           <div class="result-display">
             <a-row>
-              <a-tabs>
+              <a-tabs :active-key="showOutput" @change="handleResultTabSwitch">
                 <a-tab-pane key="input" tab="测试输入">
                   <a-textarea
                     v-model="input"
@@ -43,13 +54,52 @@
                 </a-tab-pane>
                 <a-tab-pane key="output" tab="输出结果">
                   <center-loading v-if="isLoading" />
-                  <a-textarea
-                    v-else
-                    v-model="output"
-                    :rows="8"
-                    style="max-height: 200px"
-                    read-only
-                  />
+                  <div v-else>
+                    <a-alert
+                      v-if="outputStatus == 1"
+                      :key="refreshKey"
+                      message="运行成功"
+                      type="success"
+                      show-icon
+                    >
+                      <span slot="description" class="result-info">
+                        {{ output }}
+                      </span>
+                    </a-alert>
+                    <a-alert
+                      v-else-if="outputStatus == 3"
+                      :key="refreshKey"
+                      message="结果错误"
+                      type="warning"
+                      show-icon
+                    >
+                      <p slot="description" class="result-info">
+                        {{ output }}
+                      </p>
+                    </a-alert>
+                    <a-alert
+                      v-else-if="outputStatus == 0"
+                      :key="refreshKey"
+                      message="编译错误"
+                      type="error"
+                      show-icon
+                    >
+                      <p slot="description" class="result-info">
+                        {{ output }}
+                      </p>
+                    </a-alert>
+                    <a-alert
+                      v-else-if="outputStatus == 2"
+                      :key="refreshKey"
+                      message="运行时错误"
+                      type="error"
+                      show-icon
+                    >
+                      <span slot="description" class="result-info">
+                        {{ output }}
+                      </span>
+                    </a-alert>
+                  </div>
                 </a-tab-pane>
               </a-tabs>
             </a-row>
@@ -110,6 +160,10 @@ export default {
       breadCrumb: [{}],
       output: "",
       input: "",
+      outputStatus: -1,
+      refreshKey: 0,
+      showOutput: "input",
+      toolTipVisible: false,
     };
   },
   components: {
@@ -121,11 +175,14 @@ export default {
       course: (state) => state.curObj.course.course,
       work: (state) => state.curObj.work.work,
       user: (state) => state.curObj.user.user,
+      headers() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   mounted() {
-    // 是不是需要把提交记录（主要是提交的代码）拿下来？
-
     const source = this.$route.query.source;
     const sourceStr = this.handleSource(source);
     this.setHeader(sourceStr);
@@ -155,7 +212,7 @@ export default {
               name: this.problem.id + "号题目",
             },
           ];
-          sourceStr = this.problem.course + "\n" + this.problem.work;
+          sourceStr = this.problem.courseName + "\n" + this.problem.workName;
           break;
         }
         case "work": {
@@ -194,6 +251,10 @@ export default {
         path: "./" + value,
       });
     },
+    handleResultTabSwitch(value) {
+      this.showOutput = value;
+    },
+    showToolTip() {},
     handleSubmit() {
       // 提交代码
       this.isLoading = true;
@@ -201,14 +262,50 @@ export default {
       var data = {
         userId: this.user.id,
         questionId: this.problem.id,
-        lang: this.selectedLang,
+        lang: this.selectedLang == "python" ? "py" : this.selectedLang,
         recordContent: this.code,
       };
       var _this = this;
-      this.api.problem.submitProblem(data).then((res) => {
+      this.api.problem.submitProblem(data, this.headers).then((res) => {
         var response = res.data;
-        // 对response做处理
         // 显示运行结果
+        _this.refreshKey++;
+        console.log(response);
+        var status = Number(response.status);
+        switch (status) {
+          case 0: {
+            // 编译错误
+            _this.output = "错误信息：\n\n" + response.info;
+            break;
+          }
+          case 1: {
+            // 结果正确
+            _this.output = "代码运行成功，结果正确！\n\n耗时：\n" + response.time + "ms";
+            break;
+          }
+          case 2: {
+            // 运行错误
+            _this.output =
+              "代码运行过程中出错！\n\n程序出错时的输入：\n" +
+              response.wrongTestCaseInput +
+              "\n错误信息：\n" +
+              response.info;
+            break;
+          }
+          case 3: {
+            // 计算结果出错
+            _this.output =
+              "代码运行成功，但结果算错了！\n\n出现错误结果的输入：\n" +
+              response.wrongTestCaseInput +
+              "\n错误结果：\n" +
+              response.wrongAnswer +
+              "\n正确结果应当为：\n" +
+              response.rightAnswer;
+          }
+        }
+        _this.$store.dispatch("setCurrentProblemScore", response.score);
+        _this.outputStatus = status;
+        _this.handleResultTabSwitch("output");
         _this.isLoading = false;
       });
     },
@@ -218,16 +315,43 @@ export default {
       // 需要提交的数据
       var data = {
         userId: this.user.id,
-        questionId: this.problem.id,
-        lang: this.selectedLang,
-        recordContent: this.code,
+        problemID: this.problem.id,
+        lang: this.selectedLang == "python" ? "py" : this.selectedLang,
+        src: this.code,
         input: this.input,
       };
       var _this = this;
-      this.api.problem.debugProblem(data).then((res) => {
+      this.api.problem.debugProblem(data, this.headers).then((res) => {
         var response = res.data;
-        // 对response做处理
         // 显示运行结果
+        // {"result":"7\n","time":"2","status":"1"}
+        _this.refreshKey++;
+        console.log(response);
+        var status = Number(response.status);
+        switch (status) {
+          case 0: {
+            // 编译错误
+            _this.output = "错误信息：\n\n" + response.info;
+            break;
+          }
+          case 1: {
+            // 结果正确
+            _this.output =
+              "运行结果如下：\n\n结果：\n" +
+              response.result +
+              "耗时：\n" +
+              response.time +
+              "ms";
+            break;
+          }
+          case 2: {
+            // 运行错误
+            _this.output = "错误信息：\n\n" + response.info;
+            break;
+          }
+        }
+        _this.outputStatus = status;
+        _this.handleResultTabSwitch("output");
         _this.isLoading = false;
       });
     },
@@ -238,7 +362,6 @@ export default {
 <style scoped>
 .content {
   padding: 16px;
-  max-height: 1000px;
 }
 #problem-info {
   margin-right: 16px;
@@ -265,6 +388,14 @@ export default {
   border-right: 2px solid #e8e8e8;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+}
+
+.result-info {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .buttons {

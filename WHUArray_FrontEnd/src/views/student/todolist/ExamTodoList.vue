@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -29,13 +30,21 @@ export default {
   mounted() {
     this.getExams();
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+    }),
+  },
   methods: {
     getExams() {
       var _this = this;
       var data = {
-        id: -1,
+        userId: this.user.id,
       };
-      this.api.student.getExamList(data).then((res) => {
+      var headers = {
+        Authorization: localStorage.getItem("token"),
+      };
+      this.api.student.getExamList(data, headers).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的exams;
         var exams = response;

@@ -46,6 +46,11 @@ export default {
     ...mapState({
       user: (state) => state.curObj.user.user,
       work: (state) => state.curObj.work.work,
+      headers() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   methods: {
@@ -69,14 +74,12 @@ export default {
       // 做题记录已经保存，应该只需要传一个作业和学生id表示交卷就可以了
       var _this = this;
       var data = {
-        studentId: this.user.id,
         workId: this.work.id,
       };
-      this.api.work.submitWork(data).then((res) => {
+      this.api.work.submitWork(data, this.headers).then((res) => {
         var response = res.data;
-        // 对response进行处理
-        // 返回一个提交记录的score给我，然后更新上面的状态（更新全局的那个Work，dispatch一下）
-        var newScore = -1;
+        console.log(response);
+        var newScore = response;
         this.$store.dispatch("setCurrentWorkScore", newScore);
       });
     },

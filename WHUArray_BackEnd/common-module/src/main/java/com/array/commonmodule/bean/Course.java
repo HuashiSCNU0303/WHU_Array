@@ -11,16 +11,23 @@ public class Course {
     private Long teacherId;
     private String courseName;
     private String courseTime;
+    private String status;
+    private String grade;
+    private String description;
+
 
     public Course() {
     }
 
-    public Course(Long courseId, Long examId, Long teacherId, String courseName, String courseTime) {
+    public Course(Long courseId, Long examId, Long teacherId, String courseName, String courseTime, String status, String grade, String description) {
         this.courseId = courseId;
         this.examId = examId;
         this.teacherId = teacherId;
         this.courseName = courseName;
         this.courseTime = courseTime;
+        this.status = status;
+        this.grade = grade;
+        this.description = description;
     }
 
     @Override
@@ -30,6 +37,10 @@ public class Course {
                 ", examId=" + examId +
                 ", teacherId=" + teacherId +
                 ", courseName='" + courseName + '\'' +
+                ", courseTime='" + courseTime + '\'' +
+                ", status='" + status + '\'' +
+                ", grade='" + grade + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -71,5 +82,29 @@ public class Course {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

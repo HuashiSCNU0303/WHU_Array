@@ -26,7 +26,12 @@
       >
         搜索
       </a-button>
-      <a-button size="small" style="width: 90px" @click="() => handleReset(clearFilters)">
+      <a-button
+        size="small"
+        icon="sync"
+        style="width: 90px"
+        @click="() => handleReset(clearFilters)"
+      >
         重置
       </a-button>
     </div>

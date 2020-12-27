@@ -6,7 +6,7 @@
       <a-row>
         <a-button
           type="primary"
-          icon="user"
+          icon="usergroup-add"
           @click="
             () => {
               this.modalVisible = true;
@@ -23,7 +23,7 @@
           </a-select>
           <a-button
             type="primary"
-            icon="user"
+            icon="sync"
             @click="
               () => {
                 refreshKey = 1;
@@ -78,6 +78,11 @@ export default {
     ...mapState({
       user: (state) => state.curObj.user.user,
       courseList: (state) => state.tempData.courseList.curList,
+      headers() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   mounted() {
@@ -103,9 +108,9 @@ export default {
     getCourses() {
       var _this = this;
       var data = {
-        id: -1,
+        teacherId: this.user.id,
       };
-      this.api.teacher.getCurCourseList(data).then((res) => {
+      this.api.teacher.getCurCourseList(data, this.headers).then((res) => {
         var response = res.data;
         var courses = response;
         for (var i = 0; i < courses.length; i++) {
@@ -113,7 +118,7 @@ export default {
           var course = {
             id: course_.courseId,
             name: course_.courseName,
-            teacher: course_.teacher.name, // ?
+            teacher: course_.teacherName,
             grade: course_.grade,
             time: course_.courseTime,
             description: course_.description,
@@ -135,7 +140,7 @@ export default {
     },
 
     switchToCourse(item) {
-      this.utils.toggle.handleCourseSwitch(this, "teacher", item);
+      this.utils.toggle.handleCourseSwitch(this, "teacher", item.id);
     },
     addCourse(course) {
       var date = new Date();
@@ -154,10 +159,11 @@ export default {
       };
 
       var _this = this;
-      this.api.teacher.addCourse(newCourse).then((res) => {
+      this.api.teacher.addCourse(newCourse, this.headers).then((res) => {
         var response = res.data;
-        // 对response进行处理，获得课程号
-        course["id"] = 4;
+        console.log(response);
+        // 对response进行处理，获得id
+        course["id"] = response;
         _this.currentCourseList.push(course);
         _this.modalVisible = false;
         _this.$success({

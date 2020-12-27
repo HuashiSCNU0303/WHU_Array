@@ -25,7 +25,13 @@ export default {
   },
   computed: {
     ...mapState({
+      user: (state) => state.curObj.user.user,
       courseList: (state) => state.tempData.courseList.endList,
+      headers() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   mounted() {
@@ -35,9 +41,9 @@ export default {
     getCourses() {
       var _this = this;
       var data = {
-        id: -1,
+        teacherId: this.user.id,
       };
-      this.api.teacher.getPreCourseList(data).then((res) => {
+      this.api.teacher.getPreCourseList(data, this.headers).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的courses;
         var courses = response;
@@ -46,7 +52,7 @@ export default {
           var course = {
             id: course_.courseId,
             name: course_.courseName,
-            teacher: course_.teacher.name, // ?
+            teacher: course_.teacherName,
             grade: course_.grade,
             time: course_.courseTime,
             description: course_.description,

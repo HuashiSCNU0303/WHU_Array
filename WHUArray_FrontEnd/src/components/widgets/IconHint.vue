@@ -1,6 +1,14 @@
 <template>
   <div class="hint">
-    <p><a-avatar :icon="icon" /> &nbsp; {{ hint }}</p>
+    <!--<p><a-avatar :icon="icon" /> &nbsp; {{ hint }}</p>-->
+    <a-empty
+      image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+      :image-style="{
+        height: '60px',
+      }"
+      :description="false"
+    />
+    <div>{{ hint }}</div>
   </div>
 </template>
 
@@ -25,5 +33,7 @@ export default {
   /*margin: 30px 0;*/
   align-self: center;
   margin: 0 auto;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 </style>

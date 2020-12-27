@@ -11,12 +11,12 @@ export default {
       items: [
         {
           key: "homework",
-          iconType: "setting",
+          iconType: "form",
           text: "待完成作业",
         },
         {
           key: "exam",
-          iconType: "message",
+          iconType: "copy",
           text: "待完成考试",
         },
       ],

@@ -22,13 +22,18 @@ export default {
       type: Array,
     },
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+    }),
+  },
   methods: {
     handleSwitch(item) {
       const type = item.type;
       if (type == "Course") {
-        this.utils.toggle.handleCourseSwitch(this, item);
+        this.utils.toggle.handleCourseSwitch(this, this.user.role, item.id);
       } else {
-        this.utils.toggle.handleWorkSwitch(this, item);
+        this.utils.toggle.handleWorkSwitch(this, this.user.role, item.id);
       }
     },
   },

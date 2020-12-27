@@ -13,6 +13,7 @@
           :hint="emptyHint"
           :showAllTestCase="showAllTestCase"
           :key="routerKey"
+          style="width: 100%"
         />
       </a-col>
     </a-row>
@@ -64,6 +65,11 @@ export default {
     },
     typeName() {
       return this.type == "Homework" ? "作业" : "考试";
+    },
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
     },
   },
   mounted() {
@@ -130,14 +136,14 @@ export default {
         onOk() {
           // 删除这个作业/考试，调后端接口
           var data = {
-            workId: this.work.id,
+            workId: _this.work.id,
           };
-          _this.api.teacher.delWork(data).then((res) => {
+          _this.api.teacher.delWork(data, _this.headers).then((res) => {
             // 跳转回课程
             _this.$success({
               title: "删除成功",
               onOk() {
-                _this.utils.toggle.handleCourseSwitch(_this, "teacher", _this.course);
+                _this.utils.toggle.handleCourseSwitch(_this, "teacher", _this.course.id);
               },
             });
           });
@@ -152,6 +158,8 @@ export default {
       this.$confirm({
         title: "你确定要发布这个" + _this.typeName + "吗？",
         content: "发布后，你不可以再修改作业，在课上的同学可以见到布置的这些题目",
+        okText: "确定",
+        cancelText: "取消",
         onOk() {
           var _work = _this.work;
           _work.status = "published";
@@ -169,14 +177,17 @@ export default {
         work.endTime = this.utils.countdown.transPickerToString(work.endTime);
       }
       var data = {
+        homeworkId: work.id,
         homeworkName: work.name,
+        courseId: this.course.id,
         startTime: work.startTime,
         endTime: work.endTime,
         status: work.status,
         isExam: work.type == "Homework" ? 0 : 1,
       };
 
-      this.api.teacher.editWork(data).then((res) => {
+      console.log(data);
+      this.api.teacher.editWork(data, this.headers).then((res) => {
         _this.$success({
           title: "操作成功",
           onOk() {

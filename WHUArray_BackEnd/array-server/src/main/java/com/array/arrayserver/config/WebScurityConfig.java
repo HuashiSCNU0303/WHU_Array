@@ -78,6 +78,8 @@ public class WebScurityConfig extends WebSecurityConfigurerAdapter {
             .and().authorizeRequests()
                 .antMatchers("/student/reg", "/teacher/reg").permitAll()
                 .antMatchers("/auth/login").permitAll()
+                .antMatchers("/wsSever/**").permitAll()
+                .antMatchers("/api/file/**", "/file/**", "/root/file/**").permitAll()
                 .antMatchers("/student/**").hasRole("STUDENT")
                 .antMatchers("/teacher/**").hasRole("TEACHER")
                 .anyRequest().authenticated() //暂时测试用，正式使用要把上面的注释恢复，可能还要改一些其它页面权限什么的

@@ -27,6 +27,7 @@ export default {
       pageType: (state) => state.curObj.page.type,
       course: (state) => state.curObj.course.course,
       work: (state) => state.curObj.work.work,
+      user: (state) => state.curObj.user.user,
     }),
     type() {
       return this.$route.meta.type;
@@ -52,7 +53,7 @@ export default {
       this.breadCrumb = [
         {
           name: "我的课程",
-          href: "/index/course",
+          href: "/student/course",
         },
         {
           name: this.course.name,
@@ -65,31 +66,35 @@ export default {
       ];
     },
     getProblems() {
-      // 获取题目列表，下面只是模拟一下请求后端获得结果而已
-      // let _this = this;
-      // let homeworkId = this.homework.homeworkId;
-      // let getUrl = "http://localhost:8009/homework/" + homeworkId + "/allQuestion";
-      // axios
-      //   .get(getUrl, {
-      //     headers: {
-      //       Authorization: localStorage.getItem("token"),
-      //     },
-      //   })
-      //   .then((res) => {
-      //     // console.log(res.data);
-      //     _this.problemList = res.data;
-      //     _this.isLoading = false;
-      //   });
       var _this = this;
       var data = {
-        studentId: "",
-        workId: "",
+        workId: this.work.id,
       };
-      this.api.student.getWorkProblems(data).then((res) => {
+      var headers = {
+        Authorization: localStorage.getItem("token"),
+      };
+      this.api.student.getWorkProblems(data, headers).then((res) => {
         var response = res.data;
-        // 对response进行处理，变成problemList_temp;
-        var problemList_temp = [];
-        _this.problemList = problemList_temp;
+        // 对response做处理，搞出problemList
+        // console.log(response);
+        var problems = response;
+        for (var i = 0; i < problems.length; i++) {
+          var problem_ = problems[i].question;
+          var problemTags = problem_.tag.split(";");
+          problemTags.splice(problemTags.length - 1, 1);
+          var problem = {
+            id: problem_.questionId,
+            name: problem_.questionName,
+            tags: problemTags,
+            isDone: "",
+            score: "",
+          };
+
+          var records = problems[i].records;
+          _this.utils.statusHandler.handleProblemRecord(problem, records, _this.user.id);
+
+          _this.problemList.push(problem);
+        }
         _this.isLoading = false;
       });
     },

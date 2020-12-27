@@ -13,9 +13,11 @@
       <a-menu-item id="unselectable-wrapper" key="logo">
         <img id="logo" src="@/assets/logo.png" />
       </a-menu-item>
-      <a-menu-item key="todoList"> <a-icon type="home" />&nbsp;待办列表 </a-menu-item>
+      <a-menu-item key="todoList"> <a-icon type="calendar" />&nbsp;待办列表 </a-menu-item>
       <a-menu-item key="course"> <a-icon type="home" />&nbsp;我的课程 </a-menu-item>
-      <a-menu-item key="problemRepos"> <a-icon type="home" />&nbsp;真题仓库 </a-menu-item>
+      <a-menu-item key="problemRepos">
+        <a-icon type="inbox" />&nbsp;真题仓库
+      </a-menu-item>
       <a-menu-item id="unselectable-wrapper" class="header-index-right" key="userMenu">
         <user-menu @clearSelection="handleClearSelection"></user-menu>
       </a-menu-item>
@@ -89,6 +91,8 @@ export default {
         this.currentKey = "problemRepos";
       } else if (val == "MgmtCenter") {
         this.currentKey = "";
+      } else if (val == "ProblemInRepos") {
+        this.currentKey = "problemRepos";
       } else {
         this.currentKey = "course";
       }

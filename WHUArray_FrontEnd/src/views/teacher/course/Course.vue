@@ -20,12 +20,12 @@ export default {
       items: [
         {
           key: "homework",
-          iconType: "setting",
+          iconType: "form",
           text: "所有作业",
         },
         {
           key: "exam",
-          iconType: "message",
+          iconType: "copy",
           text: "所有考试",
         },
         {
@@ -48,10 +48,16 @@ export default {
   },
   computed: {
     ...mapState({
+      user: (state) => state.curObj.user.user,
       course: (state) => state.curObj.course.course,
     }),
     courseName() {
       return this.course.grade + " " + this.course.name;
+    },
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
     },
   },
   mounted() {
@@ -96,6 +102,7 @@ export default {
         onOk() {
           var _course = _this.course;
           _course.status = "off";
+          console.log(_course);
           _this.editCourse(_course);
         },
       });
@@ -113,9 +120,9 @@ export default {
         onOk() {
           // 删除这个课程，调后端接口
           var data = {
-            courseId: this.course.id,
+            courseId: _this.course.id,
           };
-          _this.api.teacher.delCourse(data).then((res) => {
+          _this.api.teacher.delCourse(data, _this.headers).then((res) => {
             // 跳转回课程中心
             _this.$success({
               title: "删除成功",
@@ -140,7 +147,7 @@ export default {
     editCourse(course) {
       // 把编辑好的course发送到后台
       var _this = this;
-
+      console.log(course);
       var data = {
         courseId: course.id,
         courseName: course.name,
@@ -151,7 +158,7 @@ export default {
         status: course.status,
       };
 
-      this.api.teacher.editCourse(data).then((res) => {
+      this.api.teacher.editCourse(data, this.headers).then((res) => {
         _this.$success({
           title: "操作成功",
           onOk() {

@@ -1,17 +1,17 @@
 package com.array.arrayserver.controller;
 
-import com.array.arrayserver.client.CourseClientFeign;
-import com.array.arrayserver.client.HomeworkClientFeign;
-import com.array.arrayserver.client.MessageClientFeign;
-import com.array.commonmodule.bean.HomeWork;
-import com.array.commonmodule.bean.Message;
-import com.array.commonmodule.bean.Question;
-import com.array.commonmodule.bean.Student;
-import com.netflix.discovery.converters.Auto;
+import com.alibaba.fastjson.JSONObject;
+import com.array.arrayserver.Utils.UserUtils;
+import com.array.arrayserver.client.*;
+import com.array.commonmodule.bean.*;
+import com.array.commonmodule.bean.dto.CourseDTO;
+import com.array.commonmodule.bean.dto.HomeworkTodo;
+import com.array.commonmodule.bean.dto.QuestionDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -30,18 +30,38 @@ public class HomeworkController {
     @Autowired
     CourseClientFeign courseClientFeign;
 
+    @Autowired
+    TeacherClientFeign teacherClientFeign;
+
+    @Autowired
+    QuestionClientFeign questionClientFeign;
+
     @PostMapping("/addHomework")
-    public int addHomework(@RequestBody HomeWork homeWork) throws IOException {
-        Long homeworkId = homeWork.getHomeworkId();
-        String courseName = courseClientFeign.findCourseById(homeWork.getCourseId()).getCourseName();
-        String messageContent = "你的课程" + courseName + "有了新作业，点击查看";
-        Message message = new Message(homeworkId, messageContent);
-        messageClientFeign.addMessage(message, homeWork.getCourseId());
-        List<Student> students = courseClientFeign.findStudentByCourseId(homeWork.getCourseId());
-        for(Student student: students) {
-            WebSocketServer.sendInfo("1", student.getStudentId().toString());
+    public Long addHomework(@RequestBody HomeWork homeWork) throws IOException {
+        Long homeworkId = homeworkClientFeign.addHomework(homeWork);
+        CourseDTO course = courseClientFeign.findCourseById(homeWork.getCourseId());
+        if (homeWork.getIsExam() == 1) {
+            // 发消息
+            // 把这个作业下面的题目的status也改成published
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("courseId", course.getCourseId());
+            jsonObject.put("courseName", course.getCourseName());
+            jsonObject.put("homeworkId", homeworkId);
+            jsonObject.put("homeworkName", homeWork.getHomeworkName());
+            jsonObject.put("isExam", homeWork.getIsExam());
+            jsonObject.put("type", "Create");
+            String messageContent = jsonObject.toJSONString();
+            Message message = new Message((long)-1, messageContent);
+            messageClientFeign.addMessage(message, homeWork.getCourseId());
+            List<Student> students = courseClientFeign.findStudentByCourseId(homeWork.getCourseId());
+            List<Long> sids = new LinkedList<>();
+            for(Student student: students) {
+                WebSocketServer.sendInfo("新消息", student.getUserId().toString());
+                sids.add(student.getUserId());
+            }
+            homeworkClientFeign.addStudentToHomework(homeworkId, sids);
         }
-        return homeworkClientFeign.addHomework(homeWork);
+        return homeworkId;
     }
 
     @DeleteMapping("/{homeworkId}")
@@ -50,12 +70,32 @@ public class HomeworkController {
     }
 
     @PutMapping("/updateHomework")
-    public int updateHomework(@RequestBody HomeWork homeWork) {
+    public int updateHomework(@RequestBody HomeWork homeWork) throws IOException {
         Long homeworkId = homeWork.getHomeworkId();
-        String courseName = courseClientFeign.findCourseById(homeWork.getCourseId()).getCourseName();
-        String messageContent = "你的课程" + courseName + "作业有更新，点击查看";
-        Message message = new Message(homeworkId, messageContent);
-        messageClientFeign.addMessage(message, homeWork.getCourseId());
+        CourseDTO course = courseClientFeign.findCourseById(homeWork.getCourseId());
+        System.out.println(homeWork.getStatus());
+        if ("published".equals(homeWork.getStatus())) {
+            // 发消息
+            // 把这个作业下面的题目的status也改成published
+            questionClientFeign.updateQuestionStatus(homeworkId);
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("courseId", course.getCourseId());
+            jsonObject.put("courseName", course.getCourseName());
+            jsonObject.put("homeworkId", homeworkId);
+            jsonObject.put("homeworkName", homeWork.getHomeworkName());
+            jsonObject.put("isExam", homeWork.getIsExam());
+            jsonObject.put("type", "Publish");
+            String messageContent = jsonObject.toJSONString();
+            Message message = new Message((long)-1, messageContent);
+            messageClientFeign.addMessage(message, homeWork.getCourseId());
+            List<Student> students = courseClientFeign.findStudentByCourseId(homeWork.getCourseId());
+            List<Long> sids = new LinkedList<>();
+            for(Student student: students) {
+                WebSocketServer.sendInfo("新消息", student.getUserId().toString());
+                sids.add(student.getUserId());
+            }
+            homeworkClientFeign.addStudentToHomework(homeworkId, sids);
+        }
         return homeworkClientFeign.updateHomework(homeWork);
     }
 
@@ -69,8 +109,24 @@ public class HomeworkController {
         return homeworkClientFeign.findAllHomeWork();
     }
 
+    @PostMapping("/submitHomework/{homeworkId}")
+    public int submitHomework(@PathVariable("homeworkId") Long homeworkId) {
+        Long studentId = UserUtils.getCurrentUser().getUserId();
+        return homeworkClientFeign.submitHomework(studentId, homeworkId);
+    }
+
+    @GetMapping("/findStudentHomeworkAssociationByCourseIdAndUserId")
+    public List<StudentHomeworkAssociation> findStudentHomeworkAssociationByCourseIdAndUserId(@RequestParam Long userId, @RequestParam Long courseId) {
+        return homeworkClientFeign.findStudentHomeworkAssociationByCourseIdAndUserId(userId, courseId);
+    }
+
     @GetMapping("/{homeworkId}/allQuestion")
-    public List<Question> findQuestionByHomeWorkId(@PathVariable("homeworkId") Long homeworkId) {
+    public List<QuestionDTO> findQuestionByHomeWorkId(@PathVariable("homeworkId") Long homeworkId) {
         return homeworkClientFeign.findQuestionByHomeWorkId(homeworkId);
+    }
+
+    @GetMapping("/homeworkTodoList/{userId}")
+    public List<HomeworkTodo> findHomeWorkTodoListByUserId(@PathVariable("userId") Long id) {
+        return homeworkClientFeign.findHomeWorkTodoListByUserId(id);
     }
 }

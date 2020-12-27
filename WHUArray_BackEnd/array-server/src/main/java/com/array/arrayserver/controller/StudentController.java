@@ -1,9 +1,9 @@
 package com.array.arrayserver.controller;
 
+import com.array.arrayserver.Utils.UserUtils;
 import com.array.arrayserver.service.StudentService;
 import com.array.commonmodule.bean.RespBean;
 import com.array.commonmodule.bean.Student;
-import com.array.commonmodule.bean.User;
 import com.array.commonmodule.bean.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,6 @@ public class StudentController {
 
     @PostMapping("/reg")
     public RespBean reg(@RequestBody UserVo userVo) {
-        System.out.println("测试测试：" + userVo.getName());
         int result = studentService.reg(userVo);
         if (result == 0) {
             //成功
@@ -63,6 +62,11 @@ public class StudentController {
     @PutMapping("/updateStudent")
     public int updateStudent(@RequestBody Student student) {
         return studentService.updateStudent(student);
+    }
+
+    @GetMapping("/currentUser")
+    public Long getCurrentUser() {
+        return UserUtils.getCurrentUser().getUserId();
     }
 
     @GetMapping("/{studentId}")

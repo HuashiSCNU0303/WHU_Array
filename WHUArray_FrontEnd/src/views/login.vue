@@ -8,7 +8,7 @@
         </a-row>
         <a-row>
           <p class="header-text">
-            <b>一个基于SpringBoot+Vue开发的在线编程作业/考试平台</b>
+            <b>一个基于SpringCloud+Vue开发的在线编程作业/考试平台</b>
           </p>
         </a-row>
       </a-col>
@@ -167,7 +167,11 @@ export default {
         .then((res) => {
           let token = res.headers.authorization;
           localStorage.setItem("token", token);
-          _this.getCurrentUser();
+          var headers = {
+            Authorization: localStorage.getItem("token"),
+          };
+          console.log(headers);
+          _this.getCurrentUser(headers);
         })
         .catch((error) => {
           console.log(error);
@@ -180,76 +184,50 @@ export default {
     register() {
       // 请求后台注册接口
       var _this = this;
-      var data = {
-        ...this.loginUserInfo,
-      };
       this.api.user
-        .register(registerUserInfo, this.role == "1" ? "teacher" : "student")
+        .register(this.registerUserInfo, this.role == "1" ? "teacher" : "student")
         .then((res) => {
           console.log(res);
-          _this.autoLogin(_this.role);
+          _this.$success({
+            title: "注册成功！",
+            content: "登录以使用系统的功能",
+          });
+          _this.loginUserInfo = {
+            username: _this.registerUserInfo.name,
+            password: _this.registerUserInfo.password,
+          };
         })
         .catch((error) => {
           console.log(error);
         });
-      /*switch (this.role) {
-        case "1":
-          axios
-            .post("http://localhost:8009/teacher/reg", this.registerUserInfo)
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          this.autoLogin("1");
-          break;
-        case "2":
-          axios
-            .post("http://localhost:8009/student/reg", this.registerUserInfo)
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-          this.autoLogin("2");
-          break;
-      }*/
     },
 
-    autoLogin(role) {
-      var data = {
-        ...this.registerUserInfo,
-        rememberMe: true,
-      };
-      this.api.user
-        .autoLogin(data)
-        .then((res) => {
-          let status = res.status;
-          if (status != null && status === 200) {
-            let token = res.headers.authorization;
-            localStorage.setItem("token", token);
-            _this.getCurrentUser();
-          }
-        })
-        .catch((error) => {
-          if (error.response.status === 401) {
-            alert("用户名或密码错误");
-          }
-        });
-    },
-
-    getCurrentUser(role) {
+    getCurrentUser(headers) {
       var _this = this;
-      var axios = _this.role == "2"? this.api.student.getCurrentStudent(): this.api.teacher.getCurrentTeacher();
+      var axios =
+        _this.role == "2"
+          ? this.api.student.getCurrentStudent(headers)
+          : this.api.teacher.getCurrentTeacher(headers);
       axios.then((res) => {
         var response = res.data;
-        var user = {
-          username: response.username,
-          id: response.id,
-          role: this.role == "1" ? "teacher" : "student",
-        };
+        console.log(response);
+
+        var user = {};
+        if (this.role == "2") {
+          user = {
+            username: this.loginUserInfo.username,
+            id: response,
+            role: "student",
+            nickname: "",
+            userFace: "",
+          };
+        } else {
+          user = {
+            username: this.loginUserInfo.username,
+            id: response.userId,
+            role: "teacher",
+          };
+        }
         _this.$store.dispatch("setCurrentUser", user);
         _this.$router.push({
           path: "/" + (_this.role == "1" ? "teacher" : "student"),
@@ -260,50 +238,6 @@ export default {
 
   mounted() {},
 };
-
-// 这里复制一个login()免得我写错了。。
-// login() {
-//       console.log(this.loginUserInfo);
-//       // 请求后台登录接口，下面注释掉的是原项目的旧代码，没有删
-//       var user = {
-//         username: this.loginUserInfo.username,
-//         role: this.loginUserInfo.role,
-//       };
-//       this.$store.dispatch("setCurrentUser", user);
-//       this.$router.push({ path: "/index" });
-//       this.$axios({
-//         url: `/auth/login`,
-//         method: "post",
-//         data: {
-//           ...this.userInfo,
-//         },
-//       }).then((res) => {
-//         let resData = res.data.data;
-//         if (resData != null) {
-//           switch (resData.role) {
-//             case "1": //教师
-//               this.$cookies.set("cname", resData.teacherName);
-//               this.$cookies.set("cid", resData.teacherId);
-//               this.$cookies.set("role", 1);
-//               this.$router.push({ path: "/index" }); //跳转到教师用户
-//               break;
-//             case "2": //学生
-//               this.$cookies.set("cname", resData.studentName);
-//               this.$cookies.set("cid", resData.studentId);
-//               this.$router.push({ path: "/student" });
-//               break;
-//           }
-//         }
-//         if (resData == null) {
-//           //错误提示
-//           this.$message({
-//             showClose: true,
-//             type: "error",
-//             message: "用户名或者密码错误",
-//           });
-//         }
-//       });
-//     },
 </script>
 
 <style scoped>

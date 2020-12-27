@@ -60,4 +60,21 @@ export default {
       work.status = "已发布";
     }
   },
+
+  handleProblemRecord (problem, records, userId) {
+    var recordScore = -1;
+    var myRecords = [];
+    records.forEach(record => {
+      if (record.userId == userId) {
+        myRecords.push(record);
+      }
+    });
+    myRecords.forEach(record => {
+      if (record.recordGrade > recordScore) {
+        recordScore = record.recordGrade;
+      }
+    })
+    problem.isDone = myRecords.length != 0;
+    problem.score = recordScore;
+  }
 }

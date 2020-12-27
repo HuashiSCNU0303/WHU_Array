@@ -2,6 +2,9 @@
 
 import axios from "axios";
 
+const URL = "http://39.106.97.180:8009";
+
+
 export default {
   // 获取作业/考试描述信息，参数为作业/考试的id
   // 使用的地方：/utils/toggle/Toggle
@@ -9,7 +12,7 @@ export default {
   // 对接完成
   getWorkDetail (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/" + data.workId,
+      url: URL + "/homework/" + data.workId,
       method: "get",
       headers: headers,
     });
@@ -20,9 +23,8 @@ export default {
   // 
   submitWork (data, headers) {
     return axios({
-      url: "http://localhost:8009/homework/all",
-      // method: "post",
-      // data: data,
+      url: URL + "/homework/submitHomework/" + data.workId,
+      method: "post",
       headers: headers,
     });
   },

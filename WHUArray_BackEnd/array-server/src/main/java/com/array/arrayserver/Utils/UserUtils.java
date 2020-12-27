@@ -1,6 +1,8 @@
 package com.array.arrayserver.Utils;
 
+import com.array.arrayserver.service.UserService;
 import com.array.commonmodule.bean.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -9,8 +11,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserUtils {
+    private static UserService userService;
+    @Autowired(required = true)
+    public void setDocUserService(UserService userService) {
+        UserUtils.userService = userService;
+    }
     public static User getCurrentUser() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String name = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = (User)userService.loadUserByUsername(name);
         return user;
     }
+
 }

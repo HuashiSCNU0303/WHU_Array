@@ -5,7 +5,7 @@
       :title="title"
       ok-text="提交"
       cancel-text="取消"
-      @ok="handleOk(work)"
+      @ok="handleOk(work, true)"
       @cancel="handleCancel"
     >
       <a-form>
@@ -90,6 +90,15 @@ export default {
   mounted() {
     this.setModal();
   },
+
+  watch: {
+    visible: function (newVal) {
+      if (this.visible) {
+        this.setModal();
+      }
+    },
+  },
+
   methods: {
     setModal() {
       this.title =

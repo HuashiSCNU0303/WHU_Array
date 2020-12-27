@@ -1,20 +1,25 @@
+var headers = {
+  Authorization: localStorage.getItem("token"),
+};
+
 export default {
   handleCourseSwitch (self, role, id) {
     var data = {
       courseId: id,
-    }
-    self.api.course.getCourseDetail(data,).then((res) => {
+    };
+    self.api.course.getCourseDetail(data, headers).then((res) => {
       var response = res.data;
       // 处理response，不知道长啥样，先不管
       var item = {
         id: response.courseId,
         name: response.courseName,
-        teacher: response.teacher.name, // ?
+        teacher: response.teacherName,
         grade: response.grade,
         time: response.courseTime,
         description: response.description,
         status: response.status,
-      }
+      };
+      console.log(item);
       self.$store.dispatch("setCurrentCourse", item);
       self.$router.push({
         path: "/" + role + "/course/" + id,
@@ -22,13 +27,19 @@ export default {
     });
   },
 
+  handleCourseSwitchByItem (self, role, item) {
+    self.$store.dispatch("setCurrentCourse", item);
+    self.$router.push({
+      path: "/" + role + "/course/" + item.id,
+    });
+  },
+
   handleWorkSwitch (self, role, id, courseName) {
     var data = {
       workId: id,
-    }
-    self.api.work.getWorkDetail(data).then((res) => {
+    };
+    self.api.work.getWorkDetail(data, headers).then((res) => {
       var response = res.data;
-      // 处理response，不知道长啥样，先不管
       var item = {
         id: response.homeworkId,
         courseId: response.courseId,
@@ -37,18 +48,36 @@ export default {
         endTime: response.endTime,
         status: response.status,
         type: response.isExam == 0 ? "Homework" : "Exam",
-      }
-      if (typeof courseName !== 'undefined') {
+      };
+      if (typeof courseName !== "undefined") {
         var course = {
           id: response.courseId,
-          courseName: courseName,
-        }
+          name: courseName,
+        };
         self.$store.dispatch("setCurrentCourse", course);
       }
+
+      if (role == "teacher") {
+        self.utils.statusHandler.handleTeacherWork(self, item);
+      } else {
+        if (item.type == "Homework") {
+          self.utils.statusHandler.handleStudentHomework(self, item);
+        } else {
+          self.utils.statusHandler.handleStudentExam(self, item);
+        }
+      }
+
       self.$store.dispatch("setCurrentWork", item);
       self.$router.push({
         path: "/" + role + "/" + item.type.toLowerCase() + "/" + id,
       });
+    });
+  },
+
+  handleWorkSwitchByItem (self, role, item) {
+    self.$store.dispatch("setCurrentWork", item);
+    self.$router.push({
+      path: "/" + role + "/" + item.type.toLowerCase() + "/" + item.id,
     });
   },
 

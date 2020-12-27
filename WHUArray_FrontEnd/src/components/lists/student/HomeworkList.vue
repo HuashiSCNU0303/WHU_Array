@@ -25,6 +25,7 @@
         <a-button
           size="small"
           style="width: 90px"
+          icon="sync"
           @click="() => handleReset(clearFilters)"
         >
           重置
@@ -142,7 +143,7 @@ export default {
       switch (this.currentPage) {
         case "CourseHomework": {
           this.columns.splice(1, 1);
-          this.columns.splice(2, 1);
+          this.columns.splice(3, 1);
           this.columns[0]["filters"] = [
             {
               text: "已提交",
@@ -160,7 +161,7 @@ export default {
         }
         case "CourseTodoHomework": {
           this.columns.splice(1, 1);
-          this.columns.splice(3, 1);
+          this.columns.splice(4, 1);
           break;
         }
         case "TodoList": {
@@ -191,19 +192,15 @@ export default {
 
     handleHomeworkSwitch(record) {
       // 跳转到具体作业
-      // 还要设置当前课程，待后端接口完成后再做
-      this.utils.toggle.handleWorkSwitch(this, "student", record);
+      if (this.currentPage == "TodoList") {
+        console.log(record.courseName);
+        this.utils.toggle.handleWorkSwitch(this, "student", record.id, record.courseName);
+      } else {
+        this.utils.toggle.handleWorkSwitchByItem(this, "student", record);
+      }
     },
     handleCourseSwitch(record) {
-      // 跳转到具体课程，待后端接口完成后再做
-      var item = {
-        id: record.courseId,
-        name: record.courseName,
-        teacher: record.teacher,
-        time: "2019-2020",
-        description: "",
-      };
-      this.utils.toggle.handleCourseSwitch(this, item);
+      this.utils.toggle.handleCourseSwitch(this, "student", record.courseId);
     },
     getRecordId(record) {
       return record.id;

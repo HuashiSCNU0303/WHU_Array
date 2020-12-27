@@ -1,9 +1,11 @@
 package com.array.arrayserver.controller;
 
+import com.array.arrayserver.Utils.UserUtils;
 import com.array.arrayserver.client.TeacherClientFeign;
 import com.array.arrayserver.service.TeacherService;
 import com.array.commonmodule.bean.RespBean;
 import com.array.commonmodule.bean.Teacher;
+import com.array.commonmodule.bean.User;
 import com.array.commonmodule.bean.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +68,11 @@ public class TeacherController {
     @GetMapping("/{id}")
     public Teacher findTeacherById(@PathVariable Long id) {
         return teacherClientFeign.findTeacherById(id);
+    }
+
+    @GetMapping("/currentUser")
+    public User getCurrentUser() {
+        return UserUtils.getCurrentUser();
     }
 
     @PostMapping("/name")

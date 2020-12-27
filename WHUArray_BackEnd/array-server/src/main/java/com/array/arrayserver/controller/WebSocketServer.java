@@ -7,7 +7,6 @@ import com.array.arrayserver.Utils.UserUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 
@@ -20,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author yee
  */
-@ServerEndpoint("/wsSever")
+@ServerEndpoint("/wsSever/{userId}")
 @Component
 public class WebSocketServer {
 
@@ -39,9 +38,9 @@ public class WebSocketServer {
      * 这里可以先试一下getCurrentUser()能不能用，不能用则换用带{userId}的url
      */
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(@PathParam("userId") String userId, Session session) {
         this.session = session;
-        this.userId= UserUtils.getCurrentUser().getId().toString();
+        this.userId= userId;
         if(webSocketMap.containsKey(userId)){
             webSocketMap.remove(userId);
             webSocketMap.put(userId,this);
@@ -57,6 +56,7 @@ public class WebSocketServer {
 
         try {
             sendMessage("连接成功");
+            System.out.println("onOpen" + this.userId);
         } catch (IOException e) {
             log.error("用户:"+userId+",网络异常!!!!!!");
         }
@@ -144,9 +144,5 @@ public class WebSocketServer {
     public static synchronized void subOnlineCount() {
         WebSocketServer.onlineCount--;
     }
-
-
-
-
 
 }

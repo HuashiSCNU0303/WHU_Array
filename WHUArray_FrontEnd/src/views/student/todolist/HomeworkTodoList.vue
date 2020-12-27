@@ -35,13 +35,13 @@ export default {
       var headers = {
         Authorization: localStorage.getItem("token"),
       };
-      this.api.student.getHomeworkList(data).then((res) => {
+      this.api.student.getHomeworkList(data, headers).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的homeworks
         var homeworks = response;
         for (var i = 0; i < homeworks.length; i++) {
           var homework_ = homeworks[i];
-          if (homework_.isExam != 0) {
+          if (homework_.isExam != 0 || homework_.status == "unpublished") {
             continue;
           }
           var homework = {

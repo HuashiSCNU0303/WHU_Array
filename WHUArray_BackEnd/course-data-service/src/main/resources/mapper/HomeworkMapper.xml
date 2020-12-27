@@ -3,26 +3,130 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.array.coursedataservice.mapper.HomeworkMapper">
-    <insert id="addHomework" parameterType="com.array.commonmodule.bean.HomeWork">
-        insert into homework set homeworkId=#{homework},courseId=#{courseId},homeworkContent=#{homeworkContent},homeworkTime=#{homeworkTime}
+    <insert id="addHomework" parameterType="com.array.commonmodule.bean.HomeWork" useGeneratedKeys="true" keyProperty="homeworkId">
+        insert into homework set homeworkId=#{homeworkId},courseId=#{courseId},homeworkContent=#{homeworkContent},homeworkName=#{homeworkName},startTime=#{startTime},endTime=#{endTime},status=#{status},isExam=#{isExam}
     </insert>
+    <update id="submitHomework" parameterType="com.array.commonmodule.bean.StudentHomeworkAssociation">
+        update student_homework set grade=#{grade} where userId=#{userId} and homeworkId=#{homeworkId}
+    </update>
     <delete id="deleteHomework">
         delete from homework where homeworkId=#{homeworkId}
     </delete>
     <update id="updateHomework" parameterType="com.array.commonmodule.bean.HomeWork">
-        update homework set homeworkId=#{homework},courseId=#{courseId},homeworkContent=#{homeworkContent},homeworkTime=#{homeworkTime}
+        update homework set startTime=#{startTime},endTime=#{endTime},status=#{status},isExam=#{isExam} where homeworkId=#{homeworkId}
     </update>
     <select id="findHomeworkById" resultType="com.array.commonmodule.bean.HomeWork">
-        select * from homework where homewrokId=#{homeworkId}
+        select * from homework where homeworkId=#{homeworkId}
     </select>
     <select id="findAllHomeWork" resultType="com.array.commonmodule.bean.HomeWork">
         select * from homework
     </select>
-    <select id="findQuestionByHomeworkId" resultType="com.array.commonmodule.bean.Question">
-        select * from question where homeworkId=#{homeworkId}
+    <select id="findQuestionByHomeworkId" resultMap="questionDto">
+        select q.*,r.id as rid,
+        r.userId as ruserId,
+        r.questionId as rquestionId,
+        r.recordGrade as rrecordGrade,
+        r.lang as rlang,
+        r.recordContent as rrecordContent
+        from question q left join record r on q.questionId=r.questionId where homeworkId=#{homeworkId}
     </select>
+    <select id="findHomeWorkTodoListByUserId" resultMap="HomeworkTodoMap">
+        select h.*,
+        c.courseId as ccourseId,
+        c.examId as cexamId,
+        c.teacherId as cteacherId,
+        c.courseName as ccourseName,
+        c.courseTime as ccourseTime,
+        c.status as cstatus,
+        c.grade as cgrade,
+        c.description as cdescription,
+        sh.grade as shgrade
+        from homework h left join course c on h.courseId=c.courseId left join student_homework sh on h.homeworkId=sh.homeworkId where sh.userId=#{id}
+    </select>
+    <select id="findStudentHomeworkAssociationByCourseIdAndUserId" resultType="com.array.commonmodule.bean.StudentHomeworkAssociation">
+        select * from student_homework where userId=#{userId} and homeworkId in
+        <foreach collection="homeworkIds" item="hid" open="(" separator="," close=")">
+            #{hid}
+        </foreach>
+    </select>
+    <insert id="addStudentToHomework">
+        insert into student_homework(userId,homeworkId,grade) values
+        <foreach collection="sids" item="sid" separator=",">
+            (#{sid},#{homeworkId},-1)
+        </foreach>
+    </insert>
+    <resultMap id="HomeworkTodoMap" type="com.array.commonmodule.bean.dto.HomeworkTodo">
+        <id property="homeworkId" column="homeworkId" />
+        <result property="homeworkContent" column="homeworkContent" />
+        <result property="homeworkName" column="homeworkName" />
+        <result property="startTime" column="startTime" />
+        <result property="endTime" column="endTime" />
+        <result property="status" column="status" />
+        <result property="isExam" column="isExam" />
+        <result property="grade" column="shgrade" />
+        <association property="course" javaType="com.array.commonmodule.bean.Course">
+            <id property="courseId" column="ccourseId" />
+            <result property="examId" column="cexamId" />
+            <result property="teacherId" column="cteacherId" />
+            <result property="courseName" column="ccourseName" />
+            <result property="courseTime" column="ccourseTime" />
+            <result property="status" column="cstatus" />
+            <result property="grade" column="cgrade" />
+            <result property="description" column="cdescription" />
+        </association>
+    </resultMap>
+    <resultMap id="questionDto" type="com.array.commonmodule.bean.dto.QuestionDTO">
+        <id property="id" column="questionId" />
+        <result property="courseName" column="" />
+        <result property="homeworkName" column="" />
+        <association property="question" javaType="com.array.commonmodule.bean.Question">
+            <id property="questionId" column="questionId" />
+            <result property="homeworkId" column="homeworkId" />
+            <result property="examId" column="examId" />
+            <result property="questionName" column="questionName" />
+            <result property="questionContent" column="questionContent" />
+            <result property="status" column="status" />
+            <result property="tag" column="tag" />
+        </association>
+        <collection property="records" ofType="com.array.commonmodule.bean.Record">
+            <id property="id" column="rid" />
+            <result property="userId" column="ruserId" />
+            <result property="questionId" column="rquestionId" />
+            <result property="recordGrade" column="rrecordGrade" />
+            <result property="lang" column="rlang" />
+            <result property="recordContent" column="rrecordContent" />
+        </collection>
+    </resultMap>
 </mapper>
+
+<!--        private String status;-->
+<!--        private String tag;-->
+<!--record-->
+<!--        private Long id;-->
+<!--        private Long userId;-->
+<!--        private Long questionId;-->
+<!--        private Long recordGrade;-->
+<!--        private String lang;-->
+<!--        private String recordContent;-->
+
+<!--Course-->
+<!--        private Long courseId;-->
+<!--        private Long examId;-->
+<!--        private Long teacherId;-->
+<!--        private String courseName;-->
+<!--        private String courseTime;-->
+<!--        private String status;-->
+<!--        private String grade;-->
+<!--        private String description;-->
+
+<!--HomeworkTodo-->
 <!--        private Long homeworkId;-->
 <!--        private Long courseId;-->
 <!--        private String homeworkContent;-->
-<!--        private Timestamp homeworkTime;-->
+<!--        private String homeworkName;-->
+<!--        private String startTime;-->
+<!--        private String endTime;-->
+<!--        private String status;-->
+<!--        private int isExam;-->
+<!--        private Course course;-->
+<!--        private int grade;-->

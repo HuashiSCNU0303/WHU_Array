@@ -1,13 +1,12 @@
 package com.array.coursedataservice.controller;
 
+import com.array.commonmodule.bean.Question;
 import com.array.commonmodule.bean.Record;
 import com.array.coursedataservice.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -20,13 +19,23 @@ public class RecordController {
     RecordService recordService;
 
     @PostMapping("/addRecord")
-    public int addRecord(Record record) {
+    public int addRecord(@RequestBody Record record) {
         return recordService.addRecord(record);
     }
 
     @GetMapping("/findRecordByQuestionIdAndUserId")
-    public List<Record> findRecordByQuestionIdAndUserId(Long questionId, Long userId) {
+    public List<Record> findRecordByQuestionIdAndUserId(@RequestParam Long questionId, @RequestParam Long userId) {
         return recordService.findRecordByQuestionIdAndUserId(questionId, userId);
+    }
+
+    @GetMapping("/findRecordByUserId")
+    public List<Record> findRecordByUserId(@RequestParam Long userId) {
+        return recordService.findRecordByUserId(userId);
+    }
+
+    @GetMapping("/findRecordByUserIdAndHomeworkId")
+    public List<Record> findRecordByUserIdAndHomeworkId(@RequestParam Long userId, @RequestParam Long homeworkId) {
+        return recordService.findRecordByUserIdAndHomeworkId(userId, homeworkId);
     }
 
 }

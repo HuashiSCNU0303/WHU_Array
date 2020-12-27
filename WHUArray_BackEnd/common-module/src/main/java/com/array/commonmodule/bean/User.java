@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class User implements UserDetails, Serializable {
     private static final long serialVersionUID = 5281791227447347462L;
-    private Long id;
+    private Long userId;
     private String name;
     private String password;
     private String role;
@@ -28,19 +28,19 @@ public class User implements UserDetails, Serializable {
     }
 
 
-    public User(Long id, String name, String password, String role) {
-        this.id = id;
+    public User(Long userId, String name, String password, String role) {
+        this.userId = userId;
         this.name = name;
         this.password = password;
         this.role = role;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -104,7 +104,7 @@ public class User implements UserDetails, Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + userId +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +

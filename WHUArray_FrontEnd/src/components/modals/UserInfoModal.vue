@@ -2,7 +2,7 @@
   <div>
     <a-modal
       v-model="visible"
-      :title="studentInfo.name + ' 做题记录'"
+      :title="studentInfo.nickname + ' 做题记录'"
       okText="好的"
       cancelText="取消"
       @ok="closeModal"
@@ -76,7 +76,7 @@ export default {
     }),
   },
   watch: {
-    "studentInfo.id": function (newVal) {
+    "studentInfo.userId": function (newVal) {
       this.isLoading = true;
       this.getRecords();
     },
@@ -106,7 +106,7 @@ export default {
     },
 
     getRecordId(record) {
-      return record.id;
+      return record.userId;
     },
   },
 };

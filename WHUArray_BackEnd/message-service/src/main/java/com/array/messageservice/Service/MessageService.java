@@ -21,10 +21,17 @@ public class MessageService {
     public int addMessage(Message message, Long courseId) {
         List<Long> ids = new LinkedList<>();
         List<Student> students = courseClientFeign.findStudentByCourseId(courseId);
-        for(Student s: students) {
-            ids.add(s.getId());
+        if(students.size()==0) {
+            return -1;
         }
-        return messageMapper.addMessage(message, ids);
+        for(Student s: students) {
+            ids.add(s.getUserId());
+        }
+        messageMapper.addMessage(message, ids);
+        Long messageId = message.getMessageId();
+        messageMapper.addMessageToUser(messageId, ids);
+        return 0;
+
     }
 
     public int deleteMessage(Long messageId) {

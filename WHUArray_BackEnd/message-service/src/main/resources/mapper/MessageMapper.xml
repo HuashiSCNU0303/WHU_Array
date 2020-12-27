@@ -3,18 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.array.messageservice.mapper.MessageMapper">
-    <insert id="addMessage" parameterType="com.array.commonmodule.bean.Message">
-        insert into message set messageId=#{messageId},messageContent=#{messageContent};
-
+    <insert id="addMessage" parameterType="com.array.commonmodule.bean.Message" useGeneratedKeys="true" keyProperty="message.messageId">
+        insert into message set messageContent=#{message.messageContent};
     </insert>
+    <insert id="addMessageToUser">
+        insert into message_user(messageId,userId) values
+        <foreach collection="userIds" item="uid" separator=",">
+            (#{messageId},#{uid})
+        </foreach>
+    </insert>
+
     <delete id="deleteMessage">
         delete from message where messageId=#{messageId}
     </delete>
     <select id="getMessageById" resultType="com.array.commonmodule.bean.Message">
         select * from message where messageId=#{messageId}
     </select>
-    <select id="getMessageByUserId">
-        select s.* from message m left join message_user mu on m.messageId=mu.messageId join student s on mu.userId=s.userId where s.userId=#{userId}
+    <select id="getMessageByUserId" resultType="com.array.commonmodule.bean.Message">
+        select m.* from message m left join message_user mu on m.messageId=mu.messageId join student s on mu.userId=s.userId where s.userId=#{userId}
     </select>
 
 </mapper>

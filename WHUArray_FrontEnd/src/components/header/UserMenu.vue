@@ -3,30 +3,30 @@
     <div class="content-box">
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">
-          <a-avatar
-            class="avatar"
-            size="small"
-            :src="user.role == 'teacher' ? '' : user.userFace"
-          />
-          <span>&nbsp;{{ user.role == "teacher" ? user.name : user.nickname }}</span>
+          <span v-if="user.role == 'teacher'">
+            <a-avatar style="background-color: #1890ff">老师</a-avatar>
+            <span>&nbsp;{{ user.username }}</span>
+          </span>
+          <span v-else>
+            <a-avatar class="avatar" :src="user.userFace" />
+            <span>&nbsp;{{ user.nickname }}</span>
+          </span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-          <div v-if="user.role == 'student'">
-            <a-menu-item key="userSetting">
-              <a href="javascript:;" @click="handleMgmtSwitch('userSetting')">
-                <a-icon type="setting" />
-                <span>账户设置</span>
-              </a>
-            </a-menu-item>
-            <a-menu-divider />
-            <a-menu-item key="msg">
-              <a href="javascript:;" @click="handleMgmtSwitch('msg')">
-                <a-icon type="message" />
-                <span>消息提醒</span>
-              </a>
-            </a-menu-item>
-            <a-menu-divider />
-          </div>
+          <a-menu-item v-if="user.role == 'student'" key="userSetting">
+            <a href="javascript:;" @click="handleMgmtSwitch('userSetting')">
+              <a-icon type="setting" />
+              <span>账户设置</span>
+            </a>
+          </a-menu-item>
+          <a-menu-divider v-if="user.role == 'student'" />
+          <a-menu-item v-if="user.role == 'student'" key="msg">
+            <a href="javascript:;" @click="handleMgmtSwitch('msg')">
+              <a-icon type="message" />
+              <span>消息提醒</span>
+            </a>
+          </a-menu-item>
+          <a-menu-divider v-if="user.role == 'student'" />
           <a-menu-item key="logOut">
             <a href="javascript:;" @click="handleLogout">
               <a-icon type="logout" />
@@ -56,23 +56,20 @@ export default {
       });
     },
     handleLogout() {
-      const that = this;
+      const _this = this;
 
       this.$confirm({
         title: "提示",
         content: "真的要注销登录吗 ?",
+        okText: "确定",
+        cancelText: "取消",
         onOk() {
-          return that
-            .Logout({})
-            .then(() => {
-              window.location.reload();
-            })
-            .catch((err) => {
-              that.$message.error({
-                title: "错误",
-                description: err.message,
-              });
-            });
+          var user = {};
+          localStorage.removeItem("token");
+          _this.$store.dispatch("setCurrentUser", user);
+          _this.$router.push({
+            path: "/",
+          });
         },
         onCancel() {},
       });

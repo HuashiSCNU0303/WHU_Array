@@ -11,12 +11,12 @@ export default {
       items: [
         {
           key: "homework",
-          iconType: "setting",
+          iconType: "form",
           text: "所有作业",
         },
         {
           key: "exam",
-          iconType: "message",
+          iconType: "copy",
           text: "所有考试",
         },
       ],
@@ -50,7 +50,7 @@ export default {
       this.breadCrumb = [
         {
           name: "我的课程",
-          href: "/index/course",
+          href: "/student/course",
         },
         {
           name: this.course.name,

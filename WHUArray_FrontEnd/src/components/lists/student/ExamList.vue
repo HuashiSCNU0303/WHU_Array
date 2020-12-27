@@ -25,6 +25,7 @@
         <a-button
           size="small"
           style="width: 90px"
+          icon="sync"
           @click="() => handleReset(clearFilters)"
         >
           重置
@@ -174,7 +175,7 @@ export default {
 
     handleCourseSwitch(record) {
       // 跳转到id对应的课程，待后端接口完成以后再做
-      this.utils.toggle.handleCourseSwitch(this, item);
+      this.utils.toggle.handleCourseSwitch(this, record.id);
     },
     getRecordId(record) {
       return record.id;

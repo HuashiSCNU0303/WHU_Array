@@ -3,39 +3,86 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.array.coursedataservice.mapper.CourseMapper">
-    <insert id="addCourse" parameterType="com.array.commonmodule.bean.Course">
-        insert into course set courseId=#{courseId},teacherId=#{teacherId},courseName=#{courseName}
+    <insert id="addCourse" parameterType="com.array.commonmodule.bean.Course" useGeneratedKeys="true" keyProperty="courseId">
+        insert into course set examId=#{examId},teacherId=#{teacherId},courseName=#{courseName},courseTime=#{courseTime},status=#{status},grade=#{grade},description=#{description}
     </insert>
     <delete id="deleteCourse">
         delete from course where courseId=#{courseId}
     </delete>
     <update id="updateCourse" parameterType="com.array.commonmodule.bean.Course">
-        update course set courseId=#{courseId},teacherId=#{teacherId},courseName=#{courseName}
+        update course set courseId=#{courseId},teacherId=#{teacherId},courseName=#{courseName},status=#{status},grade=#{grade},description=#{description}
         <if test="examId!=null and examId!=''">
             ,examId=#{examId}
         </if>
         where courseId=#{courseId}
     </update>
-    <select id="findCourseById" resultType="com.array.commonmodule.bean.Course">
-        select * from course where courseId=#{courseId}
+    <select id="findCourseById" resultMap="courseMap">
+        select c.*,t.name as tname from course c left join teacher t on c.teacherId=t.userId where c.courseId=#{courseId}
     </select>
     <select id="findCourseByName" resultType="com.array.commonmodule.bean.Course">
         select * from course where courseName=#{courseName}
     </select>
     <select id="findAllCourse" resultMap="courseMap">
-        select c.*,t.name as tname from course c left join teacher t on c.teacherId=t.userId
+        select c.*,t.name as tname from course c left join teacher t on c.teacherId=t.userId where c.status = 'on'
     </select>
     <select id="findStudentByCourseId" resultType="com.array.commonmodule.bean.Student">
-        SELECT s.* FROM course c LEFT JOIN user_course uc on c.courseId=uc.courseId LEFT JOIN student s ON uc.userId=s.userId WHERE c.courseId=#{courseId}
+        SELECT s.* FROM student s LEFT JOIN user_course uc on s.userId=uc.userId LEFT JOIN course c ON uc.courseId=c.courseId WHERE c.courseId=#{courseId}
     </select>
-    <select id="findHomeWorkByCourseId" resultType="com.array.commonmodule.bean.HomeWork">
+    <select id="findHomeWorkByCourseId" resultMap="homeworkDto">
+        select h.*,sh.grade as shgrade from homework h left join student_homework sh on h.homeworkId=sh.homeworkId where h.courseId=#{courseId} and sh.userId=#{userId}
+    </select>
+    <select id="findCourseByStudentId" resultMap="courseMap">
+        select c.*,t.name as tname from course c LEFT JOIN user_course uc on c.courseId=uc.courseId left join teacher t on c.teacherId=t.userId where uc.userId=#{id}
+    </select>
+    <select id="getHomeworkByCourseId" resultType="com.array.commonmodule.bean.HomeWork">
         select * from homework where courseId=#{courseId}
     </select>
+    <select id="findCourseByStatus" resultMap="courseMap">
+        select c.*,t.name as tname from course c left join teacher t on c.teacherId=t.userId where c.status=#{status}
+    </select>
+    <insert id="chooseCourse">
+        insert into user_course set userId=#{userId},courseId=#{courseId},grade=-1
+    </insert>
+    <delete id="withdrawCourse">
+        delete from user_course where userId=#{userId} AND courseId=#{courseId}
+    </delete>
+    <select id="findCurCourse" resultType="com.array.commonmodule.bean.Course">
+        select * from course where teacherId=#{teacherId} and status='on'
+    </select>
+    <select id="findPreCourse" resultType="com.array.commonmodule.bean.Course">
+        select * from course where teacherId=#{teacherId} and status='off'
+    </select>
     <resultMap id="courseMap" type="com.array.commonmodule.bean.dto.CourseDTO">
-        <id property="id" column="courseId" />
-        <result property="name" column="courseName" />
-        <result property="time" column="courseTime" />
-        <result property="teacher" column="tname" />
-        <result property="description" column="" />
+        <id property="courseId" column="courseId" />
+        <result property="examId" column="examId" />
+        <result property="teacherId" column="teacherId" />
+        <result property="courseName" column="courseName" />
+        <result property="courseTime" column="courseTime" />
+        <result property="status" column="status" />
+        <result property="grade" column="grade" />
+        <result property="description" column="description" />
+        <result property="teacherName" column="tname" />
+    </resultMap>
+    <resultMap id="homeworkDto" type="com.array.commonmodule.bean.dto.HomeworkDTO">
+        <id property="homeworkId" column="homeworkId" />
+        <result property="homeworkContent" column="homeworkContent" />
+        <result property="homeworkName" column="homeworkName" />
+        <result property="startTime" column="startTime" />
+        <result property="endTime" column="endTime" />
+        <result property="status" column="status" />
+        <result property="isExam" column="isExam" />
+        <result property="grade" column="shgrade" />
     </resultMap>
 </mapper>
+
+
+<!--CourseDTO-->
+<!--        private Long courseId;-->
+<!--        private Long examId;-->
+<!--        private Long teacherId;-->
+<!--        private String courseName;-->
+<!--        private String courseTime;-->
+<!--        private String status;-->
+<!--        private String grade;-->
+<!--        private String description;-->
+<!--        private String teacherName;-->

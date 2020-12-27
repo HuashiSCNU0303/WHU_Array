@@ -19,7 +19,14 @@
     <select id="findUserById" resultType="com.array.commonmodule.bean.Teacher">
         select * from teacher where userId=#{id}
     </select>
-    <select id="findTeacherByName" resultType="com.array.commonmodule.bean.Student">
+    <select id="findTeacherByName" resultType="com.array.commonmodule.bean.Teacher">
         select * from teacher where name=#{name}
     </select>
+    <resultMap id="teacherMap" type="com.array.commonmodule.bean.Teacher">
+        <constructor>
+            <idArg column="userId" javaType="long"/>
+            <arg column="name" javaType="String"/>
+            <arg column="password" javaType="String"/>
+        </constructor>
+    </resultMap>
 </mapper>

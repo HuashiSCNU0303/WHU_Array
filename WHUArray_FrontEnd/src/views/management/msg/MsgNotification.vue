@@ -7,11 +7,13 @@
       </template>
       <a-collapse-panel key="1" header="新消息" :style="customStyle">
         <center-loading v-if="isLoading == true" />
-        <msg-list v-else :data="newMsgList"></msg-list>
+        <msg-list v-else-if="newMsgList.length > 0" :data="newMsgList" />
+        <icon-hint v-else :hint="emptyHints[0]" />
       </a-collapse-panel>
       <a-collapse-panel key="2" header="已读消息" :style="customStyle">
         <center-loading v-if="isLoading == true" />
-        <msg-list v-else :data="oldMsgList"></msg-list>
+        <msg-list v-else-if="oldMsgList.length > 0" :data="oldMsgList"></msg-list>
+        <icon-hint v-else :hint="emptyHints[1]" />
       </a-collapse-panel>
     </a-collapse>
   </div>
@@ -19,53 +21,28 @@
 
 <script>
 import MsgList from "@/views/management/msg/MsgList.vue";
+import { mapState } from "vuex";
+import IconHint from "../../../components/widgets/IconHint.vue";
 
-const newMsgList_temp = [
-  {
-    title: "Ant Design Title 1",
-    description: "Ant Design Description 1",
-  },
-  {
-    title: "Ant Design Title 2",
-    description: "Ant Design Description 2",
-  },
-  {
-    title: "Ant Design Title 3",
-    description: "Ant Design Description 3",
-  },
-  {
-    title: "Ant Design Title 4",
-    description: "Ant Design Description 4",
-  },
-];
-const oldMsgList_temp = [
-  {
-    title: "Ant Design Title 5",
-    description: "Ant Design Description 5",
-  },
-  {
-    title: "Ant Design Title 6",
-    description: "Ant Design Description 6",
-  },
-  {
-    title: "Ant Design Title 7",
-    description: "Ant Design Description 7",
-  },
-  {
-    title: "Ant Design Title 8",
-    description: "Ant Design Description 8",
-  },
-];
 export default {
   data() {
     return {
       newMsgList: [], // 未读消息
       oldMsgList: [], // 已读消息
       isLoading: true,
+      emptyHints: ["当前没有新消息", "当前没有已读消息"],
       selectedKey: "msg",
       customStyle:
         "background: #fff; padding-bottom: 18px; border-bottom: 1px solid #e8e8e8; overflow: hidden",
     };
+  },
+  computed: {
+    ...mapState({}),
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
   },
   components: {
     MsgList,
@@ -75,12 +52,65 @@ export default {
   },
   methods: {
     getMsg() {
-      // 获取消息列表，下面只是模拟一下请求后端获得结果而已
-      setTimeout(() => {
-        this.newMsgList = newMsgList_temp;
-        this.oldMsgList = oldMsgList_temp;
-        this.isLoading = false;
-      }, 1000);
+      this.newMsgList = [];
+      this.oldMsgList = [];
+      var _this = this;
+      this.api.student.getMessage(this.headers).then((res) => {
+        var response = res.data;
+        var msgList = response;
+        console.log(msgList);
+        for (var i = msgList.length - 1; i >= 0; i--) {
+          var msgString = msgList[i].messageContent;
+          console.log(msgString);
+          var msg = JSON.parse(msgString);
+          console.log(msg);
+          var item = _this.handleMessage(msg);
+          _this.newMsgList.push(item);
+        }
+        _this.isLoading = false;
+      });
+    },
+
+    handleMessage(msg) {
+      var item = {
+        title: "",
+        avatar: "",
+        description: "",
+        workId: msg.homeworkId,
+        courseId: msg.courseId,
+        type: "",
+      };
+      if (msg.isExam == 0) {
+        item.title = "有新作业了！";
+        item.avatar = "";
+        item.description =
+          "你的课程" + msg.courseName + "布置了" + msg.homeworkName + "，点击查看";
+        item.type = 0;
+        item.src = "../../../assets/img/homework_start.png";
+      } else if (msg.isExam == 1 && msg.type == "Create") {
+        item.title = "有新考试了！";
+        item.avatar = "";
+        item.description =
+          "你的课程" +
+          msg.courseName +
+          "新增了即将开始的" +
+          msg.homeworkName +
+          "，点击查看";
+        item.type = 1;
+        item.src = "../../../assets/img/exam_create.png";
+      } else if (msg.isExam == 1 && msg.type == "Publish") {
+        item.title = "考试开始了！";
+        item.avatar = "";
+        item.description =
+          "你的课程" +
+          msg.courseName +
+          "下的" +
+          msg.homeworkName +
+          "已经开始了，点击去完成";
+        item.type = 2;
+        item.src = "../../../assets/img/exam_start.png";
+      }
+      return item;
     },
   },
 };

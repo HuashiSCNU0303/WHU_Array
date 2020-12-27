@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -20,6 +21,16 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+    }),
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
+  },
   mounted() {
     this.$store.dispatch("setCurrentPageHeader", this.header);
     this.$store.dispatch("setCurrentBreadCrumb", null);
@@ -28,14 +39,35 @@ export default {
   },
   methods: {
     getProblems() {
-      // 获取题目列表，下面只是模拟一下请求后端获得结果而已
+      this.problemList = [];
       var _this = this;
-      var data = {
-        role: "",
-        id: -1
+      var data = {};
+      var headers = {
+        Authorization: localStorage.getItem("token"),
       };
-      this.api.problem.getProblems(data, ).then((res) => {
+      this.api.problem.getProblems(data, headers).then((res) => {
         var response = res.data;
+        console.log(response);
+        var problemDTOs = response;
+        for (var i = 0; i < problemDTOs.length; i++) {
+          var problem_ = problemDTOs[i].question;
+          var problemTags = problem_.tag.split(";");
+          problemTags.splice(problemTags.length - 1, 1);
+          var problem = {
+            id: problem_.questionId,
+            name: problem_.questionName,
+            description: problem_.questionContent,
+            isDone: "",
+            score: "",
+            courseName: problemDTOs[i].courseName,
+            workName: problemDTOs[i].homeworkName,
+            tags: problemTags,
+          };
+
+          var records = problemDTOs[i].records;
+          _this.utils.statusHandler.handleProblemRecord(problem, records, _this.user.id);
+          _this.problemList.push(problem);
+        }
         // 对response做处理
         _this.isLoading = false;
       });

@@ -25,6 +25,7 @@
         <a-button
           size="small"
           style="width: 90px"
+          icon="sync"
           @click="() => handleReset(clearFilters)"
         >
           重置
@@ -94,6 +95,11 @@ export default {
     ...mapState({
       courseListCol: (state) => state.tableProto.student.courseListCol,
     }),
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
   },
   props: {
     data: {
@@ -111,7 +117,7 @@ export default {
 
     if (this.currentPage == "TeaPreCourse") {
       this.columns.splice(2, 1);
-      this.columns.splice(4, 1);
+      this.columns.splice(4, 2);
     }
   },
   methods: {
@@ -186,10 +192,9 @@ export default {
         onOk() {
           // 发撤课请求
           var data = {
-            studentId: -1,
-            courseId: -1,
+            courseId: record.id,
           };
-          _this.api.student.dropCourse(data).then((res) => {
+          _this.api.student.dropCourse(data, _this.headers).then((res) => {
             _this.$success({
               title: "操作成功",
               onOk() {
@@ -206,10 +211,9 @@ export default {
       // 发选课请求
       var _this = this;
       var data = {
-        studentId: -1,
-        courseId: -1,
+        courseId: record.id,
       };
-      this.api.student.dropCourse(data).then((res) => {
+      this.api.student.addCourse(data, this.headers).then((res) => {
         _this.$success({
           title: "操作成功",
           onOk() {

@@ -1,7 +1,10 @@
 package com.array.coursedataservice.service;
 
 import com.array.commonmodule.bean.Question;
+import com.array.commonmodule.bean.UseCase;
+import com.array.commonmodule.bean.dto.QuestionDTO;
 import com.array.coursedataservice.mapper.QuestionMapper;
+import com.array.coursedataservice.mapper.UseCaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import java.util.List;
 public class QuestionService {
     @Autowired
     QuestionMapper questionMapper;
+    @Autowired
+    UseCaseMapper useCaseMapper;
 
     public int addQuestion(Question question) {
         return questionMapper.addQuestion(question);
@@ -24,6 +29,8 @@ public class QuestionService {
     }
 
     public int updateQuestion(Question question) {
+        useCaseMapper.deleteUseCaseByQuestionId(question.getQuestionId());
+        useCaseMapper.addUseCases(question.getUseCases());
         return questionMapper.updateQuestion(question);
     }
 
@@ -35,7 +42,15 @@ public class QuestionService {
         return questionMapper.findQuestionByName(questionName);
     }
 
-    public List<Question> findAllQuestion() {
+    public int updateQuestionStatus(Long homeworkId) {
+        return questionMapper.updateQuestionStatus(homeworkId);
+    }
+
+    public List<QuestionDTO> findAllQuestion() {
         return questionMapper.findAllQuestion();
+    }
+
+    public List<Question> findQuestionByHomeworkId(Long id) {
+        return questionMapper.findQuestionByHomeworkId(id);
     }
 }

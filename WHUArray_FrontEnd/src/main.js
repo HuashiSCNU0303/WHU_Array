@@ -8,10 +8,9 @@ import Antd from "ant-design-vue";
 import VueBreadcrumbs from "vue-breadcrumbs";
 import store from "./store/index";
 import utils from "./utils/index";
-import api from "./api/index"
+import api from "./api/index";
 import CommonComs from "./components/index";
-import moment from 'moment'
-
+import moment from "moment";
 
 Vue.use(VueBreadcrumbs);
 Vue.use(Antd);
@@ -20,14 +19,18 @@ Vue.use(Antd);
 Vue.config.productionTip = false;
 Vue.prototype.utils = utils;
 Vue.prototype.api = api;
-moment.locale('zh-cn');
+moment.locale("zh-cn");
 Vue.prototype.$moment = moment;
+
+document.title = "Array";
 
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
   router,
   store,
-  components: { App },
+  components: {
+    App,
+  },
   template: "<App/>",
 });

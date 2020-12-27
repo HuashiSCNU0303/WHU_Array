@@ -1,11 +1,10 @@
 package com.array.coursedataservice.mapper;
 
-import com.array.commonmodule.bean.Course;
-import com.array.commonmodule.bean.HomeWork;
-import com.array.commonmodule.bean.Student;
-import com.array.commonmodule.bean.User;
+import com.array.commonmodule.bean.*;
 import com.array.commonmodule.bean.dto.CourseDTO;
+import com.array.commonmodule.bean.dto.HomeworkDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public interface CourseMapper {
 
     int updateCourse(Course course);
 
-    Course findCourseById(Long courseId);
+    CourseDTO findCourseById(Long courseId);
 
     List<Course> findCourseByName(String courseName);
 
@@ -28,5 +27,19 @@ public interface CourseMapper {
 
     List<Student> findStudentByCourseId(Long courseId);
 
-    List<HomeWork> findHomeWorkByCourseId(Long courseId);
+    List<HomeWork> getHomeworkByCourseId(Long courseId);
+
+    List<HomeworkDTO> findHomeWorkByCourseId(@Param("courseId") Long courseId, @Param("userId") Long userId);
+
+    int chooseCourse(@Param("userId") Long userId, @Param("courseId")  Long courseId);
+
+    int withdrawCourse(@Param("userId") Long userId, @Param("courseId") Long courseId);
+
+    List<CourseDTO> findCourseByStudentId(Long id);
+
+    List<CourseDTO> findCourseByStatus(String status);
+
+    List<Course> findCurCourse(Long teacherId);
+
+    List<Course> findPreCourse(Long teacherId);
 }

@@ -46,6 +46,11 @@ export default {
     ...mapState({
       course: (state) => state.curObj.course.course,
     }),
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
   },
   mounted() {
     this.getStudents();
@@ -56,14 +61,13 @@ export default {
       var data = {
         courseId: this.course.id,
       };
-      this.api.teacher.getCourseStudentList(data).then((res) => {
+      this.api.teacher.getCourseStudentList(data, this.headers).then((res) => {
         var response = res.data;
         // 对response进行处理，变成students
         var students = response;
         for (var i = 0; i < students.length; i++) {
           var student_ = students[i];
-          // ？怎么处理，待定
-          _this.studentList.push(student);
+          _this.studentList.push(student_);
         }
         _this.isLoading = false;
       });

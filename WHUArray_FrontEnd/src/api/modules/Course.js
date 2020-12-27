@@ -1,7 +1,8 @@
 // 与课程相关的所有接口
 
-import axios from "axios";
+const URL = "http://39.106.97.180:8009";
 
+import axios from "axios";
 export default {
 
   // 获取课程的描述信息，参数为课程id
@@ -10,7 +11,7 @@ export default {
   // 对接完成
   getCourseDetail (data, headers) {
     return axios({
-      url: "http://localhost:8009/course/" + data.courseId,
+      url: URL + "/course/" + data.courseId,
       method: "get",
       headers: headers,
     });

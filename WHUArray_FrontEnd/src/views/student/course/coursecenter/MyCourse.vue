@@ -11,7 +11,11 @@
         <div v-else><icon-hint :hint="emptyHints[0]" /></div>
       </div>
       <div slot="panel2_content">
-        <course-card-list v-if="endCourseList.length > 0" :data="endCourseList" />
+        <course-card-list v-if="endCourseList.length > 0" :data="endCourseList">
+          <div slot="content" slot-scope="props" @click="switchToCourse(props.item)">
+            <stu-course-card :item="props.item" />
+          </div>
+        </course-card-list>
         <div v-else><icon-hint :hint="emptyHints[1]" /></div>
       </div>
     </all-expand-col-panel>
@@ -19,7 +23,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -33,6 +37,16 @@ export default {
   },
   mounted() {
     this.getCourses();
+  },
+  computed: {
+    ...mapState({
+      user: (state) => state.curObj.user.user,
+    }),
+    headers_() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
   },
   methods: {
     getCourses() {
@@ -55,14 +69,24 @@ export default {
       // 获取课程列表，下面只是模拟一下请求后端获得结果而已
       var _this = this;
       var data = {
-        id: -1,
+        userId: this.user.id,
       };
-      this.api.student.getCourseList(data).then((res) => {
+      this.api.student.getCourseList(data, this.headers_).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的courses;
-        var courses;
+        var courses = response;
+        console.log(courses);
         for (var i = 0; i < courses.length; i++) {
-          var course = courses[i];
+          var course_ = courses[i];
+          var course = {
+            id: course_.courseId,
+            name: course_.courseName,
+            teacher: course_.teacherName,
+            grade: course_.grade,
+            time: course_.courseTime,
+            description: course_.description,
+            status: course_.status,
+          };
           if (course.status == "on") {
             _this.currentCourseList.push(course);
           } else {
@@ -70,11 +94,12 @@ export default {
           }
         }
         _this.isLoading = false;
+        console.log(_this.endCourseList);
       });
     },
 
     switchToCourse(item) {
-      this.utils.toggle.handleCourseSwitch(this, "student", item);
+      this.utils.toggle.handleCourseSwitchByItem(this, "student", item);
     },
   },
 };

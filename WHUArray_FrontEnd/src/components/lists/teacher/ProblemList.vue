@@ -51,7 +51,7 @@ export default {
     }),
   },
   mounted() {
-    this.columns = this.problemListCol;
+    this.columns = JSON.parse(JSON.stringify(this.problemListCol));
     if (this.editable == false) {
       this.columns.splice(2, 1);
     }

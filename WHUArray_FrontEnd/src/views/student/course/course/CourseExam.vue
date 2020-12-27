@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -38,7 +38,7 @@ export default {
         "当前没有已结束的考试",
       ],
       headers: ["当前进行中的考试", "准备开始的考试", "已结束的考试"],
-      currentExamData: {},
+      currentExamData: null,
       todoExamList: [],
       finishExamList: [],
       isLoading: true,
@@ -53,6 +53,11 @@ export default {
     ...mapState({
       user: (state) => state.curObj.user.user,
       course: (state) => state.curObj.course.course,
+      headers_() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   methods: {
@@ -62,7 +67,7 @@ export default {
         userId: this.user.id,
         courseId: this.course.id,
       };
-      this.api.student.getCourseExam(data).then((res) => {
+      this.api.student.getCourseExam(data, this.headers_).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的exams;
         var exams = response;

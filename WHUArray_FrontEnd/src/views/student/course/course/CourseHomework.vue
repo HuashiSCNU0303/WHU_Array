@@ -30,6 +30,11 @@ export default {
     ...mapState({
       user: (state) => state.curObj.user.user,
       course: (state) => state.curObj.course.course,
+      headers_() {
+        return {
+          Authorization: localStorage.getItem("token"),
+        };
+      },
     }),
   },
   data() {
@@ -48,38 +53,20 @@ export default {
   },
   methods: {
     getHomeworks() {
-      // let courseId = this.course.id;
-      // let _this = this;
-      // let getUrl = "http://localhost:8009/course/" + courseId + "/allHomework";
-      // axios
-      //   .get(getUrl, {
-      //     headers: {
-      //       Authorization: localStorage.getItem("token"),
-      //     },
-      //   })
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     this.homeworkList = res.data;
-      //     this.isLoading = false;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   });
-      // 获取作业列表，下面只是模拟一下请求后端获得结果而已
-      // 在这里分成两个表，一个是已提交/已结束的，一个是未提交的
-
       var _this = this;
       var data = {
         userId: this.user.id,
         courseId: this.course.id,
       };
-      this.api.student.getCourseHomework(data).then((res) => {
+      this.api.student.getCourseHomework(data, this.headers_).then((res) => {
         var response = res.data;
         // 对response做处理，变成下面的homeworks
-        var homeworks = resource;
+        var homeworks = response;
+        console.log(homeworks);
         for (var i = 0; i < homeworks.length; i++) {
           var homework_ = homeworks[i];
-          if (homework_.isExam != 0) {
+          console.log(homework_);
+          if (homework_.isExam != 0 || homework_.status == "unpublished") {
             continue;
           }
           var homework = {
@@ -92,6 +79,7 @@ export default {
             score: homework_.grade,
             type: "Homework",
           };
+          console.log(homework);
           _this.utils.statusHandler.handleStudentHomework(_this, homework);
           if (homework.status == "未提交") {
             _this.todoHomeworkList.push(homework);

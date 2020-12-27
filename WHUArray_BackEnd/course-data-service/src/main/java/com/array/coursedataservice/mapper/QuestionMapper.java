@@ -2,6 +2,7 @@ package com.array.coursedataservice.mapper;
 
 import com.array.commonmodule.bean.Course;
 import com.array.commonmodule.bean.Question;
+import com.array.commonmodule.bean.dto.QuestionDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,10 +19,13 @@ public interface QuestionMapper {
 
     int updateQuestion(Question question);
 
+    int updateQuestionStatus(Long homeworkId);
+
     Question findQuestionById(Long questionId);
 
     List<Question> findQuestionByName(String questionName);
 
-    List<Question> findAllQuestion();
+    List<QuestionDTO> findAllQuestion();
 
+    List<Question> findQuestionByHomeworkId(Long id);
 }

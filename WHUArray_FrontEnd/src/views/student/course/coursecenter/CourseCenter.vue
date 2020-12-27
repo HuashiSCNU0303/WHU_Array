@@ -11,12 +11,12 @@ export default {
       items: [
         {
           key: "myCourse",
-          iconType: "setting",
+          iconType: "schedule",
           text: "我的课程",
         },
         {
           key: "addCourse",
-          iconType: "message",
+          iconType: "team",
           text: "加入课程",
         },
       ],

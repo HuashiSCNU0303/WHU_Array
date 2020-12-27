@@ -28,14 +28,14 @@ public class JudgeController {
         JudgeRequest judgeRequest = new JudgeRequest();
         judgeRequest.setSrc(jsonObject.getString("src"));
         judgeRequest.setLang(jsonObject.getString("lang"));
-        judgeRequest.setProblemID(jsonObject.getInteger("problemID"));
-        judgeRequest.setSubmitID(jsonObject.getInteger("submitID"));
+        judgeRequest.setProblemID(jsonObject.getLong("problemID"));
+        judgeRequest.setSubmitID(jsonObject.getLong("submitID"));
 
         Map<Integer, String> testCases = new HashMap<>();
         JSONArray jsonArray = jsonObject.getJSONArray("testCases");
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject object = jsonArray.getJSONObject(i);
-            int testCaseID = object.getInteger("testCaseID");
+            int testCaseID = object.getInteger("testCaseId");
             String result = object.getString("result");
             testCases.put(testCaseID, result);
         }
@@ -179,8 +179,6 @@ public class JudgeController {
         }
         CommonUtils.createFile(path, judgeRequest.getSrc());
 
-        // results.put("problemID", String.valueOf(judgeRequest.getProblemID()));
-        // results.put("submitID", String.valueOf(judgeRequest.getSubmitID()));
         if ("java".equals(chosenLang)) {
             // 编译源文件
             if (CommonUtils.compileJavaProgram(path, results)) {
@@ -191,6 +189,7 @@ public class JudgeController {
         else {
             runProgram(chosenLang, submissionPath.toFile(), judgeRequest, results);
         }
+        // CommonUtils.deleteDir(submissionPath.toFile());
         return results;
     }
 }

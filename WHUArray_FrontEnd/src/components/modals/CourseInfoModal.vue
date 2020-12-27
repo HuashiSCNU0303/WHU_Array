@@ -92,6 +92,15 @@ export default {
     this.setModal();
     this.setGradeOptions();
   },
+
+  watch: {
+    visible: function (newVal) {
+      if (this.visible) {
+        this.setModal();
+      }
+    },
+  },
+
   methods: {
     setModal() {
       this.title = typeof this.item === "undefined" ? "添加课程" : "修改课程信息";

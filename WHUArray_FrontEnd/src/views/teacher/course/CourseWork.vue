@@ -9,7 +9,7 @@
         <a-button
           v-if="course.status == 'on'"
           type="primary"
-          icon="user"
+          icon="file-add"
           @click="
             () => {
               this.modalVisible = true;
@@ -30,7 +30,7 @@
           </a-select>
           <a-button
             type="primary"
-            icon="user"
+            icon="sync"
             @click="
               () => {
                 refreshKey = 1;
@@ -81,6 +81,11 @@ export default {
     typeName() {
       return this.type == "Homework" ? "作业" : "考试";
     },
+    headers() {
+      return {
+        Authorization: localStorage.getItem("token"),
+      };
+    },
   },
   watch: {
     type: function () {
@@ -109,7 +114,7 @@ export default {
       curFilterStatus: "",
       refreshKey: 1,
       isLoading: true, // 标识一下正在加载的状态
-      emptyHint: "当前没有未完成的作业",
+      emptyHint: "当前没有未发布的作业",
     };
   },
   mounted() {
@@ -118,14 +123,16 @@ export default {
   methods: {
     getWorks() {
       // 获取作业列表，下面只是模拟一下请求后端获得结果而已
+      this.workList = [];
       var _this = this;
       var data = {
         courseId: this.course.id,
       };
-      this.api.teacher.getCourseWork(data).then((res) => {
+      this.api.teacher.getCourseWork(data, this.headers).then((res) => {
         var response = res.data;
         // 对response进行处理，变成下面的works
         var works = response;
+        console.log(works);
         for (var i = 0; i < works.length; i++) {
           var work_ = works[i];
 
@@ -145,33 +152,40 @@ export default {
             type: work_.isExam == 0 ? "Homework" : "Exam",
           };
 
+          console.log(work);
+
           _this.utils.statusHandler.handleTeacherWork(_this, work);
           work["visible"] = true;
+          _this.workList.push(work);
         }
-        _this.workList = works;
         _this.isLoading = false;
       });
     },
     switchToWork(item) {
       // 跳转到作业
-      this.utils.toggle.handleWorkSwitch(this, "teacher", item);
+      this.utils.toggle.handleWorkSwitch(this, "teacher", item.id);
     },
     addWork(work) {
       var work_ = {
         homeworkName: work.name,
+        courseId: this.course.id,
         startTime: this.utils.countdown.transPickerToString(work.startTime),
         endTime: this.utils.countdown.transPickerToString(work.endTime),
         status: "unpublished",
         isExam: this.type == "Homework" ? 0 : 1,
       };
 
+      console.log(work);
       // 把组装好的work_发送给后台，添加作业/考试，给我返回一个作业/考试号！！
       var _this = this;
-      this.api.teacher.addWork(work_).then((res) => {
+      this.api.teacher.addWork(work_, this.headers).then((res) => {
         var response = res.data;
         // 对response进行处理，取得作业/考试号
-        work_["id"] = 10005;
-        _this.workList.push(work_);
+        work["id"] = response;
+        work["status"] = "未发布";
+        work.startTime = work_.startTime;
+        work.endTime = work_.endTime;
+        _this.workList.push(work);
         _this.modalVisible = false;
         _this.$success({
           title: "添加成功",

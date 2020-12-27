@@ -5,6 +5,7 @@ import com.array.commonmodule.bean.HomeWork;
 import com.array.commonmodule.bean.Student;
 import com.array.commonmodule.bean.User;
 import com.array.commonmodule.bean.dto.CourseDTO;
+import com.array.commonmodule.bean.dto.HomeworkDTO;
 import com.array.coursedataservice.mapper.CourseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,12 @@ public class CourseService {
         return courseMapper.updateCourse(course);
     }
 
-    public Course findCourseById(Long courseId) {
+    public CourseDTO findCourseById(Long courseId) {
         return courseMapper.findCourseById(courseId);
+    }
+
+    public List<HomeWork> getHomeworkByCourseId(Long courseId) {
+        return courseMapper.getHomeworkByCourseId(courseId);
     }
 
     public List<Course> findCourseByName(String courseName) {
@@ -47,7 +52,31 @@ public class CourseService {
         return courseMapper.findStudentByCourseId(courseId);
     }
 
-    public List<HomeWork> findHomeWorkByCourseId(Long courseId) {
-        return courseMapper.findHomeWorkByCourseId(courseId);
+    public List<HomeworkDTO> findHomeWorkByCourseId(Long courseId, Long userId) {
+        return courseMapper.findHomeWorkByCourseId(courseId, userId);
+    }
+
+    public int chooseCourse(Long userId, Long courseId){
+        return courseMapper.chooseCourse(userId, courseId);
+    }
+
+    public List<CourseDTO> findCourseByStudentId(Long id) {
+        return courseMapper.findCourseByStudentId(id);
+    }
+
+    public List<CourseDTO> findCourseByStatus(String status) {
+        return courseMapper.findCourseByStatus(status);
+    }
+
+    public int withdrawCourse(Long userId, Long courseId) {
+        return courseMapper.withdrawCourse(userId, courseId);
+    }
+
+    public List<Course> findCurCourse(Long teacherId) {
+        return courseMapper.findCurCourse(teacherId);
+    }
+
+    public List<Course> findPreCourse(Long teacherId) {
+        return courseMapper.findPreCourse(teacherId);
     }
 }
